@@ -1,16 +1,14 @@
 //
-//  ViewController.swift
+//  ViewControllerLogin.swift
 //  elysium
 //
-//  Created by Joshua Eleazar Bosinos on 17/12/2015.
-//  Copyright © 2015 UnionBank. All rights reserved.
+//  Created by Joshua Eleazar Bosinos on 05/01/2016.
+//  Copyright © 2016 UnionBank. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-class ViewController: UIViewController {
-
+class ViewControllerLogin: UIViewController {
     var id = ""
     var name = ""
     var email = ""
@@ -20,61 +18,73 @@ class ViewController: UIViewController {
     var autoRates = [("",0.00)]
     var homeRates = [("",0.00)]
     
-    var withConnection = false
-    
-    @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        //performSegueWithIdentifier("ShowMainMenu", sender: self)
-        //_ = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "ShowMainMenu", userInfo: nil, repeats: false)
-        /*
-        let url = NSURL(string: "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android")
+        loadingIndicator.hidden = true
+        // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("networkStatusChanged:"), name: ReachabilityStatusChangedNotification, object: nil)
+        Reach().monitorReachabilityChanges()
         
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-        }
+    }
+    
+    func networkStatusChanged(notification: NSNotification) {
+        //let userInfo = notification.userInfo
+        //print(userInfo)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    //touches the screen
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        task.resume()
-        */
-        let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        self.view.endEditing(true)
+    }
+    
+    //presses the return button from the keypad
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        if (userDefaults.objectForKey("id") != nil) {
-            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
-        }
-        
-        loadingIndicator.hidden = false
-        loadingIndicator.startAnimating()
-        
+        textField.resignFirstResponder()
+        return false;
+    }
+    
+    @IBOutlet var txtPassword: UITextField!
+    
+    @IBAction func actionBackToMain(sender: AnyObject) {
+        self.performSegueWithIdentifier("IDontHavePassword", sender: self)
+    }
+    
+    
+    @IBAction func actionLogin(sender: AnyObject) {
         var contProc = true
         let status = Reach().connectionStatus()
         switch status {
         case .Unknown, .Offline:
             contProc = false
-            withConnection = false
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
         default:
             contProc = true
-            withConnection = true
         }
         
         if(contProc){
-            
+        
             loadingIndicator.hidden = false
             loadingIndicator.startAnimating()
             
             var urlAsString = "";
             
-            if(id != ""){
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + id.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android"
+            if(sender.tag == 0){
+                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + txtPassword.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android"
             }else{
                 urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android"
             }
             
             let url = NSURL(string: urlAsString)!
             let urlSession = NSURLSession.sharedSession()
-            
+
             var err = false
             
             let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
@@ -89,13 +99,10 @@ class ViewController: UIViewController {
                     
                     if(s == "INVALID_LOGIN"){
                         dispatch_async(dispatch_get_main_queue(), {
-                            NSUserDefaults.standardUserDefaults().setObject("", forKey: "id")
                             self.loadingIndicator.stopAnimating()
                             self.loadingIndicator.hidden = true
-                            let alert = UIAlertController(title: "Something's wrong", message: "There seems to be a problem with your installation. Relaunch the app to resolve the problem.", preferredStyle: .Alert)
-                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                                exit(1)
-                            })
+                            let alert = UIAlertController(title: "Invalid login", message: "You entered an invalid company code!", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
                             alert.addAction(action)
                             self.presentViewController(alert, animated: true, completion: nil)
                         })
@@ -109,11 +116,11 @@ class ViewController: UIViewController {
                             let jsonResult = try NSJSONSerialization.JSONObjectWithData(jsonStr!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                             
                             let jsonResult_Standard = try NSJSONSerialization.JSONObjectWithData(jsonStr_Standard!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                            
+                        
                             //if (err != nil) {
                             //    print("JSON Error \   (err!.localizedDescription)")
                             //}
-                            
+                        
                             // 4
                             //let text1: String! = jsonResult["id"] as! String
                             //let text2: String! = jsonResult["name"] as! String
@@ -133,7 +140,7 @@ class ViewController: UIViewController {
                                 let autoRates_Standard = auto_Standard["rates"] as! NSDictionary
                                 
                                 self.autoInfo = [auto["aouid"] as! String, auto["rmname"] as! String, auto["rmemail"] as! String]
-                                
+
                                 self.autoRates.removeAll()
                                 for(term, rate) in autoRates{
                                     if(rate as! String == ""){
@@ -203,19 +210,17 @@ class ViewController: UIViewController {
                                 
                                 self.saveUserDefaults()
                                 
-                                if(self.id != "NON"){
-                                    self.performSegueWithIdentifier("ShowMainMenuLogged", sender: self)
+                                if(sender.tag == 0){
+                                    self.performSegueWithIdentifier("LoginSuccess", sender: self)
                                 }else{
-                                    self.performSegueWithIdentifier("ShowMainMenu", sender: self)
+                                    self.performSegueWithIdentifier("IDontHavePassword", sender: self)
                                 }
                                 
                             })
                         }catch{
                             self.loadingIndicator.stopAnimating()
-                            let alert = UIAlertController(title: "Error", message: "An error has occured! Relaunch the app and try again.", preferredStyle: .Alert)
-                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                                exit(1)
-                            })
+                            let alert = UIAlertController(title: "Error", message: "An error has occured!", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
                             alert.addAction(action)
                             self.presentViewController(alert, animated: true, completion: nil)
                         }
@@ -223,10 +228,8 @@ class ViewController: UIViewController {
                 }else{
                     self.loadingIndicator.hidden = true
                     self.loadingIndicator.stopAnimating()
-                    let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-                    let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                        exit(1)
-                    })
+                    let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again later.", preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
                     alert.addAction(action)
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
@@ -235,37 +238,18 @@ class ViewController: UIViewController {
         }else{
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
-            })
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-        
-    }
-    override func viewDidAppear(animated: Bool) {
-        if(self.withConnection == false){
-            self.loadingIndicator.hidden = true
-            self.loadingIndicator.stopAnimating()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
-            })
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again later.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
+    @IBOutlet var loadingIndicator: UIActivityIndicatorView!
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-    func ShowMainMenu() {
-        self.performSegueWithIdentifier("ShowMainMenu", sender: self)
-    }
-    
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "LoginSuccess"
         {
@@ -293,6 +277,4 @@ class ViewController: UIViewController {
         NSUserDefaults.standardUserDefaults().setObject(self.ccInfo, forKey: "ccInfo")
     }
 
-
 }
-

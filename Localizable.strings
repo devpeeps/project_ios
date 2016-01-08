@@ -1,0 +1,58 @@
+/* 
+  Localizable.strings
+  elysium
+
+  Created by Joshua Eleazar Bosinos on 08/01/2016.
+  Copyright © 2016 UnionBank. All rights reserved.
+*/
+
+urlLib = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchlib_csv.php?libtype=@@LIBTYPE&param1=@@PARAM1&param2=@@PARAM2&param3=@@PARAM3&param4=@@PARAM4&param5=@@PARAM5&param6=@@PARAM6";
+
+about_text = "The Consumer Finance App is a mobile application wherein our clients can apply for our Consumer products  from their phones or tablets. Specifically, the app was designed to generate  applications for the following products: <b>Home Loans</b>, <b>Auto Loans</b> and<b>Credit Cards</b>.<br>
+
+<br><b><u>The UnionBank Consumer Finance App Terms & Conditions</u></b><br>
+<br><b>Credit  Information Authority </b><br>
+<br>I/We hereby certify that  all information and statements in this application are correct and complete,  and that they are made for the purpose of obtaining credit. I/We authorize  UnionBank of the Philippines to obtain such information as may be required  concerning the statements made in this application. I/We agree that this  application may remain your property whether the credit is granted or not.<br>
+<br><b>SMS Notification Authority</b><br>
+<br>This is to authorize  UnionBank of the Philippines to notify me/us electronically, included but not  limited to Short Message Service (SMS), using the information given above at  any time. Moreover, I/We shall be solely responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br>
+<br><br>
+<br><b>About the UnionBank  Consumer Finance App</b> <br>
+<br>The App provides you with a  means to apply for a Home Loan, Auto Loan or UnionBank Credit Card. The App  also enables you to explore Real Estate properties and car models that are  available in the Philippines. <br>
+<br>In  these Terms and Conditions:<br>
+<br><b>\"the  App\", \"the app\" or \"app\"</b> refers to UnionBank Consumer Finance App <br>
+<br>
+<b>\"We\", \"Us\", \"Our\", and \"Bank\"</b> refer to UnionBank of the  Philippines.<br>
+<br><b>\"You\" and \"Your\"</b> refer to the client or the owner of the account.<br>
+<br><b>\"Workplace  Arrangement Program\", \"WAP\" </b>refers to UnionBank’s customized arrangement between the  Bank and a partner company wherein qualified or eligible employees of that same  partner company can avail of a Home or Auto loan. Applications are still  subject to further screening by the Bank.<br>
+<br><b>\"Password\",  \"special access code\" </b>refers  to the Mobile Personal Identification (MPIN) code that is given to the  qualified employees of the Bank’s partner WAP companies to access special  arrangements between the Bank and the partner company<br>
+<br><b>Terms & Conditions</b><br>
+<br>
+Please read through the  following Terms and Conditions before clicking on the \"accept\" button  found at the bottom of the page. By clicking on the \"accept\" button,  you are agreeing to the terms and conditions stated on the application and are  bound by these Terms and Conditions.<br>
+<br><b><u>Applicability </u></b><br>
+<br>Only persons who are  permitted by applicable law may browse the information and/or subscribe to the  services and products offered. Persons browsing these materials are required to  ensure that they are aware of and observe all relevant restrictions that apply  to them and are responsible for satisfying themselves that they may do so under  the laws or the jurisdiction to which they are bound or located. Eligibility of  any person for particular product or service is subject to the final  determination of the Bank.<br>
+<br><b><u>Disclaimer </u></b><br>
+<br>The information contained  in these materials is for general information only and is provided on an  \"as is\" basis without warranty of any kind (including without  limitation, merchantability, title, fitness for particular purpose, freedom  from computer virus, non-infringement, compatibility, security, accuracy and  completeness) and may be withdrawn and/or changed at any time without prior  notice.<b><u></u></b><br>
+<br>This app and/or these materials may not be available at all times  and there may be delays, failures, errors or omissions or loss of transmitted  information.<br>
+<br>
+No information contained in these materials should be regarded as an offer or  solicitation to sell, to subscribe to, or provide any recommendation to any person.  The information is not intended to be relied upon as the basis for any decision  which may affect you or your business. All persons should consult their own  professional adviser before making any purchasing of product or subscribing to  any service.<br>
+<br>
+The user should be aware that any information through this app might be on a  delayed basis. The Bank will endeavor to ensure the accuracy and reliability of  the information provided but do not guarantee its accuracy or reliability and  accept no liability (whether in tort or contract or otherwise) for any loss or  damage arising from any inaccuracies or omissions.<br>
+<br>
+To the extent permitted by applicable law, the Bank disclaims liability for any  error, omissions or inaccuracies in the information contained in these  materials and for any loss of damages, resulting from its use or reliance, or  inability to use, by any party or in connection with any error, interruption,  delay in operation or incomplete transmission, line or system failure or  computer virus. The Bank is not responsible in any manner for direct, indirect,  special, incidental or consequential damages arising out of the use of this app  and/or these materials.<br>
+<br>
+Your use of this app and these materials is entirely at your own risk. The Bank  does not represent or warrant that no viruses or other destructive properties  will be transmitted or that no damage will occur to your equipment or mobile  phone. You are solely responsible for adequate protection and back up of data  and/or equipment and for undertaking reasonable and appropriate precautions to  scan for computer viruses or other destructive properties and to prevent,  safeguard and ensure that no computer virus enters your equipment or mobile  phone. The Bank makes no representations or warranties concerning the accuracy,  functionality or performance of any third party software that may be used in  connection with this app.<br>
+<br>
+<b><u>Security Information</u></b><br>
+<br>
+The Bank endeavors to ensure the security of your data transmitted. To protect  your privacy and assets, please strictly observe at all times the following  security precautions: <br>
+(A) Do not  disclose your Mobile Banking PIN (MPIN) to anyone <br>
+(B)  Regularly change your MPIN<br>
+(C) Do not  let other people use your mobile phone enrolled in a mobile banking service<br>
+(D) If the  phone is lost or stolen, report the incident immediately to the Bank and  confirm the same in writing to the Bank within 24 hours from the loss of the  phone<a name=\"_GoBack\"></a><br>
+(E) Be  vigilant and refrain from doing mobile banking transactions in a place where  you observe the presence of \"shoulder surfers\"<br>
+(F) Keep a  copy of the transaction reference number provided by the Bank whenever you  perform a mobile banking transaction as an evidence that the specific transaction  was actually executed<br>
+(G) Download applications only from official app stores or  websites to avoid the dangers of malicious applications, which can overtly  collect personal and financial information you have entered.<br>
+<br>
+<b>Copyright</b><br>
+<br>This app and all contents in these materials are protected by  copyright. No part of those materials may be modified, reproduced, transmitted  and distributed in any format or by any means for commercial or public use  without the Bank\'s prior written consent.<br>
+<br><b><em>UnionBank of the  Philippines is regulated by the Bangko Sentral ng Pilipinas. For concerns, you  may contact us at (02) 841-8600 </em></b><em>or the<b> BSP Financial Consumer Protection  Department at (02) 708-7087. </b></em><br>";
