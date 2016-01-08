@@ -315,6 +315,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="wDQ-rN-6Xl">
+                                <rect key="frame" x="281" y="282" width="37" height="37"/>
+                                <color key="color" red="0.01848298642" green="0.018278779039999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9By-CS-Pp1">
+                                <rect key="frame" x="20" y="14" width="72" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="Kg0-M0-SOz"/>
+                                    <constraint firstAttribute="height" constant="22" id="cPS-v2-3GZ"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="ic_back.png"/>
+                                <connections>
+                                    <action selector="actionBackToMain:" destination="eJF-Nz-nPD" eventType="touchUpInside" id="b3I-5X-7Ep"/>
+                                    <action selector="actionBackToMainMenu:" destination="kRW-0u-MeX" eventType="touchUpInside" id="gPj-8P-zPx"/>
+                                    <action selector="backToMain:" destination="3of-g7-LSv" eventType="touchUpInside" id="g4j-Pw-ntD"/>
+                                    <segue destination="kRW-0u-MeX" kind="show" id="Sok-R8-9z5"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZG-Fi-Q13">
                                 <rect key="frame" x="508" y="14" width="72" height="22"/>
                                 <constraints>
@@ -327,10 +345,6 @@
                                     <action selector="actionLogout:" destination="xL6-Bh-OiS" eventType="touchUpInside" id="leU-M9-ZAu"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="wDQ-rN-6Xl">
-                                <rect key="frame" x="281" y="282" width="37" height="37"/>
-                                <color key="color" red="0.01848298642" green="0.018278779039999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_auto2.png" translatesAutoresizingMaskIntoConstraints="NO" id="E72-J7-ZKo">
                                 <rect key="frame" x="11" y="44" width="578" height="92"/>
                                 <constraints>
@@ -379,20 +393,6 @@
                                     <outlet property="delegate" destination="rxh-ph-PfG" id="Ojd-23-hqm"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9By-CS-Pp1">
-                                <rect key="frame" x="20" y="14" width="72" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="72" id="Kg0-M0-SOz"/>
-                                    <constraint firstAttribute="height" constant="22" id="cPS-v2-3GZ"/>
-                                </constraints>
-                                <state key="normal" title="Button" image="ic_back.png"/>
-                                <connections>
-                                    <action selector="actionBackToMain:" destination="eJF-Nz-nPD" eventType="touchUpInside" id="b3I-5X-7Ep"/>
-                                    <action selector="actionBackToMainMenu:" destination="kRW-0u-MeX" eventType="touchUpInside" id="gPj-8P-zPx"/>
-                                    <action selector="backToMain:" destination="3of-g7-LSv" eventType="touchUpInside" id="g4j-Pw-ntD"/>
-                                    <segue destination="kRW-0u-MeX" kind="show" id="Sok-R8-9z5"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
