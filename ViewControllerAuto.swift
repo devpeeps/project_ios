@@ -16,6 +16,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     var carBrandArr = [("Choose Car Brand","")]
     var carModelArr = [("","","","")]
     var selectedCarBrand = ""
+    var selectedCarModelId = ""
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -156,7 +157,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: carBrand)
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: "1")
-        NSLog(urlAsString)
+        //NSLog(urlAsString)
         
         var contProc = true
         let status = Reach().connectionStatus()
@@ -246,14 +247,47 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
-        let (_, modeldesc, srp, _) = self.carModelArr[indexPath.row]
+        var (_, modeldesc, srp, _) = self.carModelArr[indexPath.row]
         cell.textLabel!.text = modeldesc
-        cell.detailTextLabel!.text = srp
+        if(srp == ""){
+            srp = "0"
+        }
+        let x = Int(srp)
+        cell.detailTextLabel!.text = "PHP " + x!.stringFormattedWithSepator
+        
         return cell
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return ""
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let (modelid, modeldesc, _, brand) = self.carModelArr[indexPath.row]
+        
+        let alert = UIAlertController(title: "Options for", message: brand + " " + modeldesc, preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "View Model Details", style: .Default, handler: { (alert) -> Void in
+            self.selectedCarModelId = modelid
+            self.performSegueWithIdentifier("showMapView", sender: self)
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "Auto Loan Calculator", style: .Default, handler: { (alert) -> Void in
+            self.selectedCarModelId = modelid
+            self.performSegueWithIdentifier("showMapView", sender: self)
+        })
+        alert.addAction(action2)
+        let action3 = UIAlertAction(title: "Apply for Auto Loan", style: .Default, handler: { (alert) -> Void in
+            self.selectedCarModelId = modelid
+            self.performSegueWithIdentifier("showMapView", sender: self)
+        })
+        alert.addAction(action3)
+        let action4 = UIAlertAction(title: "Inquire Now", style: .Default, handler: { (alert) -> Void in
+            self.selectedCarModelId = modelid
+            self.performSegueWithIdentifier("showMapView", sender: self)
+        })
+        alert.addAction(action4)
+        
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     
@@ -320,4 +354,18 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     }
     
 
+}
+
+struct Number {
+    static let formatterWithSepator: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.numberStyle = .DecimalStyle
+        return formatter
+    }()
+}
+extension IntegerType {
+    var stringFormattedWithSepator: String {
+        return Number.formatterWithSepator.stringFromNumber(hashValue) ?? ""
+    }
 }
