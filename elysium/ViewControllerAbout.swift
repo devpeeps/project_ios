@@ -18,18 +18,7 @@ class ViewControllerAbout: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        
-        if (userDefaults.objectForKey("id") != nil) {
-            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
-        }
-        
-        //show/hide logout button
-        if(self.id != "NON" && self.id != ""){
-            buttonLogout.hidden = false
-        }else{
-            buttonLogout.hidden = true
-        }
+        checkIfLogged()
         
         
         labelAppTitle.sizeToFit()
@@ -102,6 +91,23 @@ class ViewControllerAbout: UIViewController {
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "homeRates")
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "ccInfo")
     }
+    
+    func checkIfLogged(){
+        //Load User defaults
+        let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        
+        if (userDefaults.objectForKey("id") != nil) {
+            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
+        }
+        
+        //show/hide logout button
+        if(self.id != "NON" && self.id != ""){
+            buttonLogout.hidden = false
+        }else{
+            buttonLogout.hidden = true
+        }
+    }
+
 
 }
 
