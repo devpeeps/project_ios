@@ -263,7 +263,7 @@
 		4F728F2B1C3CEA4200703575 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		4F728F2D1C3F66D000703575 /* ViewControllerAbout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerAbout.swift; sourceTree = "<group>"; };
 		4F728F311C3F6B4B00703575 /* property.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = property.plist; path = ../property.plist; sourceTree = "<group>"; };
-		4F728F331C3F6DD900703575 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		4F728F331C3F6DD900703575 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ../Localizable.strings; sourceTree = "<group>"; };
 		4F728F351C3F806800703575 /* ViewControllerAuto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerAuto.swift; path = ../ViewControllerAuto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -295,7 +295,6 @@
 		4F40A3721C22A2F500C9FD42 = {
 			isa = PBXGroup;
 			children = (
-				4F728F331C3F6DD900703575 /* Localizable.strings */,
 				4F40A37D1C22A2F500C9FD42 /* elysium */,
 				4F40A3951C22A2F500C9FD42 /* elysiumTests */,
 				4F40A3A01C22A2F500C9FD42 /* elysiumUITests */,
@@ -330,6 +329,7 @@
 				4F40A38D1C22A2F500C9FD42 /* Info.plist */,
 				4F40A3851C22A2F500C9FD42 /* elysium.xcdatamodeld */,
 				4F728F311C3F6B4B00703575 /* property.plist */,
+				4F728F331C3F6DD900703575 /* Localizable.strings */,
 			);
 			path = elysium;
 			sourceTree = "<group>";
