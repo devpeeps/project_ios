@@ -58,6 +58,7 @@ class ViewControllerLogin: UIViewController {
     
     
     @IBAction func actionLogin(sender: AnyObject) {
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         var contProc = true
         let status = Reach().connectionStatus()
         switch status {
@@ -105,6 +106,7 @@ class ViewControllerLogin: UIViewController {
                             let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
                             alert.addAction(action)
                             self.presentViewController(alert, animated: true, completion: nil)
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
                         })
                     }else{
                         let str = s!.characters.split{$0 == "|"}.map(String.init)
@@ -215,7 +217,7 @@ class ViewControllerLogin: UIViewController {
                                 }else{
                                     self.performSegueWithIdentifier("IDontHavePassword", sender: self)
                                 }
-                                
+                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
                             })
                         }catch{
                             self.loadingIndicator.stopAnimating()
@@ -223,6 +225,7 @@ class ViewControllerLogin: UIViewController {
                             let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
                             alert.addAction(action)
                             self.presentViewController(alert, animated: true, completion: nil)
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
                         }
                     }
                 }else{
@@ -232,6 +235,7 @@ class ViewControllerLogin: UIViewController {
                     let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
                     alert.addAction(action)
                     self.presentViewController(alert, animated: true, completion: nil)
+                    UIApplication.sharedApplication().endIgnoringInteractionEvents()
                 }
             })
             jsonQuery.resume()
@@ -242,6 +246,7 @@ class ViewControllerLogin: UIViewController {
             let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }
     }
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!

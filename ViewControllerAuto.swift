@@ -248,12 +248,20 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
         var (_, modeldesc, srp, _) = self.carModelArr[indexPath.row]
-        cell.textLabel!.text = modeldesc
-        if(srp == ""){
-            srp = "0"
+        
+        if(modeldesc != ""){
+            cell.textLabel!.text = modeldesc
+            if(srp == ""){
+                srp = "0"
+            }
+            let x = Int(srp)
+            cell.detailTextLabel!.text = "PHP " + x!.stringFormattedWithSepator
+        }else{
+            cell.textLabel!.text = ""
+            cell.detailTextLabel!.text = ""
         }
-        let x = Int(srp)
-        cell.detailTextLabel!.text = "PHP " + x!.stringFormattedWithSepator
+        
+        
         
         return cell
     }

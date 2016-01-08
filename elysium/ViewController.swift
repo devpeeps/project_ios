@@ -27,16 +27,35 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         //performSegueWithIdentifier("ShowMainMenu", sender: self)
-        //_ = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "ShowMainMenu", userInfo: nil, repeats: false)
+        
+        self.loadingIndicator.hidden = true
+        self.loadingIndicator.stopAnimating()
+        
+        _ = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "ShowMainMenu", userInfo: nil, repeats: false)
+    }
+    override func viewDidAppear(animated: Bool) {
         /*
-        let url = NSURL(string: "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android")
-        
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+        if(self.withConnection == false){
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
         }
-        
-        task.resume()
         */
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func ShowMainMenu() {
+        //self.performSegueWithIdentifier("ShowMainMenu", sender: self)
+        
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if (userDefaults.objectForKey("id") != nil) {
@@ -243,27 +262,6 @@ class ViewController: UIViewController {
             self.presentViewController(alert, animated: true, completion: nil)
         }
         
-    }
-    override func viewDidAppear(animated: Bool) {
-        if(self.withConnection == false){
-            self.loadingIndicator.hidden = true
-            self.loadingIndicator.stopAnimating()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
-            })
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func ShowMainMenu() {
-        self.performSegueWithIdentifier("ShowMainMenu", sender: self)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
