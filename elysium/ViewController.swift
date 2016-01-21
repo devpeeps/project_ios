@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     var homeInfo = ["aouid","rmname","rmemail"]
     var ccInfo = ["aouid","aoemail","rmname","rmemail"]
     var autoRates = [("",0.00)]
+    var autoRates_Standard = [("",0.00)]
     var homeRates = [("",0.00)]
     
     var withConnection = false
@@ -163,6 +164,7 @@ class ViewController: UIViewController {
                                         
                                     }
                                     
+                                    
                                     //HOME
                                     let home = products["home"] as! NSDictionary
                                     let homeRates = home["rates"] as! NSDictionary
@@ -230,22 +232,26 @@ class ViewController: UIViewController {
                                     
                                 })
                             }catch{
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.loadingIndicator.stopAnimating()
+                                    let alert = UIAlertController(title: "Error", message: "An error has occured! Relaunch the app and try again.", preferredStyle: .Alert)
+                                    let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                        exit(1)
+                                    })
+                                    alert.addAction(action)
+                                    self.presentViewController(alert, animated: true, completion: nil)
+                                })
+                            }
+                        }else{
+                            dispatch_async(dispatch_get_main_queue(), {
                                 self.loadingIndicator.stopAnimating()
-                                let alert = UIAlertController(title: "Error", message: "An error has occured! Relaunch the app and try again.", preferredStyle: .Alert)
+                                let alert = UIAlertController(title: "Error", message: "There seems to be a problem with the connection. Please try again later.", preferredStyle: .Alert)
                                 let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                                     exit(1)
                                 })
                                 alert.addAction(action)
                                 self.presentViewController(alert, animated: true, completion: nil)
-                            }
-                        }else{
-                            self.loadingIndicator.stopAnimating()
-                            let alert = UIAlertController(title: "Error", message: "There seems to be a problem with the connection. Please try again later.", preferredStyle: .Alert)
-                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                                exit(1)
                             })
-                            alert.addAction(action)
-                            self.presentViewController(alert, animated: true, completion: nil)
                         }
                     }
                 }else{
@@ -296,9 +302,22 @@ class ViewController: UIViewController {
         NSUserDefaults.standardUserDefaults().setObject(self.name, forKey: "name")
         NSUserDefaults.standardUserDefaults().setObject(self.email, forKey: "email")
         NSUserDefaults.standardUserDefaults().setObject(self.autoInfo, forKey: "autoInfo")
-        NSUserDefaults.standardUserDefaults().setObject(self.autoRates as? AnyObject, forKey: "autoRates")
+        
+        for(term, rate) in self.autoRates{
+            NSUserDefaults.standardUserDefaults().setObject(rate, forKey: "autoRates_" + term)
+        }
+        
+        //NSUserDefaults.standardUserDefaults().setObject(self.autoRates as? AnyObject, forKey: "autoRates")
+        
         NSUserDefaults.standardUserDefaults().setObject(self.homeInfo, forKey: "homeInfo")
-        NSUserDefaults.standardUserDefaults().setObject(self.homeRates as? AnyObject, forKey: "homeRates")
+        
+        
+        for(term, rate) in self.homeRates{
+            NSUserDefaults.standardUserDefaults().setObject(rate, forKey: "homeRates_" + term)
+        }
+        
+        //NSUserDefaults.standardUserDefaults().setObject(self.homeRates as? AnyObject, forKey: "homeRates")
+        
         NSUserDefaults.standardUserDefaults().setObject(self.ccInfo, forKey: "ccInfo")
     }
 

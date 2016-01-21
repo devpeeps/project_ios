@@ -40,7 +40,7 @@ class ViewControllerMain: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
 
-        foreground.contentSize = CGSize(width:400, height:2000)
+        foreground.contentSize = CGSize(width:400, height:2200)
         
         
         

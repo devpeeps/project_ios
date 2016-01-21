@@ -47,10 +47,10 @@ class ViewControllerAbout: UIViewController {
     @IBAction func backToMain(sender: AnyObject) {
         
         
-        if(self.id != "NON" && self.id != ""){
-            self.performSegueWithIdentifier("BackToMainLogged", sender: self)
-        }else{
+        if(self.id == "NON" || self.id == ""){
             self.performSegueWithIdentifier("BackToMain", sender: self)
+        }else{
+            self.performSegueWithIdentifier("BackToMainLogged", sender: self)
         }
     }
     
@@ -101,10 +101,10 @@ class ViewControllerAbout: UIViewController {
         }
         
         //show/hide logout button
-        if(self.id != "NON" && self.id != ""){
-            buttonLogout.hidden = false
-        }else{
+        if(self.id == "NON" || self.id == ""){
             buttonLogout.hidden = true
+        }else{
+            buttonLogout.hidden = false
         }
     }
 

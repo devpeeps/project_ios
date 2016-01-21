@@ -8,6 +8,13 @@
 
 urlLib = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchlib_csv.php?libtype=@@LIBTYPE&param1=@@PARAM1&param2=@@PARAM2&param3=@@PARAM3&param4=@@PARAM4&param5=@@PARAM5&param6=@@PARAM6";
 
+disclaimer_amortHome = "Computed monthly amortization is rough estimation only based on a standard fixing-term rate. This may vary on the actual monthly amortization based on the developer rates.";
+
+terms_conditions = "<b>Credit Information Authority </b><br><br>
+I/We hereby certify  that all information and statements in this application are correct and  complete, and that they are made for the purpose of obtaining credit. I/We  authorize UnionBank of the Philippines to obtain such information as may be  required concerning the statements made in this application. I/We agree that  this application may remain your property whether the credit is granted or not.<br><br>
+<b>SMS Notification Authority</b><br><br>
+This is to  authorize UnionBank of the Philippines to notify me/us electronically, included  but not limited to Short Message Service (SMS), using the information given  above at any time. Moreover, I/We shall hold responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br><br>";
+
 about_text = "The Consumer Finance App is a mobile application wherein our clients can apply for our Consumer products  from their phones or tablets. Specifically, the app was designed to generate  applications for the following products: <b>Home Loans</b>, <b>Auto Loans</b> and<b>Credit Cards</b>.<br>
 
 <br><b><u>The UnionBank Consumer Finance App Terms & Conditions</u></b><br>
