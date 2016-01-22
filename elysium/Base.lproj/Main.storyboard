@@ -2205,7 +2205,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DxY-EQ-Eqp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2846" y="1989"/>
+            <point key="canvasLocation" x="3062" y="2025"/>
         </scene>
         <!--View Controller Main-->
         <scene sceneID="a55-wq-tba">
@@ -2457,7 +2457,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WkO-We-WJD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="481" y="1651"/>
+            <point key="canvasLocation" x="457" y="1651"/>
         </scene>
         <!--View Controller Login-->
         <scene sceneID="lkP-HN-ADd">
@@ -2636,11 +2636,11 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="zaZ-Uv-Mst"/>
-        <segue reference="9x6-LI-RAT"/>
-        <segue reference="Rva-9A-zdx"/>
+        <segue reference="Kkw-qX-Cdj"/>
+        <segue reference="ho1-Ba-bd7"/>
+        <segue reference="hkk-Y0-chg"/>
         <segue reference="sWb-vh-Bbx"/>
-        <segue reference="dia-7H-N7L"/>
-        <segue reference="s2C-CU-zKl"/>
-        <segue reference="Aa9-Na-CzX"/>
+        <segue reference="ICH-Hh-rta"/>
+        <segue reference="wOC-9L-5b9"/>
     </inferredMetricsTieBreakers>
 </document>
