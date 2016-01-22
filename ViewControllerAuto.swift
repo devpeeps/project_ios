@@ -10,6 +10,14 @@ import UIKit
 
 class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDelegate, UITableViewDataSource  {
     var id = ""
+    var name = ""
+    var email = ""
+    var autoInfo = ["","",""]
+    var homeInfo = ["","",""]
+    var ccInfo = ["","","",""]
+    var autoRates = [("",0.00)]
+    var homeRates = [("",0.00)]
+    
     var urlLib = ""
     var vcAction = ""
     var withConnection = false
@@ -26,9 +34,12 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     var selectedCarModelId = ""
     var selectedCarModelSRP = 0
     var prevPage = ""
-    var autoRates = [("",0.00)]
     var selectedTerm = "60"
     var selectedDP = "20"
+    var selectedCivilStat = ""
+    var selectedWithC1 = false
+    var selectedWithC2 = false
+    
     var showRecent = false
     
     @IBOutlet var scrollview: UIScrollView!
@@ -47,20 +58,8 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         if(vcAction == "apply"){
             scrollview.contentSize = CGSize(width:400, height:2200)
             
-            self.loadingIndicator.hidden = false
-            self.loadingIndicator.startAnimating()
-            self.view.userInteractionEnabled = false
-            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-            
-            self.loadCarBrandPicker()
-            self.loadEmpTypePicker()
-            self.loadPositionPicker()
-            /*
-            self.view.userInteractionEnabled = true
-            self.loadingIndicator.hidden = true
-            self.loadingIndicator.stopAnimating()
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            */
+            loadAppForm()
+
             
         }
         
@@ -304,82 +303,262 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         return 1
     }
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if(pickerView.tag == 0){
+        let tag = String(pickerView.tag)
+        let index1 = tag.startIndex.advancedBy(1)
+        let tagIndex = Int(tag.substringToIndex(index1))
+        
+        if(tagIndex == 0){
             return carBrandArr.count
-        }else if(pickerView.tag == 1){
+        }else if(tagIndex == 1){
             return downpaymentArr.count
-        }else if(pickerView.tag == 2){
+        }else if(tagIndex == 2){
             return carTermsArr.count
-        }else if(pickerView.tag == 3){
+        }else if(tagIndex == 3){
             return carModelArr.count
-        }else if(pickerView.tag == 4){
+        }else if(tagIndex == 4){
             return civilStatusArr.count
-        }else if(pickerView.tag == 5){
+        }else if(tagIndex == 5){
             return emptypeArr.count
-        }else if(pickerView.tag == 6){
+        }else if(tagIndex == 6){
             return positionArr.count
         }
         return 0
     }
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
     {   var titleData = ""
-        if(pickerView.tag == 0){
+        let tag = String(pickerView.tag)
+        let index1 = tag.startIndex.advancedBy(1)
+        let tagIndex = Int(tag.substringToIndex(index1))
+        
+        if(tagIndex == 0){
             titleData = carBrandArr[row].0
-        }else if(pickerView.tag == 1){
+        }else if(tagIndex == 1){
             titleData = String(downpaymentArr[row])
-        }else if(pickerView.tag == 2){
+        }else if(tagIndex == 2){
             titleData = String(carTermsArr[row])
-        }else if(pickerView.tag == 3){
+        }else if(tagIndex == 3){
             titleData = String(carModelArr[row].1)
-        }else if(pickerView.tag == 4){
+        }else if(tagIndex == 4){
             titleData = String(civilStatusArr[row].1).capitalizedString
-        }else if(pickerView.tag == 5){
+        }else if(tagIndex == 5){
             titleData = String(emptypeArr[row].1).capitalizedString
-        }else if(pickerView.tag == 6){
+        }else if(tagIndex == 6){
             titleData = String(positionArr[row].1).capitalizedString
         }
         return titleData
     }
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if(pickerView.tag == 0){ //BRAND
+        let tag = String(pickerView.tag)
+        let index1 = tag.startIndex.advancedBy(1)
+        let tagIndex = Int(tag.substringToIndex(index1))
+
+        if(tagIndex == 0){ //BRAND
             selectedCarBrand = carBrandArr[row].0
-        }else if(pickerView.tag == 1){ //DP
+            if(vcAction == "apply"){
+                loadCarModelPicker(selectedCarBrand)
+            }
+        }else if(tagIndex == 1){ //DP
             selectedDP =  String(downpaymentArr[row])
-        }else if(pickerView.tag == 2){ //TERM
+        }else if(tagIndex == 2){ //TERM
             selectedTerm = String(carTermsArr[row])
-        }else if(pickerView.tag == 3){ //CAR MODEL
+        }else if(tagIndex == 3){ //CAR MODEL
             selectedCarModelId = String(carModelArr[row].0)
-        }else if(pickerView.tag == 4){ //CIVIL STATUS
-            selectedTerm = String(carTermsArr[row])
-        }else if(pickerView.tag == 5){ //EMP TYPE
-            selectedTerm = String(carTermsArr[row])
-        }else if(pickerView.tag == 6){ //POSITION
+            if(vcAction == "apply"){
+                cashprice.text = carModelArr[row].2
+            }
+        }else if(tagIndex == 4){ //CIVIL STATUS
+            if(pickerView.tag == 4){ //FOR CLIENT
+                switch(civilStatusArr[row].0){
+                case "S" :
+                    splastname.enabled = false
+                    spfirstname.enabled = false
+                    spmiddlename.enabled = false
+                    spbirthday.userInteractionEnabled = false
+                    spcopycontact.enabled = false
+                    spphonenumber.enabled = false
+                    spmobilenumber.enabled = false
+                    spaddress1.enabled = false
+                    spaddress2.enabled = false
+                    spemptype.userInteractionEnabled = false
+                    spempname.enabled = false
+                    spposition.userInteractionEnabled = false
+                    spempincome.enabled = false
+                    spempyears.enabled = false
+                    spempaddress1.enabled = false
+                    spempaddress2.enabled = false
+                    spempphone.enabled = false
+                    
+                    spbirthday.alpha = 0.6
+                    spemptype.alpha = 0.6
+                    spposition.alpha = 0.6
+                    
+                    break
+                case "M":
+                    splastname.enabled = true
+                    spfirstname.enabled = true
+                    spmiddlename.enabled = true
+                    spbirthday.userInteractionEnabled = true
+                    spcopycontact.enabled = true
+                    spphonenumber.enabled = true
+                    spmobilenumber.enabled = true
+                    spaddress1.enabled = true
+                    spaddress2.enabled = true
+                    spemptype.userInteractionEnabled = true
+                    spempname.enabled = true
+                    spposition.userInteractionEnabled = true
+                    spempincome.enabled = true
+                    spempyears.enabled = true
+                    spempaddress1.enabled = true
+                    spempaddress2.enabled = true
+                    spempphone.enabled = true
+                    
+                    spbirthday.alpha = 1
+                    spemptype.alpha = 1
+                    spposition.alpha = 1
+                    
+                    break
+                case "W":
+                    splastname.enabled = false
+                    spfirstname.enabled = false
+                    spmiddlename.enabled = false
+                    spbirthday.userInteractionEnabled = false
+                    spcopycontact.enabled = false
+                    spphonenumber.enabled = false
+                    spmobilenumber.enabled = false
+                    spaddress1.enabled = false
+                    spaddress2.enabled = false
+                    spemptype.userInteractionEnabled = false
+                    spempname.enabled = false
+                    spposition.userInteractionEnabled = false
+                    spempincome.enabled = false
+                    spempyears.enabled = false
+                    spempaddress1.enabled = false
+                    spempaddress2.enabled = false
+                    spempphone.enabled = false
+                    
+                    spbirthday.alpha = 0.6
+                    spemptype.alpha = 0.6
+                    spposition.alpha = 0.6
+                    
+                    break
+                default: break //do nothing
+                }
+            }
+        }else if(tagIndex == 5){ //EMP TYPE
+            if(pickerView.tag == 5){ //FOR CLIENT
+                switch(emptypeArr[row].0){
+                case "6" :
+                    empname.enabled = false
+                    position.userInteractionEnabled = false
+                    empincome.enabled = false
+                    empyears.enabled = false
+                    empaddress1.enabled = false
+                    empaddress2.enabled = false
+                    empphone.enabled = false
+                    position.alpha = 0.6
+                    
+                    break
+                case "0","1","2","3","4","5":
+                    empname.enabled = true
+                    position.userInteractionEnabled = true
+                    empincome.enabled = true
+                    empyears.enabled = true
+                    empaddress1.enabled = true
+                    empaddress2.enabled = true
+                    empphone.enabled = true
+                    position.alpha = 1
+
+                    break
+                default: break //do nothing
+                }
+            }else if(pickerView.tag == 55){ //FOR SPOUSE
+                switch(emptypeArr[row].0){
+                case "6" :
+                    spempname.enabled = false
+                    spposition.userInteractionEnabled = false
+                    spempincome.enabled = false
+                    spempyears.enabled = false
+                    spempaddress1.enabled = false
+                    spempaddress2.enabled = false
+                    spempphone.enabled = false
+                    spposition.alpha = 0.6
+                    
+                    break
+                case "0","1","2","3","4","5":
+                    spempname.enabled = true
+                    spposition.userInteractionEnabled = true
+                    spempincome.enabled = true
+                    spempyears.enabled = true
+                    spempaddress1.enabled = true
+                    spempaddress2.enabled = true
+                    spempphone.enabled = true
+                    spposition.alpha = 1
+                    
+                    break
+                default: break //do nothing
+                }
+            }else if(pickerView.tag == 555){ //FOR C1
+                switch(emptypeArr[row].0){
+                case "6" :
+                    c1empname.enabled = false
+                    c1position.userInteractionEnabled = false
+                    c1empincome.enabled = false
+                    c1empyears.enabled = false
+                    c1empaddress1.enabled = false
+                    c1empaddress2.enabled = false
+                    c1empphone.enabled = false
+                    c1position.alpha = 0.6
+                    
+                    break
+                case "0","1","2","3","4","5":
+                    c1empname.enabled = true
+                    c1position.userInteractionEnabled = true
+                    c1empincome.enabled = true
+                    c1empyears.enabled = true
+                    c1empaddress1.enabled = true
+                    c1empaddress2.enabled = true
+                    c1empphone.enabled = true
+                    c1position.alpha = 1
+                    
+                    break
+                default: break //do nothing
+                }
+            }else if(pickerView.tag == 5555){ //FOR C2
+                switch(emptypeArr[row].0){
+                case "6" :
+                    c2empname.enabled = false
+                    c2position.userInteractionEnabled = false
+                    c2empincome.enabled = false
+                    c2empyears.enabled = false
+                    c2empaddress1.enabled = false
+                    c2empaddress2.enabled = false
+                    c2empphone.enabled = false
+                    c2position.alpha = 0.6
+                    
+                    break
+                case "0","1","2","3","4","5":
+                    c2empname.enabled = true
+                    c2position.userInteractionEnabled = true
+                    c2empincome.enabled = true
+                    c2empyears.enabled = true
+                    c2empaddress1.enabled = true
+                    c2empaddress2.enabled = true
+                    c2empphone.enabled = true
+                    c2position.alpha = 1
+                    
+                    break
+                default: break //do nothing
+                }
+            }
+
+            
+            
+        }else if(tagIndex == 6){ //POSITION
             selectedTerm = String(carTermsArr[row])
         }
         
     }
-    /*
-    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        var titleData = ""
-        if(pickerView.tag == 0){ //BRAND
-            titleData = carBrandArr[row].0
-        }else if(pickerView.tag == 1){ //DP
-            titleData =  String(downpaymentArr[row])
-        }else if(pickerView.tag == 2){ //TERM
-            titleData = String(carTermsArr[row])
-        }else if(pickerView.tag == 3){ //CAR MODEL
-            titleData = String(carModelArr[row].1)
-        }else if(pickerView.tag == 4){ //CIVIL STATUS
-            titleData = String(civilStatusArr[row].1).capitalizedString
-        }else if(pickerView.tag == 5){ //EMP TYPE
-            titleData = String(emptypeArr[row].1).capitalizedString
-        }else if(pickerView.tag == 6){ //POSITION
-            titleData = String(positionArr[row].1).capitalizedString
-        }
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 10.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])
-        return myTitle
-    }
-    */
+
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         var pickerLabel = view as! UILabel!
         if view == nil {  //if no label there yet
@@ -387,22 +566,26 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         }
         pickerLabel!.textAlignment = .Center
         
+        let tag = String(pickerView.tag)
+        let index1 = tag.startIndex.advancedBy(1)
+        let tagIndex = Int(tag.substringToIndex(index1))
+        
         var titleData = ""
-        if(pickerView.tag == 0){ //BRAND
+        if(tagIndex == 0){ //BRAND
             titleData = carBrandArr[row].0
-        }else if(pickerView.tag == 1){ //DP
+        }else if(tagIndex == 1){ //DP
             titleData =  String(downpaymentArr[row])
-        }else if(pickerView.tag == 2){ //TERM
+        }else if(tagIndex == 2){ //TERM
             titleData = String(carTermsArr[row])
-        }else if(pickerView.tag == 3){ //CAR MODEL
+        }else if(tagIndex == 3){ //CAR MODEL
             titleData = String(carModelArr[row].1)
-        }else if(pickerView.tag == 4){ //CIVIL STATUS
+        }else if(tagIndex == 4){ //CIVIL STATUS
             titleData = String(civilStatusArr[row].1).capitalizedString
             pickerLabel!.textAlignment = .Left
-        }else if(pickerView.tag == 5){ //EMP TYPE
+        }else if(tagIndex == 5){ //EMP TYPE
             titleData = String(emptypeArr[row].1).capitalizedString
             pickerLabel!.textAlignment = .Left
-        }else if(pickerView.tag == 6){ //POSITION
+        }else if(tagIndex == 6){ //POSITION
             titleData = String(positionArr[row].1).capitalizedString
             pickerLabel!.textAlignment = .Left
         }
@@ -706,6 +889,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let action2 = UIAlertAction(title: "Auto Loan Calculator", style: .Default, handler: { (alert) -> Void in
             self.selectedCarModelId = modelid
             self.selectedCarModelSRP = Int(self.carModelArr[indexPath.row].2)!
+            self.selectedCarBrand = brand
             
             //SAVE SELECTED TO RECENTLY VIEWED ITEM
             let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -732,7 +916,31 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         alert.addAction(action2)
         let action3 = UIAlertAction(title: "Apply for Auto Loan", style: .Default, handler: { (alert) -> Void in
             self.selectedCarModelId = modelid
-            self.performSegueWithIdentifier("ApplyAutoLoan", sender: self)
+            self.selectedCarModelSRP = Int(self.carModelArr[indexPath.row].2)!
+            self.selectedCarBrand = brand
+            
+            //SAVE SELECTED TO RECENTLY VIEWED ITEM
+            let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            if (userDefaults.objectForKey("viewedVehicles") != nil) {
+                let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedVehicles") as! String
+                
+                let arr = s.characters.split{$0 == ","}.map(String.init)
+                var selectedModelId_viewed = false
+                for(mId) in arr{
+                    if(mId == modelid){
+                        selectedModelId_viewed = true
+                    }
+                }
+                if(!selectedModelId_viewed){
+                    NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedVehicles")
+                }
+            }else{
+                NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedVehicles")
+            }
+            
+            
+            self.performSegueWithIdentifier("ApplyLoanDirect", sender: self)
+            
         })
         alert.addAction(action3)
         let action4 = UIAlertAction(title: "Inquire Now", style: .Default, handler: { (alert) -> Void in
@@ -802,7 +1010,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     @IBOutlet var c1firstname: UITextField!
     @IBOutlet var c1middlename: UITextField!
     @IBOutlet var c1birthday: UIDatePicker!
-    @IBOutlet var c1gender: UIDatePicker!
+    @IBOutlet var c1gender: UISegmentedControl!
     @IBOutlet var c1civilstatus: UIPickerView!
     @IBOutlet var c1phonenumber: UITextField!
     @IBOutlet var c1mobilenumber: UITextField!
@@ -836,8 +1044,100 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     @IBOutlet var c2empaddress2: UITextField!
     @IBOutlet var c2empphone: UITextField!
     
-    func formatDatePickers(){
+    @IBOutlet var remarks: UITextField!
+    
+    
+    func loadAppForm(){
+        self.loadingIndicator.hidden = false
+        self.loadingIndicator.startAnimating()
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
+        self.loadCarBrandPicker()
+        self.loadEmpTypePicker()
+        self.loadPositionPicker()
+        
+        if(self.carCondition.selectedSegmentIndex == 0){
+            self.cashprice.enabled = false
+            self.carYear.enabled = false
+        }
+        
+        let date = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+        let year =  components.year
+        self.carYear.text = String(year)
+        
+        splastname.enabled = false
+        spfirstname.enabled = false
+        spmiddlename.enabled = false
+        spbirthday.userInteractionEnabled = false
+        spcopycontact.enabled = false
+        spphonenumber.enabled = false
+        spmobilenumber.enabled = false
+        spaddress1.enabled = false
+        spaddress2.enabled = false
+        spemptype.userInteractionEnabled = false
+        spempname.enabled = false
+        spposition.userInteractionEnabled = false
+        spempincome.enabled = false
+        spempyears.enabled = false
+        spempaddress1.enabled = false
+        spempaddress2.enabled = false
+        spempphone.enabled = false
+        
+        spbirthday.alpha = 0.6
+        spemptype.alpha = 0.6
+        spposition.alpha = 0.6
+        
+        c1lastname.enabled = false
+        c1firstname.enabled = false
+        c1middlename.enabled = false
+        c1birthday.userInteractionEnabled = false
+        c1civilstatus.userInteractionEnabled = false
+        c1gender.enabled = false
+        c1phonenumber.enabled = false
+        c1mobilenumber.enabled = false
+        c1address1.enabled = false
+        c1address2.enabled = false
+        c1emptype.userInteractionEnabled = false
+        c1empname.enabled = false
+        c1position.userInteractionEnabled = false
+        c1empincome.enabled = false
+        c1empyears.enabled = false
+        c1empaddress1.enabled = false
+        c1empaddress2.enabled = false
+        c1empphone.enabled = false
+        
+        c1birthday.alpha = 0.6
+        c1civilstatus.alpha = 0.6
+        c1emptype.alpha = 0.6
+        c1position.alpha = 0.6
+        
+        withc2.enabled = false
+        c2lastname.enabled = false
+        c2firstname.enabled = false
+        c2middlename.enabled = false
+        c2birthday.userInteractionEnabled = false
+        c2civilstatus.userInteractionEnabled = false
+        c2gender.enabled = false
+        c2phonenumber.enabled = false
+        c2mobilenumber.enabled = false
+        c2address1.enabled = false
+        c2address2.enabled = false
+        c2emptype.userInteractionEnabled = false
+        c2empname.enabled = false
+        c2position.userInteractionEnabled = false
+        c2empincome.enabled = false
+        c2empyears.enabled = false
+        c2empaddress1.enabled = false
+        c2empaddress2.enabled = false
+        c2empphone.enabled = false
+        
+        c2birthday.alpha = 0.6
+        c2civilstatus.alpha = 0.6
+        c2emptype.alpha = 0.6
+        c2position.alpha = 0.6
     }
     
     func loadEmpTypePicker(){
@@ -1204,8 +1504,13 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                                     if(self.selectedCarModelId != ""){
                                         if(self.carModelArr[i].0 == self.selectedCarModelId){
                                             self.carModel.selectRow(i, inComponent: 0, animated: false)
+                                            self.cashprice.text = self.carModelArr[i].2
                                             break
                                         }
+                                    }else{
+                                        self.cashprice.text = self.carModelArr[0].2
+                                        self.selectedCarBrand = self.carModelArr[0].3
+                                        self.selectedCarModelId = self.carModelArr[0].0
                                     }
                                 }
                             }
@@ -1244,6 +1549,631 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         }
     }
     
+    @IBAction func actionCarCondition(sender: AnyObject) {
+        if(self.carCondition.selectedSegmentIndex == 0){
+            self.cashprice.enabled = false
+            self.carYear.enabled = false
+        }else{
+            self.cashprice.enabled = true
+            self.carYear.enabled = true
+        }
+    }
+    
+    
+    @IBAction func actionWithC1(sender: AnyObject) {
+        if(self.withc1.on == true){
+            c1lastname.enabled = true
+            c1firstname.enabled = true
+            c1middlename.enabled = true
+            c1birthday.userInteractionEnabled = true
+            c1civilstatus.userInteractionEnabled = true
+            c1gender.enabled = true
+            c1phonenumber.enabled = true
+            c1mobilenumber.enabled = true
+            c1address1.enabled = true
+            c1address2.enabled = true
+            c1emptype.userInteractionEnabled = true
+            
+            c1empname.enabled = true
+            c1position.userInteractionEnabled = true
+            c1empincome.enabled = true
+            c1empyears.enabled = true
+            c1empaddress1.enabled = true
+            c1empaddress2.enabled = true
+            c1empphone.enabled = true
+            withc2.enabled = true
+            
+            c1birthday.alpha = 1
+            c1civilstatus.alpha = 1
+            c1emptype.alpha = 1
+            c1position.alpha = 1
+        }else{
+            c1lastname.enabled = false
+            c1firstname.enabled = false
+            c1middlename.enabled = false
+            c1birthday.userInteractionEnabled = false
+            c1civilstatus.userInteractionEnabled = false
+            c1gender.enabled = false
+            c1phonenumber.enabled = false
+            c1mobilenumber.enabled = false
+            c1address1.enabled = false
+            c1address2.enabled = false
+            c1emptype.userInteractionEnabled = false
+            c1empname.enabled = false
+            c1position.userInteractionEnabled = false
+            c1empincome.enabled = false
+            c1empyears.enabled = false
+            c1empaddress1.enabled = false
+            c1empaddress2.enabled = false
+            c1empphone.enabled = false
+            withc2.enabled = false
+            
+            c1birthday.alpha = 0.6
+            c1civilstatus.alpha = 0.6
+            c1emptype.alpha = 0.6
+            c1position.alpha = 0.6
+            
+            withc2.on = false
+            c2lastname.enabled = false
+            c2firstname.enabled = false
+            c2middlename.enabled = false
+            c2birthday.userInteractionEnabled = false
+            c2civilstatus.userInteractionEnabled = false
+            c2gender.enabled = false
+            c2phonenumber.enabled = false
+            c2mobilenumber.enabled = false
+            c2address1.enabled = false
+            c2address2.enabled = false
+            c2emptype.userInteractionEnabled = false
+            c2empname.enabled = false
+            c2position.userInteractionEnabled = false
+            c2empincome.enabled = false
+            c2empyears.enabled = false
+            c2empaddress1.enabled = false
+            c2empaddress2.enabled = false
+            c2empphone.enabled = false
+            
+            c2birthday.alpha = 0.6
+            c2civilstatus.alpha = 0.6
+            c2emptype.alpha = 0.6
+            c2position.alpha = 0.6
+            
+        }
+    }
+    
+    
+    @IBAction func actionWithC2(sender: AnyObject) {
+        if(self.withc2.on == true){
+            c2lastname.enabled = true
+            c2firstname.enabled = true
+            c2middlename.enabled = true
+            c2birthday.userInteractionEnabled = true
+            c2civilstatus.userInteractionEnabled = true
+            c2gender.enabled = true
+            c2phonenumber.enabled = true
+            c2mobilenumber.enabled = true
+            c2address1.enabled = true
+            c2address2.enabled = true
+            c2emptype.userInteractionEnabled = true
+            
+            c2empname.enabled = true
+            c2position.userInteractionEnabled = true
+            c2empincome.enabled = true
+            c2empyears.enabled = true
+            c2empaddress1.enabled = true
+            c2empaddress2.enabled = true
+            c2empphone.enabled = true
+            
+            c2birthday.alpha = 1
+            c2civilstatus.alpha = 1
+            c2emptype.alpha = 1
+            c2position.alpha = 1
+        }else{
+            c2lastname.enabled = false
+            c2firstname.enabled = false
+            c2middlename.enabled = false
+            c2birthday.userInteractionEnabled = false
+            c2civilstatus.userInteractionEnabled = false
+            c2gender.enabled = false
+            c2phonenumber.enabled = false
+            c2mobilenumber.enabled = false
+            c2address1.enabled = false
+            c2address2.enabled = false
+            c2emptype.userInteractionEnabled = false
+            c2empname.enabled = false
+            c2position.userInteractionEnabled = false
+            c2empincome.enabled = false
+            c2empyears.enabled = false
+            c2empaddress1.enabled = false
+            c2empaddress2.enabled = false
+            c2empphone.enabled = false
+            
+            c2birthday.alpha = 0.6
+            c2civilstatus.alpha = 0.6
+            c2emptype.alpha = 0.6
+            c2position.alpha = 0.6
+        }
+    }
+    
+    
+    @IBAction func actionSubmit(sender: AnyObject) {
+        let tnc = NSLocalizedString("tnc_apply", comment: "").html2String
+        
+        let alert = UIAlertController(title: "Acceptance of Terms & Conditions", message: tnc, preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Yes, I accept", style: .Default, handler: { (alert) -> Void in
+            self.submitApplication()
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "No, I do not accept", style: .Default, handler: { (alert) -> Void in
+            //do nothing
+        })
+        alert.addAction(action2)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func submitApplication(){
+        let url = NSLocalizedString("urlECLIPSE", comment: "")
+        //self.view.userInteractionEnabled = false
+        //UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        var stringUrl = url
+        
+        var errorctr = 0;
+        var errormsg = "";
+        stringUrl = stringUrl + "&companyid=" + self.id;
+
+        
+        if(self.carCondition.selectedSegmentIndex == 1){
+            if(self.cashprice.text == "" || Double(self.cashprice.text!) <= 0){
+                errorctr++;
+                errormsg += "Cash Price\n";
+            }
+            
+            if(self.carYear.text == ""){ //CHECK IF VALID YEAR
+                errorctr++;
+                errormsg += "Vehicle Year\n";
+            }
+        }
+        
+        
+        stringUrl = stringUrl + "&vehicle_model=" + self.selectedCarModelId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&vehicle_lcp=" + self.cashprice.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&vehicle_brand=" + self.selectedCarBrand.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+
+        stringUrl = stringUrl + "&vehicle_year=" + self.carYear.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&vehicle_type=" + (self.carCondition.selectedSegmentIndex == 0 ? "1" : "2").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&downpaymentpct=" + String(downpaymentArr[self.downpayment.selectedRowInComponent(0)])
+        stringUrl = stringUrl + "&term=" + String(carTermsArr[self.loanterm.selectedRowInComponent(0)]).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&ao=" + autoInfo[0].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&appsource=" + (self.id != "NON" ? "WAP" : "Online Application").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //CHECK WITH LIBFIELDVALUES
+        stringUrl = stringUrl + "&rm=" + "";
+        stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&clientclass=" + (self.id != "NON" ? "WAP (WORKPLACE ARRANGEMENT PROGR" : "REGULAR").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //ADD TO LIBFIELDVALUES = REGULAR
+        stringUrl = stringUrl + "&trantype=" + "DL".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        if(self.lastname.text == ""){
+            errorctr++;
+            errormsg += "Last Name\n";
+        }
+        if(self.firstname.text == ""){
+            errorctr++;
+            errormsg += "First Name\n";
+        }
+        if(self.mobilenumber.text == ""){ //CHECK IF VALID PHONE
+            errorctr++;
+            errormsg += "Mobile No\n";
+        }
+        if(self.emailaddress.text == ""){ //CHECK IF VALID EMAIL
+            errorctr++;
+            errormsg += "Email Address\n";
+        }
+        if(self.address1.text == ""){
+            errorctr++;
+            errormsg += "Res Address\n";
+        }
+        
+        if(emptypeArr[self.emptype.selectedRowInComponent(0)].0 != "6"){
+            if(self.empname.text == ""){
+                errorctr++;
+                errormsg += "Emp/Biz Name\n";
+            }
+            if(self.empincome.text == ""){ //CHECK IF VALID AMOUNT
+                errorctr++;
+                errormsg += "Emp/Biz Income\n";
+            }
+            if(self.empaddress1.text == ""){
+                errorctr++;
+                errormsg += "Emp/Biz Address\n";
+            }
+            if(self.empphone.text == ""){
+                errorctr++;
+                errormsg += "Emp/Biz Phone\n";
+            }
+        }
+        
+        stringUrl = stringUrl + "&fullname=" + self.lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + ", " + self.firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + " " + self.middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        
+        
+        stringUrl = stringUrl + "&lname=" + self.lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&fname=" + self.firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&mname=" + self.middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //var bday = self.birthday
+        //stringUrl = stringUrl + "&bday=" + bday.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&gender=" + (self.gender.selectedSegmentIndex == 0 ? "0" : "1")
+        
+        stringUrl = stringUrl + "&civilstat=" + (civilStatusArr[self.civilstatus.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&resphone=" + self.phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&mobileno=" + self.mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&email=" + self.emailaddress.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empbiz_type=" + emptypeArr[self.emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&jobpos=" + positionArr[self.position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empbiz_y=" + self.empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizadd1=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizmoincome=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+
+        if(civilStatusArr[self.civilstatus.selectedRowInComponent(0)].0 == "M"){
+            
+            if(self.splastname.text == ""){
+                errorctr++;
+                errormsg += "SP Last Name\n";
+            }
+            if(self.spfirstname.text == ""){
+                errorctr++;
+                errormsg += "SP First Name\n";
+            }
+            if(self.spmobilenumber.text == ""){
+                errorctr++;
+                errormsg += "SP Mobile No\n";
+            }
+            if(self.spaddress1.text == ""){
+                errorctr++;
+                errormsg += "SP Res Address\n";
+            }
+            
+            if(emptypeArr[self.spemptype.selectedRowInComponent(0)].0 != "6"){
+                if(self.spempname.text == ""){
+                    errorctr++;
+                    errormsg += "SP Emp/Biz Name\n";
+                }
+                if(self.spempincome.text == ""){ //CHECK IF VALID AMOUNT
+                    errorctr++;
+                    errormsg += "SP Emp/Biz Income\n";
+                }
+                if(self.spempaddress1.text == ""){
+                    errorctr++;
+                    errormsg += "SP Emp/Biz Address\n";
+                }
+                if(self.spempphone.text == ""){
+                    errorctr++;
+                    errormsg += "SP Emp/Biz Phone\n";
+                }
+            }
+            
+            stringUrl = stringUrl + "&splname=" + self.splastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spfname=" + self.spfirstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spmname=" + self.spmiddlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&spbday=" + spbday.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //var spbday
+            stringUrl = stringUrl + "&spresphone=" + self.spphonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spmobileno=" + self.spmobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spresadd1=" + self.spaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spresadd2=" + self.spaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&spempbiz_type=" + emptypeArr[self.spemptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&spempbizname=" + self.spempname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&spjobpos=" + positionArr[self.spposition.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&spempbiz_y=" + self.spempyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spempbizadd1=" + self.spempaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spempbizadd2=" + self.spempaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spempbizphone=" + self.spempphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&spempbizmoincome=" + self.spempincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }
+        
+        if(self.withc1.on == true){
+
+            
+            if(self.c1lastname.text == ""){
+                errorctr++;
+                errormsg += "C1 Last Name\n";
+            }
+            if(self.c1firstname.text == ""){
+                errorctr++;
+                errormsg += "C1 First Name\n";
+            }
+            if(self.c1mobilenumber.text == ""){
+                errorctr++;
+                errormsg += "C1 Mobile No\n";
+            }
+            if(self.c1address1.text == ""){
+                errorctr++;
+                errormsg += "C1 Res Address\n";
+            }
+
+            if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
+                if(self.c1empname.text == ""){
+                    errorctr++;
+                    errormsg += "C1 Emp/Biz Name\n";
+                }
+                if(self.c1empincome.text == ""){ //CHECK IF VALID AMOUNT
+                    errorctr++;
+                    errormsg += "C1 Emp/Biz Income\n";
+                }
+                if(self.c1empaddress1.text == ""){
+                    errorctr++;
+                    errormsg += "C1 Emp/Biz Address\n";
+                }
+                if(self.c1empphone.text == ""){
+                    errorctr++;
+                    errormsg += "C1 Emp/Biz Phone\n";
+                }
+            }
+            
+
+            stringUrl = stringUrl + "&m1lname=" + self.c1lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1fname=" + self.c1firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1mname=" + self.c1middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1bday=" + m1bday.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //var m1bday
+            stringUrl = stringUrl + "&m1gender=" + (self.c1gender.selectedSegmentIndex == 0 ? "0" : "1")
+            stringUrl = stringUrl + "&m1resphone=" + self.c1phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1mobileno=" + self.c1mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1resadd1=" + self.c1address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1resadd2=" + self.c1address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m1empbiz_type=" + emptypeArr[self.c1emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m1empbizname=" + self.c1empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m1jobpos=" + positionArr[self.c1position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m1empbiz_y=" + self.c1empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1empbizadd1=" + self.c1empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1empbizadd2=" + self.c1empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1empbizphone=" + self.c1empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1empbizmoincome=" + self.c1empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }
+        
+        if(self.withc2.on == true){
+            
+            
+            if(self.c2lastname.text == ""){
+                errorctr++;
+                errormsg += "C2 Last Name\n";
+            }
+            if(self.c2firstname.text == ""){
+                errorctr++;
+                errormsg += "C2 First Name\n";
+            }
+            if(self.c2mobilenumber.text == ""){
+                errorctr++;
+                errormsg += "C2 Mobile No\n";
+            }
+            if(self.c2address1.text == ""){
+                errorctr++;
+                errormsg += "C2 Res Address\n";
+            }
+            
+            if(emptypeArr[self.c2emptype.selectedRowInComponent(0)].0 != "6"){
+                if(self.c2empname.text == ""){
+                    errorctr++;
+                    errormsg += "C2 Emp/Biz Name\n";
+                }
+                if(self.c2empincome.text == ""){ //CHECK IF VALID AMOUNT
+                    errorctr++;
+                    errormsg += "C2 Emp/Biz Income\n";
+                }
+                if(self.c2empaddress1.text == ""){
+                    errorctr++;
+                    errormsg += "C2 Emp/Biz Address\n";
+                }
+                if(self.c2empphone.text == ""){
+                    errorctr++;
+                    errormsg += "C2 Emp/Biz Phone\n";
+                }
+            }
+            
+            
+            stringUrl = stringUrl + "&m2lname=" + self.c2lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2fname=" + self.c2firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2mname=" + self.c2middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2bday=" + m2bday.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //var m2bday
+            stringUrl = stringUrl + "&m2gender=" + (self.c2gender.selectedSegmentIndex == 0 ? "0" : "1")
+            stringUrl = stringUrl + "&m2resphone=" + self.c2phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2mobileno=" + self.c2mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2resadd1=" + self.c2address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2resadd2=" + self.c2address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m2empbiz_type=" + emptypeArr[self.c2emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m2empbizname=" + self.c2empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m2jobpos=" + positionArr[self.c2position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m2empbiz_y=" + self.c2empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2empbizadd1=" + self.c2empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2empbizadd2=" + self.c2empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2empbizphone=" + self.c2empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }
+        
+        stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&remarks=" + EncodeURLString(newcase_remarks.getText().toString());
+        //stringUrl = stringUrl + "&loggeduser=" + EncodeURLString(loggedUSRUID);
+        
+        
+        if(errorctr > 0){
+            let alert = UIAlertController(title: "Error in Form", message: "You have blank/invalid/errors on some required fields.\n" + errormsg, preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }else{
+            NSUserDefaults.standardUserDefaults().setObject(self.lastname.text, forKey: "LASTNAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.firstname.text, forKey: "FIRSTNAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.middlename.text, forKey: "MIDDLENAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.birthday.date, forKey: "BIRTHDAY")
+            NSUserDefaults.standardUserDefaults().setObject(self.mobilenumber.text, forKey: "MOBILENO")
+            NSUserDefaults.standardUserDefaults().setObject(self.emailaddress.text, forKey: "EMAIL")
+            NSUserDefaults.standardUserDefaults().setObject(self.phonenumber.text, forKey: "RESPHONE")
+            NSUserDefaults.standardUserDefaults().setObject(self.empphone.text, forKey: "EMPBIZPHONE")
+            NSUserDefaults.standardUserDefaults().setObject(self.address1, forKey: "RESADDLINE1")
+            NSUserDefaults.standardUserDefaults().setObject(self.address2, forKey: "RESADDLINE2")
+            NSUserDefaults.standardUserDefaults().setObject(self.empaddress1, forKey: "EMPBIZADDLINE1")
+            NSUserDefaults.standardUserDefaults().setObject(self.empaddress2, forKey: "EMPBIZADDLINE2")
+            NSUserDefaults.standardUserDefaults().setObject(self.empname, forKey: "EMPBIZNAME")
+            
+            //SUBMIT APP
+            var contProc = true
+            let status = Reach().connectionStatus()
+            switch status {
+            case .Unknown, .Offline:
+                contProc = false
+                withConnection = false
+                //self.loadingIndicator.hidden = true
+                //self.loadingIndicator.stopAnimating()
+            default:
+                contProc = true
+                withConnection = true
+            }
+            
+            if(contProc){
+                
+                //loadingIndicator.hidden = false
+                //loadingIndicator.startAnimating()
+                
+                let url = NSURL(string: stringUrl)!
+                let urlSession = NSURLSession.sharedSession()
+                
+                var err = false
+                
+                let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                    if (error != nil) {
+                        print(error!.localizedDescription)
+                        err = true
+                    }
+                    
+                    if(!err){
+                        
+                        let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                        
+                        if(s != ""){
+                            dispatch_async(dispatch_get_main_queue(), {
+                                let str = s!.componentsSeparatedByString("<br/>")
+                                self.carBrandArr.removeAll()
+                                for i in 0...str.count - 1{
+                                    if(str[i] != ""){
+                                        self.carBrandArr.append((str[i], str[i]))
+                                        if(self.selectedCarBrand == ""){
+                                            if(i == 0){
+                                                self.selectedCarBrand = self.carBrandArr[i].0
+                                            }
+                                        }
+                                    }
+                                }
+                                self.carBrand.reloadAllComponents()
+                                //self.view.userInteractionEnabled = true
+                                //self.loadingIndicator.hidden = true
+                                //self.loadingIndicator.stopAnimating()
+                                //UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                
+                                
+                                for i in 0...str.count - 1{
+                                    if(str[i] != ""){
+                                        if(self.selectedCarBrand != ""){
+                                            if(self.carBrandArr[i].0 == self.selectedCarBrand){
+                                                self.carBrand.selectRow(i, inComponent: 0, animated: false)
+                                                self.loadCarModelPicker(self.selectedCarBrand)
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                
+                            })
+                        }else{
+                            
+                        }
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            self.view.userInteractionEnabled = true
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                //exit(1)
+                            })
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        })
+                    }
+                })
+                jsonQuery.resume()
+            }else{
+                self.loadingIndicator.hidden = true
+                self.loadingIndicator.stopAnimating()
+                self.view.userInteractionEnabled = true
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                    //exit(1)
+                })
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+            
+            
+            //END
+            
+            
+            
+            
+            
+            
+            
+            let alert = UIAlertController(title: "Application Submitted", message: "YYour new auto loan application has been saved for submission. Please make sure to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+            
+        
+        }
+        
+        
+    }
+    
+    
+    @IBAction func actionApplyDirectFromMain(sender: AnyObject) {
+        self.performSegueWithIdentifier("ApplyLoanDirectFromMain", sender: self)
+    }
+    
+    
+    @IBAction func actionCalculatorDirect(sender: AnyObject) {
+        self.performSegueWithIdentifier("AutoLoanCalculatorDirect", sender: self)
+    }
+    
+    
     @IBOutlet var buttonMenuBack: UIButton!
     @IBAction func actionBackToMainMenu(sender: AnyObject) {
         if(self.prevPage == "" || self.prevPage == "main"){
@@ -1253,6 +2183,9 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 self.performSegueWithIdentifier("BackToMainLogged", sender: self)
             }
         }else{
+            if(self.prevPage == "mainAuto"){
+                self.performSegueWithIdentifier("BackToAutoMain", sender: self)
+            }
             if(self.prevPage == "carModelList"){
                 self.performSegueWithIdentifier("ShowCarModelList", sender: self)
             }
@@ -1286,6 +2219,15 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
         if (userDefaults.objectForKey("id") != nil) {
             self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
+        }
+        if (userDefaults.objectForKey("name") != nil) {
+            self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
+        }
+        if (userDefaults.objectForKey("email") != nil) {
+            self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
+        }
+        if (userDefaults.objectForKey("autoInfo") != nil) {
+            self.autoInfo = NSUserDefaults.standardUserDefaults().valueForKey("autoInfo") as! [String]
         }
         
         //show/hide logout button
@@ -1353,6 +2295,17 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 }
             }
         }
+        if segue.identifier == "AutoLoanCalculatorDirect"
+        {
+            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
+                destinationVC.vcAction = "AutoLoanCalculator"
+                destinationVC.id = self.id
+                destinationVC.showRecent = showRecent
+                destinationVC.prevPage = "mainAuto"
+               
+            }
+        }
+        
         if segue.identifier == "ApplyLoan"
         {
             if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
@@ -1363,6 +2316,32 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 destinationVC.selectedCarModelSRP = self.selectedCarModelSRP
                 destinationVC.selectedCarBrand = self.selectedCarBrand
                 destinationVC.showRecent = showRecent
+                
+            }
+        }
+        if segue.identifier == "ApplyLoanDirect"
+        {
+            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
+                destinationVC.vcAction = "apply"
+                destinationVC.id = self.id
+                destinationVC.selectedCarModelId = self.selectedCarModelId
+                destinationVC.selectedCarModelSRP = self.selectedCarModelSRP
+                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.showRecent = showRecent
+                if(!showRecent){
+                    destinationVC.prevPage = "carModelList"
+                }else{
+                    destinationVC.prevPage = "carModelListRecent"
+                }
+            }
+        }
+        if segue.identifier == "ApplyLoanDirectFromMain"
+        {
+            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
+                destinationVC.vcAction = "apply"
+                destinationVC.id = self.id
+                destinationVC.showRecent = showRecent
+                destinationVC.prevPage = "mainAuto"
                 
             }
         }
