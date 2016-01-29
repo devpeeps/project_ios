@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewControllerLogin: UIViewController {
+class ViewControllerLogin: UIViewController, UITextFieldDelegate {
     var id = ""
     var name = ""
     var email = ""
@@ -25,6 +25,12 @@ class ViewControllerLogin: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("networkStatusChanged:"), name: ReachabilityStatusChangedNotification, object: nil)
         Reach().monitorReachabilityChanges()
         
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasShown:"), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasNotShown:"), name:UIKeyboardWillHideNotification, object: nil);
+        
+        txtPassword.delegate = self
+        
     }
     
     func networkStatusChanged(notification: NSNotification) {
@@ -35,19 +41,6 @@ class ViewControllerLogin: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    //touches the screen
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
-        self.view.endEditing(true)
-    }
-    
-    //presses the return button from the keypad
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
-        textField.resignFirstResponder()
-        return false;
     }
     
     @IBOutlet var txtPassword: UITextField!
@@ -249,6 +242,66 @@ class ViewControllerLogin: UIViewController {
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }
     }
+    
+    func keyboardWasShown(notification: NSNotification) {
+        /*
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+        self.bottomConstraint.constant = keyboardFrame.size.height + 20
+        })
+        */
+        let userInfo: [NSObject : AnyObject] = notification.userInfo!
+        
+        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
+        let offset: CGSize = userInfo[UIKeyboardFrameEndUserInfoKey]!.CGRectValue.size
+        
+        if keyboardSize.height == offset.height {
+            if self.view.frame.origin.y == 0 {
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                    self.view.frame.origin.y -= keyboardSize.height
+                })
+            }
+        } else {
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.view.frame.origin.y += keyboardSize.height - offset.height
+            })
+        }
+    }
+    
+    func keyboardWasNotShown(notification: NSNotification) {
+        /*
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+        self.bottomConstraint.constant = keyboardFrame.size.height - 20
+        })
+        */
+        let userInfo: [NSObject : AnyObject] = notification.userInfo!
+        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
+        if self.view.frame.origin.y + keyboardSize.height == 0 {
+            self.view.frame.origin.y += keyboardSize.height
+        }else{
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    //touches the screen
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        self.view.endEditing(true)
+    }
+    
+    //presses the return button from the keypad
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        self.view.endEditing(true)
+        return false;
+    }
+    
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
 
     

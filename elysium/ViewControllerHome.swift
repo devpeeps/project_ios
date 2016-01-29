@@ -1,15 +1,15 @@
 //
-//  ViewControllerAuto.swift
+//  ViewControllerHome.swift
 //  elysium
 //
-//  Created by Joshua Eleazar Bosinos on 08/01/2016.
+//  Created by Joshua Eleazar Bosinos on 26/01/2016.
 //  Copyright © 2016 UnionBank. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate  {
+class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate  {
     var id = ""
     var name = ""
     var email = ""
@@ -22,21 +22,29 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     var urlLib = ""
     var vcAction = ""
     var withConnection = false
-    var carBrandArr = [("Choose Car Brand","")]
-    var carModelArr = [("","","","")]
+    var propertyModelArr = [("modelid","modeldesc", "proj", "type",0.00,0.00,"areafrom","areato","developer","prov","city")]
     var carTermsArr = [60,48,36,24,18,12]
-    var homeTermsArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    var homeTermsArr = [20,19,18,17,16,15,14,12,11,10,9,8,7,6,5,4,3,2,1]
     var downpaymentArr = [20,30,40,50,60,70,80,90]
     var downpaymentArr_Home = [10,20,30,40,50,60,70,80,90]
     var civilStatusArr = [("S","Single"),("M","Married"),("W","Widow/er")]
+    var propertytypeArr = [("","Choose Property Type")]
+    var provinceArr = [("","Choose Province/Municipality")]
+    var cityArr = [("","Choose City","")]
     var emptypeArr = [("","")]
     var positionArr = [("","")]
-    var selectedCarBrand = ""
-    var selectedCarModelId = ""
-    var selectedCarModelSRP = 0
+    var selectedPropertyType = ""
+    var selectedProvince = ""
+    var selectedCity = ""
+    var selectedPriceFrom = ""
+    var selectedPriceTo = ""
+    var selectedPropertyModelId = ""
+    var selectedPropertyProj = ""
+    var selectedPropertyDeveloper = ""
+    var selectedPropertyModelSRP = 0
     var prevPage = ""
-    var selectedTerm = "60"
-    var selectedDP = "20"
+    var selectedTerm = "10"
+    var selectedDP = "10"
     var selectedCivilStat = ""
     var selectedWithC1 = false
     var selectedWithC2 = false
@@ -61,25 +69,30 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
         if(vcAction == ""){
             prevPage = "main"
-            loadCarBrandList()
+            txtPriceFrom.text = self.selectedPriceFrom
+            txtPriceTo.text = self.selectedPriceTo
+            loadPropertyTypeList()
+            loadProvinceList()
         }
         
         if(vcAction == "apply"){
-            scrollview.contentSize = CGSize(width:400, height:2200)
+            scrollview.contentSize = CGSize(width:400, height:3970)
             
             loadAppForm()
-
+            
             
         }
         
-        if(vcAction == "ShowCarModelList"){
-            loadCarModels(self.selectedCarBrand)
+        if(vcAction == "ShowPropertyModelList"){
+            propertyModelArr.removeAll()
+            loadPropertyModels()
         }
-        if(vcAction == "ShowCarModelListRecent"){
-            loadCarModelsRecent()
+        if(vcAction == "ShowPropertyModelListRecent"){
+            propertyModelArr.removeAll()
+            loadPropertyModelsRecent()
         }
         
-        if(vcAction == "AutoLoanCalculator"){
+        if(vcAction == "HomeLoanCalculator"){
             loadCalculatorValues()
         }
         
@@ -93,21 +106,26 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     func DismissKeyboard(){
         view.endEditing(true)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBOutlet var pickerCarBrand: UIPickerView!
+    @IBOutlet var pickerPropertyType: UIPickerView!
+    @IBOutlet var pickerPropertyProvince: UIPickerView!
+    @IBOutlet var pickerPropertyCity: UIPickerView!
+    @IBOutlet var txtPriceFrom: UITextField!
+    @IBOutlet var txtPriceTo: UITextField!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet var buttonLogout: UIButton!
     
-    func loadCarBrandList(){
+    
+    func loadPropertyTypeList(){
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "BRAND_SPINNER")
+        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "PROPTYPE")
         
         var contProc = true
         let status = Reach().connectionStatus()
@@ -145,34 +163,25 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                     if(s != ""){
                         dispatch_async(dispatch_get_main_queue(), {
                             let str = s!.componentsSeparatedByString("<br/>")
-                            self.carBrandArr.removeAll()
                             for i in 0...str.count - 1{
-                                if(str[i] != ""){
-                                    self.carBrandArr.append((str[i], str[i]))
-                                    if(self.selectedCarBrand != ""){
-                                        if(self.carBrandArr[i].0 == self.selectedCarBrand){
-                                            //self.selectedCarBrand = self.carBrandArr[i].0
-                                        }
-                                    }else{
-                                        if(i == 0){
-                                            self.selectedCarBrand = self.carBrandArr[i].0
-                                        }
-                                    }
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2[1] != ""){
+                                    self.propertytypeArr.append((str2[1], str2[0]))
                                 }
                             }
-                            self.pickerCarBrand.reloadAllComponents()
+                            self.pickerPropertyType.reloadAllComponents()
+                            
                             self.view.userInteractionEnabled = true
                             self.loadingIndicator.hidden = true
                             self.loadingIndicator.stopAnimating()
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
                             
                             for i in 0...str.count - 1{
-                                if(str[i] != ""){
-                                    if(self.selectedCarBrand != ""){
-                                        if(self.carBrandArr[i].0 == self.selectedCarBrand){
-                                            self.pickerCarBrand.selectRow(i, inComponent: 0, animated: false)
-                                            break
-                                        }
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2[1] != ""){
+                                    if(self.propertytypeArr[i].0 == self.selectedPropertyType){
+                                        self.pickerPropertyType.selectRow(i, inComponent: 0, animated: false)
+                                        break
                                     }
                                 }
                             }
@@ -212,6 +221,210 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
     }
     
+    func loadProvinceList(){
+        urlLib = NSLocalizedString("urlLib", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "PROVINCE")
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            
+            loadingIndicator.hidden = false
+            loadingIndicator.startAnimating()
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            for i in 0...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2[1] != ""){
+                                    self.provinceArr.append((str2[1], str2[0]))
+                                }
+                            }
+                            self.pickerPropertyProvince.reloadAllComponents()
+                            
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            
+                            for i in 0...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2[1] != ""){
+                                    if(self.provinceArr[i].0 == self.selectedProvince){
+                                        self.pickerPropertyProvince.selectRow(i, inComponent: 0, animated: false)
+                                        self.loadCityList(self.selectedProvince)
+                                        break
+                                    }
+                                }
+                            }
+                            
+                        })
+                    }else{
+                        
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        self.loadingIndicator.hidden = true
+                        self.loadingIndicator.stopAnimating()
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func loadCityList(provinceId: String){
+        if(provinceId != ""){
+            
+
+            urlLib = NSLocalizedString("urlLib", comment: "")
+            self.view.userInteractionEnabled = false
+            UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+            var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "CITY")
+            urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: provinceId)
+            
+            var contProc = true
+            let status = Reach().connectionStatus()
+            switch status {
+            case .Unknown, .Offline:
+                contProc = false
+                withConnection = false
+                self.loadingIndicator.hidden = true
+                self.loadingIndicator.stopAnimating()
+            default:
+                contProc = true
+                withConnection = true
+            }
+            
+            if(contProc){
+                
+                loadingIndicator.hidden = false
+                loadingIndicator.startAnimating()
+                
+                let url = NSURL(string: urlAsString)!
+                let urlSession = NSURLSession.sharedSession()
+                
+                var err = false
+                
+                let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                    if (error != nil) {
+                        print(error!.localizedDescription)
+                        err = true
+                    }
+                    
+                    if(!err){
+                        
+                        let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                        
+                        if(s != ""){
+                            dispatch_async(dispatch_get_main_queue(), {
+                                let str = s!.componentsSeparatedByString("<br/>")
+                                for i in 0...str.count - 1{
+                                    let str2 = str[i].componentsSeparatedByString("***")
+                                    if(str2[1] != ""){
+                                        self.cityArr.append((str2[1], str2[0], provinceId))
+                                    }
+                                }
+                                self.pickerPropertyCity.reloadAllComponents()
+                                
+                                self.view.userInteractionEnabled = true
+                                self.loadingIndicator.hidden = true
+                                self.loadingIndicator.stopAnimating()
+                                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                                
+                                for i in 0...str.count - 1{
+                                    let str2 = str[i].componentsSeparatedByString("***")
+                                    if(str2[1] != ""){
+                                        if(self.cityArr[i].0 == self.selectedCity){
+                                            self.pickerPropertyCity.selectRow(i, inComponent: 0, animated: false)
+                                            break
+                                        }
+                                    }
+                                }
+                            })
+                        }else{
+                            
+                        }
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                exit(1)
+                            })
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        })
+                    }
+                })
+                jsonQuery.resume()
+            }else{
+                self.view.userInteractionEnabled = true
+                self.loadingIndicator.hidden = true
+                self.loadingIndicator.stopAnimating()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                    exit(1)
+                })
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
     
     @IBOutlet var txtSellingPrice: UITextField!
     @IBOutlet var txtMonthlyAmort: UITextField!
@@ -220,7 +433,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     
     func loadCalculatorValues(){
         
-        txtSellingPrice.text = self.selectedCarModelSRP.stringFormattedWithSepator
+        txtSellingPrice.text = self.selectedPropertyModelSRP.stringFormattedWithSepator
         pickerTerm.selectRow(0, inComponent: 0, animated: false)
         pickerDP.selectRow(0, inComponent: 0, animated: false)
         
@@ -237,12 +450,12 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         var aor = 0.00
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         //NSLog((NSUserDefaults.standardUserDefaults().arrayForKey("autoInfo")?.first)! as! String)
-
-        if (userDefaults.objectForKey("autoRates_" + self.selectedTerm) != nil) {
-            aor = NSUserDefaults.standardUserDefaults().objectForKey("autoRates_" + self.selectedTerm) as! Double
+        
+        if (userDefaults.objectForKey("homeRates_standard") != nil) {
+            aor = NSUserDefaults.standardUserDefaults().objectForKey("homeRates_standard") as! Double
         }
         
-        let rate = getEIR(Int(selectedTerm)!, aor: aor ,isOMA: false);
+        let rate = aor / 100;
         let dp = Double(selectedDP)
         var amount_financed = Double(txtSellingPrice.text!.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
         amount_financed = amount_financed! - (amount_financed! * (dp! / 100))
@@ -252,8 +465,8 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
         let term = Double(selectedTerm)!
         
-        var amort = ((rate / 1200) * (0 - amount_financed!))
-        amort = amort * (pow((1 + (rate / 1200)), term) / (1 - pow((1 + (rate / 1200)), term)));
+        var amort = ((rate / 12) * (0 - amount_financed!))
+        amort = amort * (pow((1 + (rate / 12)), 12 * term) / (1 - pow((1 + (rate / 12)), 12 * term)));
         return amort
         
         
@@ -328,19 +541,21 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let tagIndex = Int(tag.substringToIndex(index1))
         
         if(tagIndex == 0){
-            return carBrandArr.count
+            return propertytypeArr.count
         }else if(tagIndex == 1){
-            return downpaymentArr.count
+            return downpaymentArr_Home.count
         }else if(tagIndex == 2){
-            return carTermsArr.count
+            return homeTermsArr.count
         }else if(tagIndex == 3){
-            return carModelArr.count
+            return provinceArr.count
         }else if(tagIndex == 4){
             return civilStatusArr.count
         }else if(tagIndex == 5){
             return emptypeArr.count
         }else if(tagIndex == 6){
             return positionArr.count
+        }else if(tagIndex == 7){
+            return cityArr.count
         }
         return 0
     }
@@ -351,19 +566,21 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let tagIndex = Int(tag.substringToIndex(index1))
         
         if(tagIndex == 0){
-            titleData = carBrandArr[row].0
+            titleData = propertytypeArr[row].1
         }else if(tagIndex == 1){
-            titleData = String(downpaymentArr[row])
+            titleData = String(downpaymentArr_Home[row])
         }else if(tagIndex == 2){
-            titleData = String(carTermsArr[row])
+            titleData = String(homeTermsArr[row])
         }else if(tagIndex == 3){
-            titleData = String(carModelArr[row].1)
+            titleData = String(provinceArr[row].1).capitalizedString
         }else if(tagIndex == 4){
             titleData = String(civilStatusArr[row].1).capitalizedString
         }else if(tagIndex == 5){
             titleData = String(emptypeArr[row].1).capitalizedString
         }else if(tagIndex == 6){
             titleData = String(positionArr[row].1).capitalizedString
+        }else if(tagIndex == 7){
+            titleData = String(cityArr[row].1).capitalizedString
         }
         return titleData
     }
@@ -371,21 +588,16 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let tag = String(pickerView.tag)
         let index1 = tag.startIndex.advancedBy(1)
         let tagIndex = Int(tag.substringToIndex(index1))
-
-        if(tagIndex == 0){ //BRAND
-            selectedCarBrand = carBrandArr[row].0
-            if(vcAction == "apply"){
-                loadCarModelPicker(selectedCarBrand)
-            }
+        
+        if(tagIndex == 0){ //PROPERTY TYPE
+            selectedPropertyType = propertytypeArr[row].0
         }else if(tagIndex == 1){ //DP
-            selectedDP =  String(downpaymentArr[row])
+            selectedDP =  String(downpaymentArr_Home[row])
         }else if(tagIndex == 2){ //TERM
-            selectedTerm = String(carTermsArr[row])
-        }else if(tagIndex == 3){ //CAR MODEL
-            selectedCarModelId = String(carModelArr[row].0)
-            if(vcAction == "apply"){
-                cashprice.text = carModelArr[row].2
-            }
+            selectedTerm = String(homeTermsArr[row])
+        }else if(tagIndex == 3){ //PROVINCE
+            selectedProvince = String(provinceArr[row].0)
+            loadCityList(selectedProvince)
         }else if(tagIndex == 4){ //CIVIL STATUS
             if(pickerView.tag == 4){ //FOR CLIENT
                 switch(civilStatusArr[row].0){
@@ -487,7 +699,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                     empaddress2.enabled = true
                     empphone.enabled = true
                     position.alpha = 1
-
+                    
                     break
                 default: break //do nothing
                 }
@@ -570,15 +782,17 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 default: break //do nothing
                 }
             }
-
+            
             
             
         }else if(tagIndex == 6){ //POSITION
             //selectedTerm = String(carTermsArr[row])
+        }else if(tagIndex == 7){ //CITY
+            selectedCity = String(cityArr[row].0)
         }
         
     }
-
+    
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         var pickerLabel = view as! UILabel!
         if view == nil {  //if no label there yet
@@ -591,14 +805,16 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let tagIndex = Int(tag.substringToIndex(index1))
         
         var titleData = ""
-        if(tagIndex == 0){ //BRAND
-            titleData = carBrandArr[row].0
+        if(tagIndex == 0){ //PROPERTY TYPE
+            titleData = propertytypeArr[row].1
+            pickerLabel!.textAlignment = .Left
         }else if(tagIndex == 1){ //DP
-            titleData =  String(downpaymentArr[row])
+            titleData =  String(downpaymentArr_Home[row])
         }else if(tagIndex == 2){ //TERM
-            titleData = String(carTermsArr[row])
-        }else if(tagIndex == 3){ //CAR MODEL
-            titleData = String(carModelArr[row].1)
+            titleData = String(homeTermsArr[row])
+        }else if(tagIndex == 3){ //PROVINCE
+            titleData = String(provinceArr[row].1)
+            pickerLabel!.textAlignment = .Left
         }else if(tagIndex == 4){ //CIVIL STATUS
             titleData = String(civilStatusArr[row].1).capitalizedString
             pickerLabel!.textAlignment = .Left
@@ -608,8 +824,10 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         }else if(tagIndex == 6){ //POSITION
             titleData = String(positionArr[row].1).capitalizedString
             pickerLabel!.textAlignment = .Left
+        }else if(tagIndex == 7){ //CITY
+            titleData = String(cityArr[row].1).capitalizedString
+            pickerLabel!.textAlignment = .Left
         }
-        
         
         
         let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Arial", size: 16.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])
@@ -622,33 +840,33 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         return 36.0
     }
     
-    @IBAction func actionSearchCarModel(sender: AnyObject) {
-        self.performSegueWithIdentifier("ShowCarModelList", sender: self)
+    @IBAction func actionSearchPropertyModel(sender: AnyObject) {
+        self.performSegueWithIdentifier("ShowPropertyModelList", sender: self)
     }
     
     @IBAction func actionShowRecentItems(sender: AnyObject) {
-        self.performSegueWithIdentifier("ShowCarModelListRecent", sender: self)
+        self.performSegueWithIdentifier("ShowPropertyModelListRecent", sender: self)
     }
     
-    @IBOutlet var tableViewCarModels: UITableView!
+    @IBOutlet var tableViewPropertyModels: UITableView!
     
     
     @IBAction func showRecentItems(sender: AnyObject) {
-        loadCarModelsRecent()
+        loadPropertyModelsRecent()
     }
     
-    func loadCarModelsRecent(){
+    func loadPropertyModelsRecent(){
         showRecent = true
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "MODEL")
+        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "HOMEMODELS")
         
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: "HISTORY")
         
         var s = ""
-        if (NSUserDefaults.standardUserDefaults().valueForKey("viewedVehicles") != nil) {
-            s = NSUserDefaults.standardUserDefaults().valueForKey("viewedVehicles") as! String
+        if (NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") != nil) {
+            s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
         }
         
         
@@ -691,14 +909,14 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                     if(s != ""){
                         dispatch_async(dispatch_get_main_queue(), {
                             let str = s!.componentsSeparatedByString("<br/>")
-                            self.carModelArr.removeAll()
+                            self.propertyModelArr.removeAll()
                             for i in 0...str.count - 1{
-                                let str2 = str[i].componentsSeparatedByString(",")
+                                let str2 = str[i].componentsSeparatedByString("***")
                                 if(str2.count >= 3){
-                                    self.carModelArr.append((str2[0], str2[1], str2[2], str2[3]))
+                                    self.propertyModelArr.append((str2[0], str2[1], str2[3], str2[4], Double(str2[13])!, Double(str2[14])!, str2[5], str2[6], str2[10], str2[11], str2[12]))
                                 }
                             }
-                            self.tableViewCarModels.reloadData()
+                            self.tableViewPropertyModels.reloadData()
                             self.view.userInteractionEnabled = true
                             self.loadingIndicator.hidden = true
                             self.loadingIndicator.stopAnimating()
@@ -748,14 +966,25 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         }
     }
     
-    func loadCarModels(carBrand: String){
+    func loadPropertyModels(){
+        
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "MODEL")
+        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "HOMEMODELS")
         
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: carBrand)
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: "1")
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: selectedPropertyType.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: selectedPriceFrom.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM3", withString: selectedPriceTo.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM4", withString: selectedProvince.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM5", withString: selectedCity.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        
+        
+        
         //NSLog(urlAsString)
         
         var contProc = true
@@ -794,21 +1023,35 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                     if(s != ""){
                         dispatch_async(dispatch_get_main_queue(), {
                             let str = s!.componentsSeparatedByString("<br/>")
-                            self.carModelArr.removeAll()
+                            self.propertyModelArr.removeAll()
                             for i in 0...str.count - 1{
-                                let str2 = str[i].componentsSeparatedByString(",")
+                                let str2 = str[i].componentsSeparatedByString("***")
                                 if(str2.count >= 3){
-                                    self.carModelArr.append((str2[0], str2[1], str2[2], str2[3]))
+                                    self.propertyModelArr.append((str2[0], str2[1], str2[3], str2[4], Double(str2[13])!, Double(str2[14])!, str2[5], str2[6], str2[10], str2[11], str2[12]))
                                 }
                             }
-                            self.tableViewCarModels.reloadData()
+                            self.tableViewPropertyModels.reloadData()
                             self.view.userInteractionEnabled = true
                             self.loadingIndicator.hidden = true
                             self.loadingIndicator.stopAnimating()
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
                         })
                     }else{
-                        
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.tableViewPropertyModels.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            
+                            let alert = UIAlertController(title: "No Record Found", message: "No properties found using the specified search criteria.", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                self.performSegueWithIdentifier("BackToHomeMain", sender: self)
+                            })
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                            
+                        })
                     }
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
@@ -845,23 +1088,18 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return carModelArr.count
+        return propertyModelArr.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
-        var (_, modeldesc, srp, _) = self.carModelArr[indexPath.row]
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! PropertyModelTableViewCell
+        let (_, modeldesc, proj, _, _, srpto, areafrom, areato, _, prov, city) = self.propertyModelArr[indexPath.row]
         
         if(modeldesc != ""){
-            cell.textLabel!.text = modeldesc
-            if(srp == ""){
-                srp = "0"
-            }
-            let x = Int(srp)
-            cell.detailTextLabel!.text = "PHP " + x!.stringFormattedWithSepator
-        }else{
-            cell.textLabel!.text = ""
-            cell.detailTextLabel!.text = ""
+            cell.lblFirstRow.text = modeldesc.capitalizedString + " - " + proj.capitalizedString
+            cell.lblThirdRow.text = city + ", " + prov
+            let x = Int(srpto)
+            cell.lblSecondRow.text = "PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
         }
         
         
@@ -874,23 +1112,24 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let (modelid, modeldesc, srp, brand) = self.carModelArr[indexPath.row]
+        let (modelid, modeldesc, proj, type, _, srpto, areafrom, areato, developer, prov, city) = self.propertyModelArr[indexPath.row]
         
-        let alert = UIAlertController(title: "Options for", message: brand + " " + modeldesc, preferredStyle: .ActionSheet)
+        
+        let alert = UIAlertController(title: "Options for", message: modeldesc.capitalizedString + " - " + proj.capitalizedString, preferredStyle: .ActionSheet)
         let action = UIAlertAction(title: "View Model Details", style: .Default, handler: { (alert) -> Void in
             //self.selectedCarModelId = modelid
             //self.performSegueWithIdentifier("ViewCarDetails", sender: self)
-            let x = Int(srp)!.stringFormattedWithSepator
-            let alert_ = UIAlertController(title: "Vehicle Details", message: "Brand : " + brand + "\r\n" + "Model Description : " + modeldesc + "\r\n" + "SRP : PHP " + x, preferredStyle: .Alert)
+            let x = Int(srpto).stringFormattedWithSepator
+            let alert_ = UIAlertController(title: "Model Details", message: "Type : " + type + "\r\n" + "Model : " + modeldesc + "\r\n" + "Project Name : " + proj + "\r\n" + "Developer : " + developer + "\r\n" + "SRP : PHP " + x + "\r\nArea (sqm) : " + areafrom + " - " + areato + "\r\nLocation : " + city + ", " + prov + "\r\n", preferredStyle: .Alert)
             let action_ = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            })
+            })
             alert_.addAction(action_)
             self.presentViewController(alert_, animated: true, completion: nil)
             
             //SAVE SELECTED TO RECENTLY VIEWED ITEM
             let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            if (userDefaults.objectForKey("viewedVehicles") != nil) {
-                let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedVehicles") as! String
+            if (userDefaults.objectForKey("viewedProperties") != nil) {
+                let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
                 
                 let arr = s.characters.split{$0 == ","}.map(String.init)
                 var selectedModelId_viewed = false
@@ -900,25 +1139,26 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                     }
                 }
                 if(!selectedModelId_viewed){
-                    NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedVehicles")
+                    NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedProperties")
                 }
             }else{
-                NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedVehicles")
+                NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
             }
-
+            
             
             
         })
         alert.addAction(action)
-        let action2 = UIAlertAction(title: "Auto Loan Calculator", style: .Default, handler: { (alert) -> Void in
-            self.selectedCarModelId = modelid
-            self.selectedCarModelSRP = Int(self.carModelArr[indexPath.row].2)!
-            self.selectedCarBrand = brand
+        let action2 = UIAlertAction(title: "Home Loan Calculator", style: .Default, handler: { (alert) -> Void in
+            self.selectedPropertyModelId = modelid
+            self.selectedPropertyModelSRP = Int(self.propertyModelArr[indexPath.row].5)
+            self.selectedPropertyProj = proj
+            self.selectedPropertyDeveloper = developer
             
             //SAVE SELECTED TO RECENTLY VIEWED ITEM
             let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            if (userDefaults.objectForKey("viewedVehicles") != nil) {
-                let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedVehicles") as! String
+            if (userDefaults.objectForKey("viewedProperties") != nil) {
+                let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
                 
                 let arr = s.characters.split{$0 == ","}.map(String.init)
                 var selectedModelId_viewed = false
@@ -928,25 +1168,26 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                     }
                 }
                 if(!selectedModelId_viewed){
-                    NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedVehicles")
+                    NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedProperties")
                 }
             }else{
-                NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedVehicles")
+                NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
             }
             
             
-            self.performSegueWithIdentifier("AutoLoanCalculator", sender: self)
+            self.performSegueWithIdentifier("HomeLoanCalculator", sender: self)
         })
         alert.addAction(action2)
-        let action3 = UIAlertAction(title: "Apply for Auto Loan", style: .Default, handler: { (alert) -> Void in
-            self.selectedCarModelId = modelid
-            self.selectedCarModelSRP = Int(self.carModelArr[indexPath.row].2)!
-            self.selectedCarBrand = brand
+        let action3 = UIAlertAction(title: "Apply for Home Loan", style: .Default, handler: { (alert) -> Void in
+            self.selectedPropertyModelId = modelid
+            self.selectedPropertyModelSRP = Int(self.propertyModelArr[indexPath.row].5)
+            self.selectedPropertyProj = proj
+            self.selectedPropertyDeveloper = developer
             
             //SAVE SELECTED TO RECENTLY VIEWED ITEM
             let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
             if (userDefaults.objectForKey("viewedVehicles") != nil) {
-                let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedVehicles") as! String
+                let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
                 
                 let arr = s.characters.split{$0 == ","}.map(String.init)
                 var selectedModelId_viewed = false
@@ -956,10 +1197,10 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                     }
                 }
                 if(!selectedModelId_viewed){
-                    NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedVehicles")
+                    NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedProperties")
                 }
             }else{
-                NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedVehicles")
+                NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
             }
             
             
@@ -983,10 +1224,6 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     }
     
     
-    @IBOutlet var carCondition: UISegmentedControl!
-    @IBOutlet var carBrand: UIPickerView!
-    @IBOutlet var carModel: UIPickerView!
-    @IBOutlet var carYear: UITextField!
     @IBOutlet var downpayment: UIPickerView!
     @IBOutlet var loanterm: UIPickerView!
     @IBOutlet var cashprice: UITextField!
@@ -1069,29 +1306,15 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     @IBOutlet var c2empaddress2: UITextField!
     @IBOutlet var c2empphone: UITextField!
     
-    @IBOutlet var remarks: UITextField!
-    
-    
     func loadAppForm(){
         self.loadingIndicator.hidden = false
         self.loadingIndicator.startAnimating()
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
-        self.loadCarBrandPicker()
         self.loadEmpTypePicker()
         self.loadPositionPicker()
-        
-        if(self.carCondition.selectedSegmentIndex == 0){
-            self.cashprice.enabled = false
-            self.carYear.enabled = false
-        }
-        
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Day , .Month , .Year], fromDate: date)
-        let year =  components.year
-        self.carYear.text = String(year)
+    
         
         splastname.enabled = false
         spfirstname.enabled = false
@@ -1222,8 +1445,6 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         c2empaddress1.delegate = self
         c2empaddress2.delegate = self
         c2empphone.delegate = self
-        
-        remarks.delegate = self
         
     }
     
@@ -1423,238 +1644,6 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
     }
     
-    func loadCarBrandPicker(){
-        urlLib = NSLocalizedString("urlLib", comment: "")
-        //self.view.userInteractionEnabled = false
-        //UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "BRAND_SPINNER")
-        
-        var contProc = true
-        let status = Reach().connectionStatus()
-        switch status {
-        case .Unknown, .Offline:
-            contProc = false
-            withConnection = false
-            //self.loadingIndicator.hidden = true
-            //self.loadingIndicator.stopAnimating()
-        default:
-            contProc = true
-            withConnection = true
-        }
-        
-        if(contProc){
-            
-            //loadingIndicator.hidden = false
-            //loadingIndicator.startAnimating()
-            
-            let url = NSURL(string: urlAsString)!
-            let urlSession = NSURLSession.sharedSession()
-            
-            var err = false
-            
-            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
-                if (error != nil) {
-                    print(error!.localizedDescription)
-                    err = true
-                }
-                
-                if(!err){
-                    
-                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
-                    
-                    if(s != ""){
-                        dispatch_async(dispatch_get_main_queue(), {
-                            let str = s!.componentsSeparatedByString("<br/>")
-                            self.carBrandArr.removeAll()
-                            for i in 0...str.count - 1{
-                                if(str[i] != ""){
-                                    self.carBrandArr.append((str[i], str[i]))
-                                    if(self.selectedCarBrand == ""){
-                                        if(i == 0){
-                                            self.selectedCarBrand = self.carBrandArr[i].0
-                                        }
-                                    }
-                                }
-                            }
-                            self.carBrand.reloadAllComponents()
-                            //self.view.userInteractionEnabled = true
-                            //self.loadingIndicator.hidden = true
-                            //self.loadingIndicator.stopAnimating()
-                            //UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            
-                            
-                            for i in 0...str.count - 1{
-                                if(str[i] != ""){
-                                    if(self.selectedCarBrand != ""){
-                                        if(self.carBrandArr[i].0 == self.selectedCarBrand){
-                                            self.carBrand.selectRow(i, inComponent: 0, animated: false)
-                                            self.loadCarModelPicker(self.selectedCarBrand)
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            
-                        })
-                    }else{
-                        
-                    }
-                }else{
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.view.userInteractionEnabled = true
-                        self.loadingIndicator.hidden = true
-                        self.loadingIndicator.stopAnimating()
-                        self.view.userInteractionEnabled = true
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            //exit(1)
-                        })
-                        alert.addAction(action)
-                        self.presentViewController(alert, animated: true, completion: nil)
-                    })
-                }
-            })
-            jsonQuery.resume()
-        }else{
-            self.view.userInteractionEnabled = true
-            self.loadingIndicator.hidden = true
-            self.loadingIndicator.stopAnimating()
-            self.view.userInteractionEnabled = true
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                //exit(1)
-            })
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-        
-    }
-    
-    func loadCarModelPicker(carBrand: String){
-        urlLib = NSLocalizedString("urlLib", comment: "")
-        //self.view.userInteractionEnabled = false
-        //UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "MODEL")
-        
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: carBrand)
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: "1")
-        //NSLog(urlAsString)
-        
-        var contProc = true
-        let status = Reach().connectionStatus()
-        switch status {
-        case .Unknown, .Offline:
-            contProc = false
-            withConnection = false
-            //self.loadingIndicator.hidden = true
-            //self.loadingIndicator.stopAnimating()
-        default:
-            contProc = true
-            withConnection = true
-        }
-        
-        if(contProc){
-            
-            //loadingIndicator.hidden = false
-            //loadingIndicator.startAnimating()
-            
-            let url = NSURL(string: urlAsString)!
-            let urlSession = NSURLSession.sharedSession()
-            
-            var err = false
-            
-            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
-                if (error != nil) {
-                    print(error!.localizedDescription)
-                    err = true
-                }
-                
-                if(!err){
-                    
-                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
-                    
-                    if(s != ""){
-                        dispatch_async(dispatch_get_main_queue(), {
-                            let str = s!.componentsSeparatedByString("<br/>")
-                            self.carModelArr.removeAll()
-                            for i in 0...str.count - 1{
-                                let str2 = str[i].componentsSeparatedByString(",")
-                                if(str2.count >= 3){
-                                    self.carModelArr.append((str2[0], str2[1], str2[2], str2[3]))
-                                }
-                            }
-                            self.carModel.reloadAllComponents()
-                            //self.view.userInteractionEnabled = true
-                            //self.loadingIndicator.hidden = true
-                            //self.loadingIndicator.stopAnimating()
-                            //UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            
-                            for i in 0...str.count - 1{
-                                let str2 = str[i].componentsSeparatedByString(",")
-                                if(str2.count >= 3){
-                                    if(self.selectedCarModelId != ""){
-                                        if(self.carModelArr[i].0 == self.selectedCarModelId){
-                                            self.carModel.selectRow(i, inComponent: 0, animated: false)
-                                            self.cashprice.text = self.carModelArr[i].2
-                                            break
-                                        }
-                                    }else{
-                                        self.cashprice.text = self.carModelArr[0].2
-                                        self.selectedCarBrand = self.carModelArr[0].3
-                                        self.selectedCarModelId = self.carModelArr[0].0
-                                    }
-                                }
-                            }
-                            
-                        })
-                    }else{
-                        
-                    }
-                }else{
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.view.userInteractionEnabled = true
-                        self.loadingIndicator.hidden = true
-                        self.loadingIndicator.stopAnimating()
-                        self.view.userInteractionEnabled = true
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            //exit(1)
-                        })
-                        alert.addAction(action)
-                        self.presentViewController(alert, animated: true, completion: nil)
-                    })
-                }
-            })
-            jsonQuery.resume()
-        }else{
-            self.view.userInteractionEnabled = true
-            self.loadingIndicator.hidden = true
-            self.loadingIndicator.stopAnimating()
-            self.view.userInteractionEnabled = true
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                //exit(1)
-            })
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    @IBAction func actionCarCondition(sender: AnyObject) {
-        if(self.carCondition.selectedSegmentIndex == 0){
-            self.cashprice.enabled = false
-            self.carYear.enabled = false
-        }else{
-            self.cashprice.enabled = true
-            self.carYear.enabled = true
-        }
-    }
-    
-    
     @IBAction func actionCopyContacts(sender: AnyObject) {
         spphonenumber.text = phonenumber.text
         spmobilenumber.text = mobilenumber.text
@@ -1820,44 +1809,29 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
         
-        let url = NSLocalizedString("urlECLIPSE", comment: "")
+        let url = NSLocalizedString("urlCREST", comment: "")
         
         var stringUrl = url
         
         var errorctr = 0;
         var errormsg = "";
         stringUrl = stringUrl + "&companyid=" + self.id;
-
-        
-        if(self.carCondition.selectedSegmentIndex == 1){
-            if(self.cashprice.text == "" || Double(self.cashprice.text!) <= 0){
-                errorctr++;
-                errormsg += "Cash Price\n";
-            }
-            
-            if(self.carYear.text == ""){ //CHECK IF VALID YEAR
-                errorctr++;
-                errormsg += "Vehicle Year\n";
-            }
-        }
         
         
-        stringUrl = stringUrl + "&vehicle_model=" + self.selectedCarModelId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&vehicle_lcp=" + self.cashprice.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&vehicle_brand=" + self.selectedCarBrand.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-
-        stringUrl = stringUrl + "&vehicle_year=" + self.carYear.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&vehicle_type=" + (self.carCondition.selectedSegmentIndex == 0 ? "1" : "2").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&model=" + self.selectedPropertyModelId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&selling_price=" + self.cashprice.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&project=" + self.selectedPropertyProj.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&developer=" + self.selectedPropertyDeveloper.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
         stringUrl = stringUrl + "&downpaymentpct=" + String(downpaymentArr[self.downpayment.selectedRowInComponent(0)])
-        stringUrl = stringUrl + "&term=" + String(carTermsArr[self.loanterm.selectedRowInComponent(0)]).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&term=" + String(homeTermsArr[self.loanterm.selectedRowInComponent(0)]).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&ao=" + autoInfo[0].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&ao=" + homeInfo[0].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&appsource=" + (self.id != "NON" ? "WAP" : "Online Application").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //CHECK WITH LIBFIELDVALUES
         stringUrl = stringUrl + "&rm=" + "";
         stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&clientclass=" + (self.id != "NON" ? "WAP (WORKPLACE ARRANGEMENT PROGR" : "REGULAR").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //ADD TO LIBFIELDVALUES = REGULAR
-        stringUrl = stringUrl + "&trantype=" + "DL".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         if(self.lastname.text == ""){
@@ -1934,7 +1908,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&empbizmoincome=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-
+        
         if(civilStatusArr[self.civilstatus.selectedRowInComponent(0)].0 == "M"){
             
             if(self.splastname.text == ""){
@@ -2000,7 +1974,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         }
         
         if(self.withc1.on == true){
-
+            
             
             if(self.c1lastname.text == ""){
                 errorctr++;
@@ -2018,7 +1992,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 errorctr++;
                 errormsg += "C1 Res Address\n";
             }
-
+            
             if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
                 if(self.c1empname.text == ""){
                     errorctr++;
@@ -2038,7 +2012,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 }
             }
             
-
+            
             stringUrl = stringUrl + "&m1lname=" + self.c1lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m1fname=" + self.c1firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m1mname=" + self.c1middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -2133,11 +2107,10 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
-        stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        
         stringUrl = stringUrl + "&duid=" + UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&dtype=ios"
         
+        //stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         //stringUrl = stringUrl + "&loggeduser=" + EncodeURLString(loggedUSRUID);
         
         
@@ -2173,7 +2146,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: manageObjectContext)
             url.url = stringUrl
             url.datecreated = String(NSDate())
-            url.refid = "AUTO"
+            url.refid = "HOME"
             url.datesuccess = "0"
             
             self.view.userInteractionEnabled = true
@@ -2181,13 +2154,13 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
             
-            let alert = UIAlertController(title: "Application Submitted", message: "Your new auto loan application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Application Submitted", message: "Your new home loan application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                 self.performSegueWithIdentifier("BackToAutoMain", sender: self)
+                self.performSegueWithIdentifier("BackToHomeMain", sender: self)
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
-        
+            
         }
         
         
@@ -2200,7 +2173,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     
     
     @IBAction func actionCalculatorDirect(sender: AnyObject) {
-        self.performSegueWithIdentifier("AutoLoanCalculatorDirect", sender: self)
+        self.performSegueWithIdentifier("HomeLoanCalculatorDirect", sender: self)
     }
     
     
@@ -2223,17 +2196,17 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 self.performSegueWithIdentifier("BackToMainLogged", sender: self)
             }
         }else{
-            if(self.prevPage == "mainAuto"){
-                self.performSegueWithIdentifier("BackToAutoMain", sender: self)
+            if(self.prevPage == "mainHome"){
+                self.performSegueWithIdentifier("BackToHomeMain", sender: self)
             }
-            if(self.prevPage == "carModelList"){
-                self.performSegueWithIdentifier("ShowCarModelList", sender: self)
+            if(self.prevPage == "propertyModelList"){
+                self.performSegueWithIdentifier("ShowPropertyModelList", sender: self)
             }
-            if(self.prevPage == "carModelListRecent"){
-                self.performSegueWithIdentifier("ShowCarModelListRecent", sender: self)
+            if(self.prevPage == "propertyModelListRecent"){
+                self.performSegueWithIdentifier("ShowPropertyModelListRecent", sender: self)
             }
-            if(self.prevPage == "autoLoanCalculator"){
-                self.performSegueWithIdentifier("AutoLoanCalculator", sender: self)
+            if(self.prevPage == "homeLoanCalculator"){
+                self.performSegueWithIdentifier("HomeLoanCalculator", sender: self)
             }
         }
     }
@@ -2266,8 +2239,8 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         if (userDefaults.objectForKey("email") != nil) {
             self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
         }
-        if (userDefaults.objectForKey("autoInfo") != nil) {
-            self.autoInfo = NSUserDefaults.standardUserDefaults().valueForKey("autoInfo") as! [String]
+        if (userDefaults.objectForKey("homeInfo") != nil) {
+            self.homeInfo = NSUserDefaults.standardUserDefaults().valueForKey("homeInfo") as! [String]
         }
         
         //show/hide logout button
@@ -2291,97 +2264,123 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowCarModelList"
+        if segue.identifier == "ShowPropertyModelList"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
-                destinationVC.vcAction = "ShowCarModelList"
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
+                destinationVC.vcAction = "ShowPropertyModelList"
                 destinationVC.id = self.id
-                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.selectedPropertyType = selectedPropertyType
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedProvince = selectedProvince
+                destinationVC.selectedCity = selectedCity
                 destinationVC.prevPage = "main"
             }
         }
         
-        if segue.identifier == "BackToAutoMain"
+        if segue.identifier == "BackToHomeMain"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
                 destinationVC.vcAction = ""
                 destinationVC.id = self.id
-                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.selectedPropertyType = selectedPropertyType
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedProvince = selectedProvince
+                destinationVC.selectedCity = selectedCity
             }
         }
         
-        if segue.identifier == "ShowCarModelListRecent"
+        if segue.identifier == "ShowPropertyModelListRecent"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
-                destinationVC.vcAction = "ShowCarModelListRecent"
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
+                destinationVC.vcAction = "ShowPropertyModelListRecent"
                 destinationVC.id = self.id
                 destinationVC.prevPage = "main"
-                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.selectedPropertyType = selectedPropertyType
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedProvince = selectedProvince
+                destinationVC.selectedCity = selectedCity
             }
         }
-        if segue.identifier == "AutoLoanCalculator"
+        if segue.identifier == "HomeLoanCalculator"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
-                destinationVC.vcAction = "AutoLoanCalculator"
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
+                destinationVC.vcAction = "HomeLoanCalculator"
                 destinationVC.id = self.id
-                destinationVC.selectedCarModelId = self.selectedCarModelId
-                destinationVC.selectedCarModelSRP = self.selectedCarModelSRP
-                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.selectedPropertyModelId = selectedPropertyModelId
+                destinationVC.selectedPropertyModelSRP = selectedPropertyModelSRP
+                destinationVC.selectedPropertyType = selectedPropertyType
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedProvince = selectedProvince
+                destinationVC.selectedCity = selectedCity
                 destinationVC.showRecent = showRecent
                 if(!showRecent){
-                    destinationVC.prevPage = "carModelList"
+                    destinationVC.prevPage = "propertyModelList"
                 }else{
-                    destinationVC.prevPage = "carModelListRecent"
+                    destinationVC.prevPage = "propertyModelListRecent"
                 }
             }
         }
-        if segue.identifier == "AutoLoanCalculatorDirect"
+        if segue.identifier == "HomeLoanCalculatorDirect"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
-                destinationVC.vcAction = "AutoLoanCalculator"
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
+                destinationVC.vcAction = "HomeLoanCalculator"
                 destinationVC.id = self.id
                 destinationVC.showRecent = showRecent
-                destinationVC.prevPage = "mainAuto"
-               
+                destinationVC.prevPage = "mainHome"
+                
             }
         }
         
         if segue.identifier == "ApplyLoan"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
                 destinationVC.vcAction = "apply"
                 destinationVC.id = self.id
-                destinationVC.prevPage = "autoLoanCalculator"
-                destinationVC.selectedCarModelId = self.selectedCarModelId
-                destinationVC.selectedCarModelSRP = self.selectedCarModelSRP
-                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.prevPage = "homeLoanCalculator"
+                destinationVC.selectedPropertyModelId = selectedPropertyModelId
+                destinationVC.selectedPropertyModelSRP = selectedPropertyModelSRP
+                destinationVC.selectedPropertyType = selectedPropertyType
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedProvince = selectedProvince
+                destinationVC.selectedCity = selectedCity
                 destinationVC.showRecent = showRecent
                 
             }
         }
         if segue.identifier == "ApplyLoanDirect"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
                 destinationVC.vcAction = "apply"
                 destinationVC.id = self.id
-                destinationVC.selectedCarModelId = self.selectedCarModelId
-                destinationVC.selectedCarModelSRP = self.selectedCarModelSRP
-                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.selectedPropertyModelId = selectedPropertyModelId
+                destinationVC.selectedPropertyModelSRP = selectedPropertyModelSRP
+                destinationVC.selectedPropertyType = selectedPropertyType
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedProvince = selectedProvince
+                destinationVC.selectedCity = selectedCity
                 destinationVC.showRecent = showRecent
                 if(!showRecent){
-                    destinationVC.prevPage = "carModelList"
+                    destinationVC.prevPage = "propertyModelList"
                 }else{
-                    destinationVC.prevPage = "carModelListRecent"
+                    destinationVC.prevPage = "propertyModelListRecent"
                 }
             }
         }
         if segue.identifier == "ApplyLoanDirectFromMain"
         {
-            if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
+            if let destinationVC = segue.destinationViewController as? ViewControllerHome{
                 destinationVC.vcAction = "apply"
                 destinationVC.id = self.id
                 destinationVC.showRecent = showRecent
-                destinationVC.prevPage = "mainAuto"
+                destinationVC.prevPage = "mainHome"
                 
             }
         }
@@ -2389,9 +2388,13 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         {
             if let destinationVC = segue.destinationViewController as? ViewControllerInquiry{
                 destinationVC.id = self.id
-                destinationVC.prevPage = "AutoMain"
-                destinationVC.product = "Auto Loan"
-                destinationVC.selectedCarBrand = self.selectedCarBrand
+                destinationVC.prevPage = "HomeMain"
+                destinationVC.product = "Home Loan"
+                destinationVC.selectedPropertyType = selectedPropertyType
+                destinationVC.selectedPriceFrom = selectedPriceFrom
+                destinationVC.selectedPriceTo = selectedPriceTo
+                destinationVC.selectedProvince = selectedProvince
+                destinationVC.selectedCity = selectedCity
                 destinationVC.showRecent = showRecent
             }
         }
@@ -2399,7 +2402,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         {
             if let destinationVC = segue.destinationViewController as? ViewControllerFAQ{
                 destinationVC.id = self.id
-                destinationVC.prevPage = "AutoMain"
+                destinationVC.prevPage = "HomeMain"
             }
         }
     }
@@ -2410,7 +2413,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         UIView.animateWithDuration(0.1, animations: { () -> Void in
-            self.bottomConstraint.constant = keyboardFrame.size.height + 20
+        self.bottomConstraint.constant = keyboardFrame.size.height + 20
         })
         */
         let userInfo: [NSObject : AnyObject] = notification.userInfo!
@@ -2437,7 +2440,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
         UIView.animateWithDuration(0.1, animations: { () -> Void in
-            self.bottomConstraint.constant = keyboardFrame.size.height - 20
+        self.bottomConstraint.constant = keyboardFrame.size.height - 20
         })
         */
         let userInfo: [NSObject : AnyObject] = notification.userInfo!
@@ -2471,8 +2474,10 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         return emailTest.evaluateWithObject(testStr)
     }
     
-
+    struct PropertyModelData {
+        var firstRowLabel:String
+        var secondRowLabel:String
+        var thirdRowLabel:String
+    }
 }
-
-
 

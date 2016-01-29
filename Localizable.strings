@@ -73,3 +73,113 @@ The Bank endeavors to ensure the security of your data transmitted. To protect  
 <b>Copyright</b><br>
 <br>This app and all contents in these materials are protected by  copyright. No part of those materials may be modified, reproduced, transmitted  and distributed in any format or by any means for commercial or public use  without the Bank\'s prior written consent.<br>
 <br><b><em>UnionBank of the  Philippines is regulated by the Bangko Sentral ng Pilipinas. For concerns, you  may contact us at (02) 841-8600 </em></b><em>or the<b> BSP Financial Consumer Protection  Department at (02) 708-7087. </b></em><br>";
+
+faq_auto = "1. What kind of vehicles can I purchase with UnionBank? What are the minimum and maximum loan amounts? What are the terms?<br><br>
+<ul>
+<li>
+The minimum loan amount is P200,000. To avail of an auto loan, the purpose of the vehicle to be acquired should be for personal or business use, not an accommodation.
+</li>
+<li>
+The maximum loan amount is 80\%% for Brand new cars and 70\%% of appraised value for used cars not over 3 years of age. Down payment will vary depending on the year model.
+</li>
+</ul>
+<br>
+
+2. Am I eligible to get a UnionBank auto loan?<br><br>
+<ul>
+<li>
+Yes, if you are between 21 to 64 years old during application or 65 years old upon maturity of the loan.
+</li>
+<li>
+Filipino citizen or Foreign nationals married to a Filipinos may apply for an auto loan.
+</li>
+<li>
+Client must be 65 years old upon maturity of loan.
+</li>
+<li>
+Net monthly amortization should not be over 40% of your total gross income.
+</li>
+</ul>
+<br>
+
+3. What do I need to submit when I apply for a UnionBank auto loan?<br><br>
+
+If you are employed, you will need to submit the following:<br><br>
+
+<ul>
+<li>COE - Certificate of employment with compensation</li>
+<li>ITR - Latest (for loans amounting to more than P3 Million)</li>
+<li>CFUSCA - Completely filled up application form</li>
+</ul>
+<br>
+4. What are the modes of payment available/offered by UnionBank?<br><br>
+<ul>
+<li>
+Auto Debit Arrangement (ADA) - Automatically deducted from your account
+</li>
+<li>
+Post-Dated Checks (PDC) - Minimum of 12 checks of your monthly amortization
+</li>
+</ul>
+<br>
+5. What are the usual fees/charges do I have to pay before availing of an auto loan?<br><br>
+<ul>
+<li>Chattel Mortgage Fee</li>
+<li>Comprehensive Insurance</li>
+<li>Appraisal fee (for 2nd hand vehicles)</li>
+</ul>
+<br>";
+
+faq_home = "
+1. What types of loan can I avail of?<br><br>
+<ul>
+<li>Purchase of Lot</li>
+<li>Purchase of House & Lot</li>
+<li>Purchase of Townhouse</li>
+<li>Purchase of Residential Condominium</li>
+</ul>
+<br><br>
+From UnionBank Accredited Developers *<br>
+* Accredited Developers - have special arrangement with the Bank. The property needs not to be appraised since the net selling price is considered by the Bank as the valuation of the property<br><br>
+2. What is the maximum term for my housing loan?<br><br>
+Maximum of 20 years<br><br>
+3. What is the maximum and minimum loanable amount?<br><br>
+Maximum loanable amount is up to 90\% of selling price, whichever is lower<br>
+Minimum loanable amount is P500,000.00<br><br>
+4. Who are qualified to borrow?<br><br>
+<ul>
+<li>Individuals who are gainfully employed and with permanent status from our Workplace Arrangement Program partner companies.</li>
+<li>Must be legal age, not more than 65 years old upon application and must not exceed the age of 70 years upon loan maturity</li>
+<li>Must have a good credit standing</li>
+</ul>
+<br><br>
+5. How fast is the approval?<br><br>
+Maximum turnaround time in processing application is 5 working days. (assuming complete requirements are submitted and all documents were verified with favorable findings)
+<br><br>
+6. What are the pre-approval requirements?<br><br>
+
+Personal Data Documents
+<ul>
+<li>Duly filled out Application form</li>
+<li>Photocopy of any government-issued ID with picture and signature</li>
+<li>Photocopy of Marriage Contract (if applicable)</li>
+<li>Photocopy of any government-issued ID with picture and signature of spouse (if applicable)</li>
+</ul>
+<br><br>
+Income Documents
+<ul>
+<li>E-mail confirmation from WAP Partner or</li>
+<li>Certificate of Employment / ITR</li>
+</ul>
+<br><br>
+Collateral Documents
+<ul>
+<li>Contract to Sell or Reservation Agreement</li>
+<li>Statement of Account</li>
+</ul>
+<br><br>
+";
+
+faq_card = "";
+
+faq_salary = "";

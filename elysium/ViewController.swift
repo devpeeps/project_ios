@@ -31,6 +31,7 @@ class ViewController: UIViewController {
         
         self.loadingIndicator.hidden = true
         self.loadingIndicator.stopAnimating()
+
         
         _ = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "ShowMainMenu", userInfo: nil, repeats: false)
     }
@@ -321,6 +322,7 @@ class ViewController: UIViewController {
         NSUserDefaults.standardUserDefaults().setObject(self.ccInfo, forKey: "ccInfo")
     }
 
+    
 
 }
 

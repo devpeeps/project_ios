@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0E71B61C5218D300B4D0A8 /* UrlStrings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71B41C5218D300B4D0A8 /* UrlStrings+CoreDataProperties.swift */; };
+		4F0E71B71C5218D300B4D0A8 /* UrlStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71B51C5218D300B4D0A8 /* UrlStrings.swift */; };
+		4F0E71B91C55A28300B4D0A8 /* ViewControllerInquiry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71B81C55A28300B4D0A8 /* ViewControllerInquiry.swift */; };
+		4F0E71BB1C565BAE00B4D0A8 /* ViewControllerFAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71BA1C565BAE00B4D0A8 /* ViewControllerFAQ.swift */; };
+		4F0E71BD1C57424200B4D0A8 /* ViewControllerHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71BC1C57424200B4D0A8 /* ViewControllerHome.swift */; };
+		4F0E71BF1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71BE1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift */; };
+		4F0E71C11C58CCA700B4D0A8 /* ViewControllerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71C01C58CCA700B4D0A8 /* ViewControllerCard.swift */; };
+		4F0E71C31C5A2B1D00B4D0A8 /* ViewControllerMy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71C21C5A2B1D00B4D0A8 /* ViewControllerMy.swift */; };
 		4F40A37F1C22A2F500C9FD42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F40A37E1C22A2F500C9FD42 /* AppDelegate.swift */; };
 		4F40A3811C22A2F500C9FD42 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F40A3801C22A2F500C9FD42 /* ViewController.swift */; };
 		4F40A3841C22A2F500C9FD42 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F40A3821C22A2F500C9FD42 /* Main.storyboard */; };
@@ -143,6 +151,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F0E71B41C5218D300B4D0A8 /* UrlStrings+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UrlStrings+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4F0E71B51C5218D300B4D0A8 /* UrlStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlStrings.swift; sourceTree = "<group>"; };
+		4F0E71B81C55A28300B4D0A8 /* ViewControllerInquiry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerInquiry.swift; sourceTree = "<group>"; };
+		4F0E71BA1C565BAE00B4D0A8 /* ViewControllerFAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerFAQ.swift; sourceTree = "<group>"; };
+		4F0E71BC1C57424200B4D0A8 /* ViewControllerHome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerHome.swift; sourceTree = "<group>"; };
+		4F0E71BE1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyModelTableViewCell.swift; sourceTree = "<group>"; };
+		4F0E71C01C58CCA700B4D0A8 /* ViewControllerCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerCard.swift; sourceTree = "<group>"; };
+		4F0E71C21C5A2B1D00B4D0A8 /* ViewControllerMy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerMy.swift; sourceTree = "<group>"; };
 		4F40A37B1C22A2F500C9FD42 /* elysium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = elysium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F40A37E1C22A2F500C9FD42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F40A3801C22A2F500C9FD42 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -319,15 +335,23 @@
 				4F40A37E1C22A2F500C9FD42 /* AppDelegate.swift */,
 				4F40A3801C22A2F500C9FD42 /* ViewController.swift */,
 				4F40A3821C22A2F500C9FD42 /* Main.storyboard */,
+				4F0E71C21C5A2B1D00B4D0A8 /* ViewControllerMy.swift */,
+				4F0E71BE1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift */,
+				4F0E71BA1C565BAE00B4D0A8 /* ViewControllerFAQ.swift */,
 				4F728F2D1C3F66D000703575 /* ViewControllerAbout.swift */,
 				4F728F1D1C3BA91E00703575 /* ViewControllerLogin.swift */,
 				4F728F2B1C3CEA4200703575 /* Reachability.swift */,
 				4F5A73E01C3B74C4007EC33C /* ViewControllerMain.swift */,
+				4F0E71B81C55A28300B4D0A8 /* ViewControllerInquiry.swift */,
 				4F728F351C3F806800703575 /* ViewControllerAuto.swift */,
+				4F0E71BC1C57424200B4D0A8 /* ViewControllerHome.swift */,
+				4F0E71C01C58CCA700B4D0A8 /* ViewControllerCard.swift */,
 				4F40A3881C22A2F500C9FD42 /* Assets.xcassets */,
 				4F40A38A1C22A2F500C9FD42 /* LaunchScreen.storyboard */,
 				4F40A38D1C22A2F500C9FD42 /* Info.plist */,
 				4F40A3851C22A2F500C9FD42 /* elysium.xcdatamodeld */,
+				4F0E71B41C5218D300B4D0A8 /* UrlStrings+CoreDataProperties.swift */,
+				4F0E71B51C5218D300B4D0A8 /* UrlStrings.swift */,
 				4F728F311C3F6B4B00703575 /* property.plist */,
 				4F728F331C3F6DD900703575 /* Localizable.strings */,
 			);
@@ -694,12 +718,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F0E71BF1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift in Sources */,
+				4F0E71B71C5218D300B4D0A8 /* UrlStrings.swift in Sources */,
 				4F728F1E1C3BA91E00703575 /* ViewControllerLogin.swift in Sources */,
+				4F0E71BD1C57424200B4D0A8 /* ViewControllerHome.swift in Sources */,
 				4F40A3871C22A2F500C9FD42 /* elysium.xcdatamodeld in Sources */,
 				4F728F2C1C3CEA4200703575 /* Reachability.swift in Sources */,
+				4F0E71C31C5A2B1D00B4D0A8 /* ViewControllerMy.swift in Sources */,
 				4F728F361C3F806800703575 /* ViewControllerAuto.swift in Sources */,
 				4F40A3811C22A2F500C9FD42 /* ViewController.swift in Sources */,
+				4F0E71B61C5218D300B4D0A8 /* UrlStrings+CoreDataProperties.swift in Sources */,
+				4F0E71B91C55A28300B4D0A8 /* ViewControllerInquiry.swift in Sources */,
+				4F0E71C11C58CCA700B4D0A8 /* ViewControllerCard.swift in Sources */,
 				4F728F2E1C3F66D000703575 /* ViewControllerAbout.swift in Sources */,
+				4F0E71BB1C565BAE00B4D0A8 /* ViewControllerFAQ.swift in Sources */,
 				4F40A37F1C22A2F500C9FD42 /* AppDelegate.swift in Sources */,
 				4F5A73E11C3B74C4007EC33C /* ViewControllerMain.swift in Sources */,
 			);
@@ -845,7 +877,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.unionbankph.elysium;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -857,7 +890,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.unionbankph.elysium;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

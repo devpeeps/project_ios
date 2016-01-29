@@ -17,6 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        //NSLog(applicationDocumentsDirectory.path!)
+        
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        
+        _ = NSTimer.scheduledTimerWithTimeInterval(180.0, target: self, selector: "loadBackgroundServices", userInfo: nil, repeats: true)
+        
+        
+        _ = NSTimer.scheduledTimerWithTimeInterval(60 * 60, target: self, selector: "loadAdsServices", userInfo: nil, repeats: true)
+        
         return true
     }
 
@@ -107,5 +117,245 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func loadBackgroundServices() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
+            print("syncing")
+            self.executeSubmitAppURL()
+            
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                //print("update some UI")
+                
+            })
+        })
+    }
+    
+    func loadAdsServices() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), { () -> Void in
+            print("syncing")
+            self.executeGetAdsURL()
+            
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                //print("update some UI")
+                
+            })
+        })
+    }
+    
+    
+
+    func executeSubmitAppURL(){
+        let manageObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: manageObjectContext)
+        let sortDescriptor = NSSortDescriptor(key: "datecreated", ascending: true)
+        let request = NSFetchRequest()
+        request.entity = entityDescription
+        request.sortDescriptors = [sortDescriptor]
+        request.fetchLimit = 1
+        let pred = NSPredicate(format: "(datesuccess = %@)", "0")
+        request.predicate = pred
+        
+        do{
+            let results = try manageObjectContext.executeFetchRequest(request) as! [UrlStrings]
+            for request in results
+            {
+                
+                let stringUrl = request.valueForKey("url") as! String
+                var contProc = true
+                let status = Reach().connectionStatus()
+                switch status {
+                case .Unknown, .Offline:
+                    contProc = false
+                default:
+                    contProc = true
+                }
+                
+                if(contProc){
+                    let managedObject = results[0]
+                    managedObject.setValue("1", forKey: "datesuccess")
+                    
+                    let url = NSURL(string: stringUrl)!
+                    //let url = NSURL(string: stringUrl.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)!
+                    
+                    //stringUrl = stringUrl.substringFromIndex(stringUrl.startIndex.advancedBy(8))
+                    //let url = NSURL(string: "https://" + stringUrl.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)!
+                    let urlSession = NSURLSession.sharedSession()
+                    
+                    var err = false
+                    
+                    let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                        if (error != nil) {
+                            print(error!.localizedDescription)
+                            err = true
+                        }
+                        
+                        if(!err){
+                            
+                            let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                            
+                            if(s != ""){
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    
+                                    if((s?.containsString("SUCCESS")) == true){
+                                        
+                                        
+                                        // create a corresponding local notification
+                                        let notification = UILocalNotification()
+                                        let refid = request.valueForKey("refid") as! String
+                                        if(refid == "AUTO"){
+                                            notification.alertBody = "Your auto loan application has been sent. " // text that will be displayed in the notification
+                                        }else if(refid == "HOME"){
+                                            notification.alertBody = "Your home loan application has been sent. " // text that will be displayed in the notification
+                                        }else if(refid == "CARD"){
+                                            notification.alertBody = "Your credit card application has been sent. " // text that will be displayed in the notification
+                                        }else if(refid == "SALARY"){
+                                            notification.alertBody = "Your salary loan application has been sent. " // text that will be displayed in the notification
+                                        }else if(refid == "INQ"){
+                                            notification.alertBody = "Your inquiry has been sent. " // text that will be displayed in the notification
+                                        }
+                                        if #available(iOS 8.2, *) {
+                                            notification.alertTitle = "Loan application sent"
+                                        } else {
+                                            // Fallback on earlier versions
+                                        }
+                                        notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
+                                        notification.fireDate = NSDate(timeIntervalSinceNow: 5)
+                                        notification.soundName = UILocalNotificationDefaultSoundName // play default sound
+                                        notification.userInfo = ["UUID": refid, ] // assign a unique identifier to the notification so that we can retrieve it later
+                                        notification.category = "TODO_CATEGORY"
+                                        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+                                        
+                                        manageObjectContext.deleteObject(results[0] as NSManagedObject) //delete from core data
+                                    }
+                                    
+                                    
+                                })
+                            }else{
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    let managedObject = results[0]
+                                    managedObject.setValue("0", forKey: "datesuccess")
+                                })
+                            }
+                        }else{
+                            dispatch_async(dispatch_get_main_queue(), {
+                                let managedObject = results[0]
+                                managedObject.setValue("0", forKey: "datesuccess")
+                            })
+                        }
+                    })
+                    jsonQuery.resume()
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        let managedObject = results[0]
+                        managedObject.setValue("0", forKey: "datesuccess")
+                    })
+                }
+                
+            }
+            
+            
+        }
+        catch{
+            NSLog("No match found \(error)")
+        }
+        
+        
+    }
+    
+    func executeGetAdsURL(){
+        let urlLib = NSLocalizedString("urlLib", comment: "")
+        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "ADS")
+
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+        default:
+            contProc = true
+        }
+        
+        if(contProc){
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            
+                            for i in 0...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2[1] != ""){
+                                    // create a corresponding local notification
+                                    let notification = UILocalNotification()
+                                    let refid = str2[0];
+                                    if #available(iOS 8.2, *) {
+                                        notification.alertTitle = str2[2]
+                                    } else {
+                                        // Fallback on earlier versions
+                                    }
+                                    notification.alertBody = str2[3]
+                                    notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
+                                    notification.fireDate = NSDate(timeIntervalSinceNow: 5)
+                                    notification.soundName = UILocalNotificationDefaultSoundName // play default sound
+                                    notification.userInfo = ["UUID": refid, ] // assign a unique identifier to the notification so that we can retrieve it later
+                                    notification.category = "TODO_CATEGORY"
+                                    UIApplication.sharedApplication().scheduleLocalNotification(notification)
+                                    
+                                }
+                            }
+                        })
+                    }else{
+                        
+                    }
+                }else{
+                    
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            
+        }
+        
+    }
+    
 }
 
+
+struct Number {
+    static let formatterWithSepator: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.numberStyle = .DecimalStyle
+        return formatter
+    }()
+}
+extension IntegerType {
+    var stringFormattedWithSepator: String {
+        return Number.formatterWithSepator.stringFromNumber(hashValue) ?? ""
+    }
+}
+
+extension NSDate {
+    var dateFormatted: String {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM/dd/YYYY"
+        return formatter.stringFromDate(self)
+    }
+}
