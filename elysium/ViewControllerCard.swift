@@ -643,6 +643,11 @@ class ViewControllerCard: UIViewController, UIPickerViewDataSource, UIPickerView
             })
             alert.addAction(action4)
             
+            let action5 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+                //nothing
+            })
+            alert.addAction(action5)
+            
             presentViewController(alert, animated: true, completion: nil)
             
         }
@@ -1607,8 +1612,8 @@ class ViewControllerCard: UIViewController, UIPickerViewDataSource, UIPickerView
         let alert = UIAlertController(title: "Logout Confirmation", message: "Are you sure you want to logout?", preferredStyle: .ActionSheet)
         let action = UIAlertAction(title: "Yes", style: .Default, handler: { (alert) -> Void in
             //self.selectedRowID = id
-            self.performSegueWithIdentifier("BackToMain", sender: self)
             self.clearUserDefaults()
+            self.performSegueWithIdentifier("BackToMain", sender: self)
         })
         alert.addAction(action)
         let action2 = UIAlertAction(title: "No", style: .Default, handler: { (alert) -> Void in

@@ -187,13 +187,17 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! MyTableViewCell
         
         
         let (type, id, name, status, datesubmitted, datelastupdated) = self.myAppArr[indexPath.row]
         
         if(name != ""){
-            cell.textLabel?.text = name
+            cell.txtLabel1.text = name
+            cell.txtLabel2.text = status
+            cell.txtLabel3.text = "Ref#" + id
+            cell.txtRightLabel1.text = datesubmitted
+            cell.txtRightLabel2.text = datelastupdated
             var imageView = UIImage(named: "")
             switch(type){
             case "AUTO": imageView = UIImage(named: "ic_auto")
@@ -233,8 +237,8 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
         let alert = UIAlertController(title: "Logout Confirmation", message: "Are you sure you want to logout?", preferredStyle: .ActionSheet)
         let action = UIAlertAction(title: "Yes", style: .Default, handler: { (alert) -> Void in
             //self.selectedRowID = id
-            self.performSegueWithIdentifier("BackToMain", sender: self)
             self.clearUserDefaults()
+            self.performSegueWithIdentifier("BackToMain", sender: self)
         })
         alert.addAction(action)
         let action2 = UIAlertAction(title: "No", style: .Default, handler: { (alert) -> Void in

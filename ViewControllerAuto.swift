@@ -967,6 +967,13 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             
         })
         alert.addAction(action3)
+        
+        
+        let action4 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+            //nothing
+        })
+        alert.addAction(action4)
+        
         /*
         let action4 = UIAlertAction(title: "Inquire Now", style: .Default, handler: { (alert) -> Void in
             self.selectedCarModelId = modelid
@@ -2241,8 +2248,8 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         let alert = UIAlertController(title: "Logout Confirmation", message: "Are you sure you want to logout?", preferredStyle: .ActionSheet)
         let action = UIAlertAction(title: "Yes", style: .Default, handler: { (alert) -> Void in
             //self.selectedRowID = id
-            self.performSegueWithIdentifier("BackToMain", sender: self)
             self.clearUserDefaults()
+            self.performSegueWithIdentifier("BackToMain", sender: self)
         })
         alert.addAction(action)
         let action2 = UIAlertAction(title: "No", style: .Default, handler: { (alert) -> Void in
@@ -2287,6 +2294,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "homeInfo")
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "homeRates")
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "ccInfo")
+        
     }
     
     

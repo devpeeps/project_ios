@@ -296,6 +296,19 @@ class ViewController: UIViewController {
                 destinationVC.ccInfo = self.ccInfo
             }
         }
+        if segue.identifier == "ShowMainMenu" || segue.identifier == "ShowMainMenuLogged"
+        {
+            if let destinationVC = segue.destinationViewController as? ViewControllerMain{
+                destinationVC.id = self.id
+                destinationVC.name = self.name
+                destinationVC.email = self.email
+                destinationVC.autoInfo = self.autoInfo
+                destinationVC.autoRates = self.autoRates
+                destinationVC.homeInfo = self.homeInfo
+                destinationVC.homeRates = self.homeRates
+                destinationVC.ccInfo = self.ccInfo
+            }
+        }
     }
     
     func saveUserDefaults(){

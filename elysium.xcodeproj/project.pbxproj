@@ -15,6 +15,7 @@
 		4F0E71BF1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71BE1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift */; };
 		4F0E71C11C58CCA700B4D0A8 /* ViewControllerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71C01C58CCA700B4D0A8 /* ViewControllerCard.swift */; };
 		4F0E71C31C5A2B1D00B4D0A8 /* ViewControllerMy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71C21C5A2B1D00B4D0A8 /* ViewControllerMy.swift */; };
+		4F0E71C51C5C4F2800B4D0A8 /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0E71C41C5C4F2800B4D0A8 /* MyTableViewCell.swift */; };
 		4F40A37F1C22A2F500C9FD42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F40A37E1C22A2F500C9FD42 /* AppDelegate.swift */; };
 		4F40A3811C22A2F500C9FD42 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F40A3801C22A2F500C9FD42 /* ViewController.swift */; };
 		4F40A3841C22A2F500C9FD42 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F40A3821C22A2F500C9FD42 /* Main.storyboard */; };
@@ -159,6 +160,7 @@
 		4F0E71BE1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyModelTableViewCell.swift; sourceTree = "<group>"; };
 		4F0E71C01C58CCA700B4D0A8 /* ViewControllerCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerCard.swift; sourceTree = "<group>"; };
 		4F0E71C21C5A2B1D00B4D0A8 /* ViewControllerMy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerMy.swift; sourceTree = "<group>"; };
+		4F0E71C41C5C4F2800B4D0A8 /* MyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
 		4F40A37B1C22A2F500C9FD42 /* elysium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = elysium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F40A37E1C22A2F500C9FD42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F40A3801C22A2F500C9FD42 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				4F40A37E1C22A2F500C9FD42 /* AppDelegate.swift */,
 				4F40A3801C22A2F500C9FD42 /* ViewController.swift */,
 				4F40A3821C22A2F500C9FD42 /* Main.storyboard */,
+				4F0E71C41C5C4F2800B4D0A8 /* MyTableViewCell.swift */,
 				4F0E71C21C5A2B1D00B4D0A8 /* ViewControllerMy.swift */,
 				4F0E71BE1C575B0B00B4D0A8 /* PropertyModelTableViewCell.swift */,
 				4F0E71BA1C565BAE00B4D0A8 /* ViewControllerFAQ.swift */,
@@ -725,6 +728,7 @@
 				4F40A3871C22A2F500C9FD42 /* elysium.xcdatamodeld in Sources */,
 				4F728F2C1C3CEA4200703575 /* Reachability.swift in Sources */,
 				4F0E71C31C5A2B1D00B4D0A8 /* ViewControllerMy.swift in Sources */,
+				4F0E71C51C5C4F2800B4D0A8 /* MyTableViewCell.swift in Sources */,
 				4F728F361C3F806800703575 /* ViewControllerAuto.swift in Sources */,
 				4F40A3811C22A2F500C9FD42 /* ViewController.swift in Sources */,
 				4F0E71B61C5218D300B4D0A8 /* UrlStrings+CoreDataProperties.swift in Sources */,
