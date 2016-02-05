@@ -13,7 +13,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     var id = ""
     var name = ""
     var email = ""
-    var autoInfo = ["","",""]
+    var autoInfo = ["","","",""]
     var homeInfo = ["","",""]
     var ccInfo = ["","","",""]
     var autoRates = [("",0.00)]
@@ -26,6 +26,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     var carModelArr = [("","","","")]
     var carTermsArr = [60,48,36,24,18,12]
     var homeTermsArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    var downpaymentArr2 = [10,20,30,40,50,60,70,80,90]
     var downpaymentArr = [20,30,40,50,60,70,80,90]
     var downpaymentArr_Home = [10,20,30,40,50,60,70,80,90]
     var civilStatusArr = [("S","Single"),("M","Married"),("W","Widow/er")]
@@ -80,6 +81,9 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         }
         
         if(vcAction == "AutoLoanCalculator"){
+            if(autoInfo[3] == "Y"){
+                selectedDP = "10"
+            }
             loadCalculatorValues()
         }
         
@@ -330,7 +334,11 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         if(tagIndex == 0){
             return carBrandArr.count
         }else if(tagIndex == 1){
-            return downpaymentArr.count
+            if(autoInfo[3] == "Y"){
+                return downpaymentArr2.count
+            }else{
+                return downpaymentArr.count
+            }
         }else if(tagIndex == 2){
             return carTermsArr.count
         }else if(tagIndex == 3){
@@ -353,7 +361,11 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         if(tagIndex == 0){
             titleData = carBrandArr[row].0
         }else if(tagIndex == 1){
-            titleData = String(downpaymentArr[row])
+            if(autoInfo[3] == "Y"){
+                titleData = String(downpaymentArr2[row])
+            }else{
+                titleData = String(downpaymentArr[row])
+            }
         }else if(tagIndex == 2){
             titleData = String(carTermsArr[row])
         }else if(tagIndex == 3){
@@ -378,7 +390,11 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 loadCarModelPicker(selectedCarBrand)
             }
         }else if(tagIndex == 1){ //DP
-            selectedDP =  String(downpaymentArr[row])
+            if(autoInfo[3] == "Y"){
+                selectedDP =  String(downpaymentArr2[row])
+            }else{
+                selectedDP =  String(downpaymentArr[row])
+            }
         }else if(tagIndex == 2){ //TERM
             selectedTerm = String(carTermsArr[row])
         }else if(tagIndex == 3){ //CAR MODEL
@@ -594,7 +610,11 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         if(tagIndex == 0){ //BRAND
             titleData = carBrandArr[row].0
         }else if(tagIndex == 1){ //DP
-            titleData =  String(downpaymentArr[row])
+            if(autoInfo[3] == "Y"){
+                titleData =  String(downpaymentArr2[row])
+            }else{
+                titleData =  String(downpaymentArr[row])
+            }
         }else if(tagIndex == 2){ //TERM
             titleData = String(carTermsArr[row])
         }else if(tagIndex == 3){ //CAR MODEL
@@ -1855,7 +1875,12 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
 
         stringUrl = stringUrl + "&vehicle_year=" + self.carYear.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&vehicle_type=" + (self.carCondition.selectedSegmentIndex == 0 ? "1" : "2").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&downpaymentpct=" + String(downpaymentArr[self.downpayment.selectedRowInComponent(0)])
+        if(autoInfo[3] == "Y"){
+            stringUrl = stringUrl + "&downpaymentpct=" + String(downpaymentArr2[self.downpayment.selectedRowInComponent(0)])
+        }else{
+            stringUrl = stringUrl + "&downpaymentpct=" + String(downpaymentArr[self.downpayment.selectedRowInComponent(0)])
+        }
+        
         stringUrl = stringUrl + "&term=" + String(carTermsArr[self.loanterm.selectedRowInComponent(0)]).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&ao=" + autoInfo[0].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;

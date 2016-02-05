@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     var id = ""
     var name = ""
     var email = ""
-    var autoInfo = ["aouid","rmname","rmemail"]
+    var autoInfo = ["aouid","rmname","rmemail","dp10"]
     var homeInfo = ["aouid","rmname","rmemail"]
     var ccInfo = ["aouid","aoemail","rmname","rmemail"]
     var autoRates = [("",0.00)]
@@ -153,7 +153,7 @@ class ViewController: UIViewController {
                                     let auto_Standard = products_Standard["auto"] as! NSDictionary
                                     let autoRates_Standard = auto_Standard["rates"] as! NSDictionary
                                     
-                                    self.autoInfo = [auto["aouid"] as! String, auto["rmname"] as! String, auto["rmemail"] as! String]
+                                    self.autoInfo = [auto["aouid"] as! String, auto["rmname"] as! String, auto["rmemail"] as! String, auto["dp10"] as! String]
                                     
                                     self.autoRates.removeAll()
                                     for(term, rate) in autoRates{

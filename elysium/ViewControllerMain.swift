@@ -172,7 +172,7 @@ class ViewControllerMain: UIViewController {
                                     let auto_Standard = products_Standard["auto"] as! NSDictionary
                                     let autoRates_Standard = auto_Standard["rates"] as! NSDictionary
                                     
-                                    self.autoInfo = [auto["aouid"] as! String, auto["rmname"] as! String, auto["rmemail"] as! String]
+                                    self.autoInfo = [auto["aouid"] as! String, auto["rmname"] as! String, auto["rmemail"] as! String, auto["dp10"] as! String]
                                     
                                     self.autoRates.removeAll()
                                     for(term, rate) in autoRates{
