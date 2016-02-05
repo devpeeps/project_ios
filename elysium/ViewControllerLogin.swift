@@ -137,13 +137,14 @@ class ViewControllerLogin: UIViewController, UITextFieldDelegate {
                                 self.autoInfo = [auto["aouid"] as! String, auto["rmname"] as! String, auto["rmemail"] as! String, auto["dp10"] as! String]
 
                                 self.autoRates.removeAll()
-                                for(term, rate) in autoRates{
+                                for (term, rate) in autoRates{
+                                    let rate_ = rate as! String
+                                    let term_ = term as! String
                                     if(rate as! String == ""){
-                                        self.autoRates.append((term as! String, (autoRates_Standard.valueForKey(term as! String) as! NSString).doubleValue))
+                                        self.autoRates.append((term_ , (autoRates_Standard.valueForKey(term_ ) as! NSString).doubleValue))
                                     }else{
-                                        self.autoRates.append((term as! String, (rate as! NSString).doubleValue))
+                                        self.autoRates.append((term_ , (rate_ as NSString).doubleValue))
                                     }
-                                    
                                 }
                                 
                                 //HOME
@@ -329,9 +330,22 @@ class ViewControllerLogin: UIViewController, UITextFieldDelegate {
         NSUserDefaults.standardUserDefaults().setObject(self.name, forKey: "name")
         NSUserDefaults.standardUserDefaults().setObject(self.email, forKey: "email")
         NSUserDefaults.standardUserDefaults().setObject(self.autoInfo, forKey: "autoInfo")
-        NSUserDefaults.standardUserDefaults().setObject(self.autoRates as? AnyObject, forKey: "autoRates")
+        
+        for(term, rate) in self.autoRates{
+            NSUserDefaults.standardUserDefaults().setObject(rate, forKey: "autoRates_" + term)
+        }
+        
+        //NSUserDefaults.standardUserDefaults().setObject(self.autoRates as? AnyObject, forKey: "autoRates")
+        
         NSUserDefaults.standardUserDefaults().setObject(self.homeInfo, forKey: "homeInfo")
-        NSUserDefaults.standardUserDefaults().setObject(self.homeRates as? AnyObject, forKey: "homeRates")
+        
+        
+        for(term, rate) in self.homeRates{
+            NSUserDefaults.standardUserDefaults().setObject(rate, forKey: "homeRates_" + term)
+        }
+        
+        //NSUserDefaults.standardUserDefaults().setObject(self.homeRates as? AnyObject, forKey: "homeRates")
+        
         NSUserDefaults.standardUserDefaults().setObject(self.ccInfo, forKey: "ccInfo")
     }
 
