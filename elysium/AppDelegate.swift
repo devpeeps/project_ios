@@ -215,7 +215,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             notification.alertBody = "Your inquiry has been sent. " // text that will be displayed in the notification
                                         }
                                         if #available(iOS 8.2, *) {
-                                            notification.alertTitle = "Loan application sent"
+                                            if(refid == "AUTO"){
+                                                notification.alertTitle = "Auto Loan application sent"
+                                            }else if(refid == "HOME"){
+                                                notification.alertTitle = "Home Loan application sent"
+                                            }else if(refid == "CARD"){
+                                                notification.alertTitle = "Credit Card application sent"
+                                            }else if(refid == "SALARY"){
+                                                notification.alertTitle = "Salary Loan application sent"
+                                            }else if(refid == "INQ"){
+                                                notification.alertTitle = "Inquiry sent"
+                                            }
                                         } else {
                                             // Fallback on earlier versions
                                         }

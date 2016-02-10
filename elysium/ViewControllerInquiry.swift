@@ -243,7 +243,7 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: manageObjectContext)
             url.url = stringUrl
             url.datecreated = String(NSDate())
-            
+            url.datesuccess = "0"
             url.refid = "INQ"
             
             
@@ -257,6 +257,12 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 if(self.prevPage == "AutoMain"){
                     self.performSegueWithIdentifier("AutoMain", sender: self)
+                }
+                if(self.prevPage == "HomeMain"){
+                    self.performSegueWithIdentifier("HomeMain", sender: self)
+                }
+                if(self.prevPage == "CardMain"){
+                    self.performSegueWithIdentifier("CardTypeList", sender: self)
                 }
             })
             alert.addAction(action)
@@ -568,14 +574,6 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
                                     //NSUserDefaults.standardUserDefaults().setObject(self.homeRates as? AnyObject, forKey: "homeRates")
                                     
                                     NSUserDefaults.standardUserDefaults().setObject(self.ccInfo, forKey: "ccInfo")
-                                    
-                                    //
-                                    
-                                    if(self.id != "NON"){
-                                        self.performSegueWithIdentifier("ShowMainMenuLogged", sender: self)
-                                    }else{
-                                        self.performSegueWithIdentifier("ShowMainMenu", sender: self)
-                                    }
                                     
                                 })
                             }catch{
