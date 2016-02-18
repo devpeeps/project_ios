@@ -87,10 +87,13 @@ class ViewController: UIViewController {
             
             var urlAsString = "";
             
+            let buildVersionNumber: String? = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as? String
+            
+            
             if(id != ""){
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + id.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android"
+                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + id.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android&platform=IOS&v="+buildVersionNumber!
             }else{
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android"
+                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android&platform=IOS&v="+buildVersionNumber!
             }
             
             let url = NSURL(string: urlAsString)!
@@ -115,6 +118,22 @@ class ViewController: UIViewController {
                             self.loadingIndicator.hidden = true
                             let alert = UIAlertController(title: "Something's wrong", message: "There seems to be a problem with your installation. Relaunch the app to resolve the problem.", preferredStyle: .Alert)
                             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                exit(1)
+                            })
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        })
+                    }else if(s == "OUTDATED"){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            NSUserDefaults.standardUserDefaults().setObject("", forKey: "id")
+                            self.loadingIndicator.stopAnimating()
+                            self.loadingIndicator.hidden = true
+                            let alert = UIAlertController(title: "Outdated App Version", message: "Your app version is outdated. Please update your app from the App Store.", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                let url  = NSURL(string: "itms://itunes.apple.com/app/id1082976832")
+                                if UIApplication.sharedApplication().canOpenURL(url!) {
+                                    UIApplication.sharedApplication().openURL(url!)
+                                }
                                 exit(1)
                             })
                             alert.addAction(action)

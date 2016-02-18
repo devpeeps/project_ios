@@ -19,13 +19,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //NSLog(applicationDocumentsDirectory.path!)
         
-        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        let openURLAction = UIMutableUserNotificationAction()
+        openURLAction.identifier = "openURL"
+        openURLAction.title = "View Details"
+        openURLAction.destructive = false
+        openURLAction.authenticationRequired = false
+        openURLAction.activationMode = UIUserNotificationActivationMode.Background
+        
+        let urlOpenededCategory = UIMutableUserNotificationCategory()
+        urlOpenededCategory.identifier = "WEBURLOPEN"
+        
+        // The Default context is the lock screen.
+        urlOpenededCategory.setActions([openURLAction],
+            forContext: UIUserNotificationActionContext.Default)
+        
+        // The Minimal context is when the user pulls down on a notification banner.
+        urlOpenededCategory.setActions([openURLAction],
+            forContext: UIUserNotificationActionContext.Minimal)
+        
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: [urlOpenededCategory])
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(180.0, target: self, selector: "loadBackgroundServices", userInfo: nil, repeats: true)
+        _ = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: "loadBackgroundServices", userInfo: nil, repeats: true)
         
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(60 * 60, target: self, selector: "loadAdsServices", userInfo: nil, repeats: true)
+        _ = NSTimer.scheduledTimerWithTimeInterval(180, target: self, selector: "loadAdsServices", userInfo: nil, repeats: true)
         
         return true
     }
@@ -326,7 +344,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     notification.soundName = UILocalNotificationDefaultSoundName // play default sound
                                     notification.userInfo = ["UUID": refid, ] // assign a unique identifier to the notification so that we can retrieve it later
                                     notification.category = "TODO_CATEGORY"
+                                    if(str2[1] == "WEBLINK"){
+                                        notification.category = "WEBURLOPEN"
+                                        notification.userInfo = ["UUID": refid, "WEBURL": str2[4]]
+                                    }
                                     UIApplication.sharedApplication().scheduleLocalNotification(notification)
+ 
+                                    
                                     
                                 }
                             }
@@ -343,6 +367,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
         
+    }
+    
+    func application(application: UIApplication,handleActionWithIdentifier identifier: String?,forLocalNotification notification: UILocalNotification,completionHandler: (() -> Void)){
+        if(identifier == "openURL"){
+            let userInfo = notification.userInfo!
+            var weburl = ""
+            for(key, value) in userInfo{
+                if(key == "WEBURL"){
+                    weburl = value as! String
+                }
+            }
+            if let url = NSURL(string: weburl) {
+                UIApplication.sharedApplication().openURL(url)
+            }
+        }
     }
     
 }

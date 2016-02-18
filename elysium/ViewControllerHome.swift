@@ -928,7 +928,7 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                             self.loadingIndicator.hidden = true
                             self.loadingIndicator.stopAnimating()
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            let alert = UIAlertController(title: "Recently Viewed Vehicles Empty", message: "You have not recently viewed any vehicle.", preferredStyle: .Alert)
+                            let alert = UIAlertController(title: "Recently Viewed Properties Empty", message: "You have not recently viewed any property.", preferredStyle: .Alert)
                             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                                 //exit(1)
                             })
