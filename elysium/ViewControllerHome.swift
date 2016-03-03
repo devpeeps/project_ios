@@ -196,9 +196,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                         self.loadingIndicator.hidden = true
                         self.loadingIndicator.stopAnimating()
                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            exit(1)
+                            //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -211,9 +216,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
+                //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -297,9 +307,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                         self.loadingIndicator.hidden = true
                         self.loadingIndicator.stopAnimating()
                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            exit(1)
+                            //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -312,9 +327,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
+                //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -330,7 +350,7 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             self.view.userInteractionEnabled = false
             UIApplication.sharedApplication().beginIgnoringInteractionEvents()
             var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "CITY")
-            urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: provinceId)
+            urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: provinceId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
             
             var contProc = true
             let status = Reach().connectionStatus()
@@ -368,6 +388,7 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                         if(s != ""){
                             dispatch_async(dispatch_get_main_queue(), {
                                 let str = s!.componentsSeparatedByString("<br/>")
+                                self.cityArr.removeAll()
                                 for i in 0...str.count - 1{
                                     let str2 = str[i].componentsSeparatedByString("***")
                                     if(str2[1] != ""){
@@ -400,9 +421,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                             self.loadingIndicator.hidden = true
                             self.loadingIndicator.stopAnimating()
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                                exit(1)
+                                //exit(1)
+                                if(self.id == "NON" || self.id == ""){
+                                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                                }else{
+                                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                                }
                             })
                             alert.addAction(action)
                             self.presentViewController(alert, animated: true, completion: nil)
@@ -415,9 +441,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                 self.loadingIndicator.hidden = true
                 self.loadingIndicator.stopAnimating()
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                 let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                    exit(1)
+                    //exit(1)
+                    if(self.id == "NON" || self.id == ""){
+                        self.performSegueWithIdentifier("BackToMain", sender: self)
+                    }else{
+                        self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                    }
                 })
                 alert.addAction(action)
                 self.presentViewController(alert, animated: true, completion: nil)
@@ -572,15 +603,15 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
         }else if(tagIndex == 2){
             titleData = String(homeTermsArr[row])
         }else if(tagIndex == 3){
-            titleData = String(provinceArr[row].1).capitalizedString
+            titleData = String(provinceArr[row].1)
         }else if(tagIndex == 4){
-            titleData = String(civilStatusArr[row].1).capitalizedString
+            titleData = String(civilStatusArr[row].1)
         }else if(tagIndex == 5){
-            titleData = String(emptypeArr[row].1).capitalizedString
+            titleData = String(emptypeArr[row].1)
         }else if(tagIndex == 6){
-            titleData = String(positionArr[row].1).capitalizedString
+            titleData = String(positionArr[row].1)
         }else if(tagIndex == 7){
-            titleData = String(cityArr[row].1).capitalizedString
+            titleData = String(cityArr[row].1)
         }
         return titleData
     }
@@ -816,16 +847,16 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             titleData = String(provinceArr[row].1)
             pickerLabel!.textAlignment = .Left
         }else if(tagIndex == 4){ //CIVIL STATUS
-            titleData = String(civilStatusArr[row].1).capitalizedString
+            titleData = String(civilStatusArr[row].1)
             pickerLabel!.textAlignment = .Left
         }else if(tagIndex == 5){ //EMP TYPE
-            titleData = String(emptypeArr[row].1).capitalizedString
+            titleData = String(emptypeArr[row].1)
             pickerLabel!.textAlignment = .Left
         }else if(tagIndex == 6){ //POSITION
-            titleData = String(positionArr[row].1).capitalizedString
+            titleData = String(positionArr[row].1)
             pickerLabel!.textAlignment = .Left
         }else if(tagIndex == 7){ //CITY
-            titleData = String(cityArr[row].1).capitalizedString
+            titleData = String(cityArr[row].1)
             pickerLabel!.textAlignment = .Left
         }
         
@@ -835,11 +866,11 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
         
         return pickerLabel
     }
-    
+    /*
     func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 36.0
     }
-    
+    */
     @IBAction func actionSearchPropertyModel(sender: AnyObject) {
         self.performSegueWithIdentifier("ShowPropertyModelList", sender: self)
     }
@@ -942,9 +973,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                         self.loadingIndicator.hidden = true
                         self.loadingIndicator.stopAnimating()
                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            exit(1)
+                            //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -957,9 +993,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
+                //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -1059,9 +1100,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                         self.loadingIndicator.hidden = true
                         self.loadingIndicator.stopAnimating()
                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            exit(1)
+                            //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -1074,9 +1120,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
+                //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -1525,9 +1576,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                         self.loadingIndicator.stopAnimating()
                         self.view.userInteractionEnabled = true
                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                             //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -1541,9 +1597,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             self.loadingIndicator.stopAnimating()
             self.view.userInteractionEnabled = true
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -1624,9 +1685,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
                         self.loadingIndicator.stopAnimating()
                         self.view.userInteractionEnabled = true
                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                             //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -1640,9 +1706,14 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
             self.loadingIndicator.stopAnimating()
             self.view.userInteractionEnabled = true
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)

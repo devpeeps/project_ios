@@ -153,9 +153,14 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
                         self.loadingIndicator.hidden = true
                         self.loadingIndicator.stopAnimating()
                         UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            exit(1)
+                            //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -168,9 +173,14 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
+                //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)

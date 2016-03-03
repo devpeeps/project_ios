@@ -590,9 +590,14 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
                         }else{
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.loadingIndicator.stopAnimating()
-                                let alert = UIAlertController(title: "Error", message: "There seems to be a problem with the connection. Please try again later.", preferredStyle: .Alert)
+                                let alert = UIAlertController(title: "Error", message: "There seems to be a problem with the connection. Please try again.", preferredStyle: .Alert)
                                 let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                                    exit(1)
+                                    //exit(1)
+                                    if(self.id == "NON" || self.id == ""){
+                                        self.performSegueWithIdentifier("BackToMain", sender: self)
+                                    }else{
+                                        self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                                    }
                                 })
                                 alert.addAction(action)
                                 self.presentViewController(alert, animated: true, completion: nil)
@@ -603,9 +608,14 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
                     dispatch_async(dispatch_get_main_queue(), {
                         self.loadingIndicator.hidden = true
                         self.loadingIndicator.stopAnimating()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            exit(1)
+                            //exit(1)
+                            if(self.id == "NON" || self.id == ""){
+                                self.performSegueWithIdentifier("BackToMain", sender: self)
+                            }else{
+                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -616,9 +626,14 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
         }else{
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Relaunch the app once you have a stable connection.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                exit(1)
+                //exit(1)
+                if(self.id == "NON" || self.id == ""){
+                    self.performSegueWithIdentifier("BackToMain", sender: self)
+                }else{
+                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)

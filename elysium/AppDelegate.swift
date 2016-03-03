@@ -64,6 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        // Reset the application badge to zero when the application as launched. The notification is viewed.
+        if application.applicationIconBadgeNumber > 0 {
+            application.applicationIconBadgeNumber = 0
+        }
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -348,6 +352,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         notification.category = "WEBURLOPEN"
                                         notification.userInfo = ["UUID": refid, "WEBURL": str2[4]]
                                     }
+                                    
+                                    if UIApplication.sharedApplication().applicationIconBadgeNumber > 0 {
+                                        notification.applicationIconBadgeNumber = UIApplication.sharedApplication().applicationIconBadgeNumber + 1
+                                    }else{
+                                        notification.applicationIconBadgeNumber = 1
+                                    }
+                                    
                                     UIApplication.sharedApplication().scheduleLocalNotification(notification)
  
                                     
@@ -384,6 +395,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        if(notification.category == "WEBURLOPEN"){
+            let userInfo = notification.userInfo!
+            var weburl = ""
+            for(key, value) in userInfo{
+                if(key == "WEBURL"){
+                    weburl = value as! String
+                }
+            }
+            if let url = NSURL(string: weburl) {
+                UIApplication.sharedApplication().openURL(url)
+            }
+        }
+    }
 }
 
 
