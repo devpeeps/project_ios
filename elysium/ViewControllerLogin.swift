@@ -22,12 +22,12 @@ class ViewControllerLogin: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         loadingIndicator.hidden = true
         // Do any additional setup after loading the view.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("networkStatusChanged:"), name: ReachabilityStatusChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerLogin.networkStatusChanged(_:)), name: ReachabilityStatusChangedNotification, object: nil)
         Reach().monitorReachabilityChanges()
         
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasShown:"), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasNotShown:"), name:UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerLogin.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerLogin.keyboardWasNotShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
         
         txtPassword.delegate = self
         
@@ -71,9 +71,9 @@ class ViewControllerLogin: UIViewController, UITextFieldDelegate {
             var urlAsString = "";
             
             if(sender.tag == 0){
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + txtPassword.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android"
+                 urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + txtPassword.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=ios"
             }else{
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android"
+                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=ios"
             }
             
             let url = NSURL(string: urlAsString)!

@@ -16,12 +16,16 @@ class ViewControllerFAQ: UIViewController {
     var autoInfo = ["","",""]
     var homeInfo = ["","",""]
     var ccInfo = ["","","",""]
-    var products = ["Auto Loan","Home Loan","Credit Card"]
+    var products = ["Auto Loan","Home Loan","Credit Card","Salary"]
     var product = ""
     var prevPage = ""
     
+    var vcAction = ""
+    var str = ""
     
-    @IBOutlet var buttonLogout: UIButton!
+    let manageObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    
+    //@IBOutlet var buttonLogout: UIButton!
     @IBOutlet var labelAppTitle: UILabel!
     @IBOutlet var textAbout: UITextView!
     
@@ -30,9 +34,7 @@ class ViewControllerFAQ: UIViewController {
 
         checkIfLogged()
         
-        var str = ""
-        
-        if(prevPage == "AutoMain"){
+        /*if(prevPage == "AutoMain"){
             str = NSLocalizedString("faq_auto", comment: "").html2String
             labelAppTitle.text = "FAQ - Auto Loan"
             
@@ -40,7 +42,19 @@ class ViewControllerFAQ: UIViewController {
             str = NSLocalizedString("faq_home", comment: "").html2String
             labelAppTitle.text = "FAQ - Home Loan"
             
+        }else if(prevPage == "SalaryMain"){
+            str = NSLocalizedString("faq_salary", comment: "").html2String
+            labelAppTitle.text = "FAQ - Salary Loan"
+        }*/
+        
+        if(vcAction == "ShowAutoFAQ")
+        {
+            str = NSLocalizedString("faq_auto", comment: "").html2String
+            labelAppTitle.text = "Frequently Asked Question - Auto Loan"
         }
+        
+        //str = NSLocalizedString("faq_auto", comment: "").html2String
+        //labelAppTitle.text = "Frequently Asked Question - Auto Loan"
         let attributedString = NSAttributedString(string: str)
         textAbout.attributedText = attributedString
         
@@ -51,7 +65,7 @@ class ViewControllerFAQ: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "AutoMain"
         {
@@ -91,7 +105,7 @@ class ViewControllerFAQ: UIViewController {
         })
         alert.addAction(action2)
         presentViewController(alert, animated: true, completion: nil)
-    }
+    }*/
     
     func checkIfLogged(){
         //Load User defaults
@@ -117,11 +131,11 @@ class ViewControllerFAQ: UIViewController {
         }
         
         //show/hide logout button
-        if(self.id == "NON" || self.id == ""){
+        /*if(self.id == "NON" || self.id == ""){
             buttonLogout.hidden = true
         }else{
             buttonLogout.hidden = false
-        }
+        }*/
     }
     
     func clearUserDefaults(){

@@ -51,11 +51,11 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+        let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewControllerAuto.DismissKeyboard))
         view.addGestureRecognizer(dismiss)
         dismiss.cancelsTouchesInView = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasShown:"), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasNotShown:"), name:UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerAuto.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerAuto.keyboardWasNotShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
         
         // Do any additional setup after loading the view.
         checkIfLogged()
@@ -325,7 +325,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             
             y0 = y1;
             y1 = y;
-            ++i;
+            i += 1;
         }
         
         NSLog(String(rate * 12.00 * 100.00));
@@ -914,9 +914,6 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             cell.textLabel!.text = ""
             cell.detailTextLabel!.text = ""
         }
-        
-        
-        
         return cell
     }
     
@@ -1929,16 +1926,15 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
         if(self.carCondition.selectedSegmentIndex == 1){
             if(self.cashprice.text == "" || Double(self.cashprice.text!) <= 0){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "Cash Price\n";
             }
             
             if(self.carYear.text == ""){ //CHECK IF VALID YEAR
-                errorctr++;
+                errorctr += 1;
                 errormsg += "Vehicle Year\n";
             }
         }
-        
         
         stringUrl = stringUrl + "&vehicle_model=" + self.selectedCarModelId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&vehicle_lcp=" + self.cashprice.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -1964,41 +1960,41 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         if(self.lastname.text == ""){
-            errorctr++;
+            errorctr += 1;
             errormsg += "Last Name\n";
         }
         if(self.firstname.text == ""){
-            errorctr++;
+            errorctr += 1;
             errormsg += "First Name\n";
         }
         if(self.mobilenumber.text == ""){ //CHECK IF VALID PHONE
-            errorctr++;
+            errorctr += 1;
             errormsg += "Mobile No\n";
         }
         if(self.emailaddress.text == "" || isValidEmail(self.emailaddress.text!) == false){ //CHECK IF VALID EMAIL
-            errorctr++;
+            errorctr += 1;
             errormsg += "Email Address\n";
         }
         if(self.address1.text == ""){
-            errorctr++;
+            errorctr += 1;
             errormsg += "Res Address\n";
         }
         
         if(emptypeArr[self.emptype.selectedRowInComponent(0)].0 != "6"){
             if(self.empname.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "Emp/Biz Name\n";
             }
             if(self.empincome.text == ""){ //CHECK IF VALID AMOUNT
-                errorctr++;
+                errorctr += 1;
                 errormsg += "Emp/Biz Income\n";
             }
             if(self.empaddress1.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "Emp/Biz Address\n";
             }
             if(self.empphone.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "Emp/Biz Phone\n";
             }
         }
@@ -2041,37 +2037,37 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         if(civilStatusArr[self.civilstatus.selectedRowInComponent(0)].0 == "M"){
             
             if(self.splastname.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "SP Last Name\n";
             }
             if(self.spfirstname.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "SP First Name\n";
             }
             if(self.spmobilenumber.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "SP Mobile No\n";
             }
             if(self.spaddress1.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "SP Res Address\n";
             }
             
             if(emptypeArr[self.spemptype.selectedRowInComponent(0)].0 != "6"){
                 if(self.spempname.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "SP Emp/Biz Name\n";
                 }
                 if(self.spempincome.text == ""){ //CHECK IF VALID AMOUNT
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "SP Emp/Biz Income\n";
                 }
                 if(self.spempaddress1.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "SP Emp/Biz Address\n";
                 }
                 if(self.spempphone.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "SP Emp/Biz Phone\n";
                 }
             }
@@ -2106,37 +2102,37 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
 
             
             if(self.c1lastname.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C1 Last Name\n";
             }
             if(self.c1firstname.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C1 First Name\n";
             }
             if(self.c1mobilenumber.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C1 Mobile No\n";
             }
             if(self.c1address1.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C1 Res Address\n";
             }
 
             if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
                 if(self.c1empname.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C1 Emp/Biz Name\n";
                 }
                 if(self.c1empincome.text == ""){ //CHECK IF VALID AMOUNT
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C1 Emp/Biz Income\n";
                 }
                 if(self.c1empaddress1.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C1 Emp/Biz Address\n";
                 }
                 if(self.c1empphone.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C1 Emp/Biz Phone\n";
                 }
             }
@@ -2173,37 +2169,37 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             
             
             if(self.c2lastname.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C2 Last Name\n";
             }
             if(self.c2firstname.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C2 First Name\n";
             }
             if(self.c2mobilenumber.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C2 Mobile No\n";
             }
             if(self.c2address1.text == ""){
-                errorctr++;
+                errorctr += 1;
                 errormsg += "C2 Res Address\n";
             }
             
             if(emptypeArr[self.c2emptype.selectedRowInComponent(0)].0 != "6"){
                 if(self.c2empname.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C2 Emp/Biz Name\n";
                 }
                 if(self.c2empincome.text == ""){ //CHECK IF VALID AMOUNT
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C2 Emp/Biz Income\n";
                 }
                 if(self.c2empaddress1.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C2 Emp/Biz Address\n";
                 }
                 if(self.c2empphone.text == ""){
-                    errorctr++;
+                    errorctr += 1;
                     errormsg += "C2 Emp/Biz Phone\n";
                 }
             }
@@ -2243,7 +2239,6 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
         //stringUrl = stringUrl + "&loggeduser=" + EncodeURLString(loggedUSRUID);
         
-        
         if(errorctr > 0){
             let alert = UIAlertController(title: "Error in Form", message: "You have blank/invalid/errors on some required fields.\n" + errormsg, preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
@@ -2257,6 +2252,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             self.view.userInteractionEnabled = true
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }else{
+            
             NSUserDefaults.standardUserDefaults().setObject(self.lastname.text, forKey: "LASTNAME")
             NSUserDefaults.standardUserDefaults().setObject(self.firstname.text, forKey: "FIRSTNAME")
             NSUserDefaults.standardUserDefaults().setObject(self.middlename.text, forKey: "MIDDLENAME")
@@ -2395,6 +2391,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         if segue.identifier == "ShowCarModelList"
         {
             if let destinationVC = segue.destinationViewController as? ViewControllerAuto{
@@ -2423,6 +2420,7 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
                 destinationVC.selectedCarBrand = self.selectedCarBrand
             }
         }
+        
         if segue.identifier == "AutoLoanCalculator"
         {
             if let destinationVC = segue.destinationViewController as? ViewControllerAuto{

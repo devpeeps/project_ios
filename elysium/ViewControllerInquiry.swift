@@ -20,10 +20,15 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
     var autoRates = [("",0.00)]
     var autoRates_Standard = [("",0.00)]
     var homeRates = [("",0.00)]
+    var salaryRates = [("",0.00)]
+    var salaryInfo = ["","","",""]
+    
+    
+    
     
     var withConnection = false
     
-    var products = ["Auto Loan","Home Loan","Credit Card"]
+    var products = ["Auto Loan","Home Loan","Credit Card", "Salary"]
     var product = ""
     var prevPage = ""
     
@@ -68,6 +73,8 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
             pickerProduct.selectRow(1, inComponent: 0, animated: false)
         }else if(prevPage == "CardMain"){
             pickerProduct.selectRow(2, inComponent: 0, animated: false)
+        }else if(prevPage == "SalaryMain"){
+            pickerProduct.selectRow(3, inComponent: 0, animated: false)
         }
         
         lastname.delegate = self
@@ -79,10 +86,10 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
         empphone.delegate = self
         remarks.delegate = self
         
-        let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+        let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewControllerInquiry.DismissKeyboard))
         view.addGestureRecognizer(dismiss)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasShown:"), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasNotShown:"), name:UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerInquiry.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerInquiry.keyboardWasNotShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -176,26 +183,29 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
         }else if(self.product == "Credit Card"){
             stringUrl = stringUrl + "&ao=" + ccInfo[0].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }else if(self.product == "Salary Loan"){
+            stringUrl = stringUrl + "&ao=" + ccInfo[0].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
         if(self.lastname.text == ""){
-            errorctr++;
+            errorctr += 1;
             errormsg += "Last Name\n";
         }
         if(self.firstname.text == ""){
-            errorctr++;
+            errorctr += 1;
             errormsg += "First Name\n";
         }
         if(self.mobilenumber.text == ""){ //CHECK IF VALID PHONE
-            errorctr++;
+            errorctr += 1;
             errormsg += "Mobile No\n";
         }
         if(self.emailaddress.text == "" || isValidEmail(self.emailaddress.text!) == false){ //CHECK IF VALID EMAIL
-            errorctr++;
+            errorctr += 1;
             errormsg += "Email Address\n";
         }
         if(self.empphone.text == ""){
-            errorctr++;
+            errorctr += 1;
             errormsg += "Emp/Biz Phone\n";
         }
         
@@ -264,6 +274,9 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
                 if(self.prevPage == "CardMain"){
                     self.performSegueWithIdentifier("CardTypeList", sender: self)
                 }
+                if(self.prevPage == "SalaryMain"){
+                    self.performSegueWithIdentifier("SalaryMain", sender: self)
+                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -299,6 +312,13 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
                 destinationVC.selectedCardCategory = selectedCardCategory
                 destinationVC.vcAction = "ShowCardTypeList"
                 destinationVC.prevPage = "mainCard"
+            }
+        }
+        if segue.identifier == "SalaryMain"
+        {
+            if let destinationVC = segue.destinationViewController as? ViewControllerSalary{
+                destinationVC.vcAction = ""
+                destinationVC.id = self.id
             }
         }
     }
@@ -513,6 +533,26 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
                                         }
                                         
                                     }
+                                    
+
+                                    //SALARY
+                                    /*
+                                    let salary = products["salary"] as! NSDictionary
+                                    
+                                    let salaryRates = ["rates"] as! NSDictionary
+                                    
+                                    self.homeInfo = [home["aouid"] as! String, home["rmname"] as! String, home["rmemail"] as! String]
+                                    
+                                    self.homeRates.removeAll()
+                                    for(term, rate) in homeRates{
+                                        if(rate as! String == ""){
+                                            self.homeRates.append((term as! String, (homeRates_Standard.valueForKey(term as! String) as! NSString).doubleValue))
+                                        }else{
+                                            self.homeRates.append((term as! String, (rate as! NSString).doubleValue))
+                                        }
+                                        
+                                    }
+                                    */
                                     
                                     //CREDIT CARD
                                     let creditcard = products["creditcard"] as! NSDictionary

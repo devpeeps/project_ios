@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate  {
+class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelegate  {
     var id = ""
     var name = ""
     var email = ""
@@ -23,20 +23,30 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
     var withConnection = false
     var myAppArr = [("type","id","name","status","datesubmitted","datelastupdate")]
 
-    
     var showRecent = false
     
-    
     let manageObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    @IBOutlet var menuButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+        if revealViewController() != nil {
+            revealViewController().rearViewRevealWidth = 280
+            menuButton.target = revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        
+        let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewControllerMy.DismissKeyboard))
         view.addGestureRecognizer(dismiss)
         dismiss.cancelsTouchesInView = false
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasShown:"), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasNotShown:"), name:UIKeyboardWillHideNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerMy.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerMy.keyboardWasNotShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
         
         // Do any additional setup after loading the view.
         checkIfLogged()
@@ -45,8 +55,6 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
             myAppArr.removeAll()
             loadMyAppList()
         }
-
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -69,6 +77,10 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     
     func loadMyAppList(){
+        if let mobilenoLabel = defaults.stringForKey("MOBILENO") {
+          mobileNo = mobilenoLabel
+        }
+        
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
@@ -93,8 +105,8 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         if(contProc){
             
-            loadingIndicator.hidden = false
-            loadingIndicator.startAnimating()
+            self.loadingIndicator.hidden = false
+            self.loadingIndicator.startAnimating()
             
             let url = NSURL(string: urlAsString)!
             let urlSession = NSURLSession.sharedSession()
@@ -121,6 +133,7 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
                                     self.myAppArr.append((str2[0], str2[1], str2[2], str2[3], str2[4], str2[5]))
                                 }
                             }
+                            
                             self.tableViewMyApp.reloadData()
                             
                             self.view.userInteractionEnabled = true
@@ -137,11 +150,6 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
                             UIApplication.sharedApplication().endIgnoringInteractionEvents()
                             let alert = UIAlertController(title: "Nothing to Diplay", message: "You have not submitted any applications yet on this device.", preferredStyle: .Alert)
                             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                                if(self.id == "NON" || self.id == ""){
-                                    self.performSegueWithIdentifier("BackToMain", sender: self)
-                                }else{
-                                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
-                                }
                             })
                             alert.addAction(action)
                             self.presentViewController(alert, animated: true, completion: nil)
@@ -156,11 +164,6 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
                         let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection.", preferredStyle: .Alert)
                         let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                             //exit(1)
-                            if(self.id == "NON" || self.id == ""){
-                                self.performSegueWithIdentifier("BackToMain", sender: self)
-                            }else{
-                                self.performSegueWithIdentifier("BackToMainLogged", sender: self)
-                            }
                         })
                         alert.addAction(action)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -176,11 +179,6 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
             let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 //exit(1)
-                if(self.id == "NON" || self.id == ""){
-                    self.performSegueWithIdentifier("BackToMain", sender: self)
-                }else{
-                    self.performSegueWithIdentifier("BackToMainLogged", sender: self)
-                }
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
@@ -196,8 +194,22 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
         return myAppArr.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! MyTableViewCell
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let headerHeight: CGFloat = CGFloat.min
+        
+        return headerHeight
+    }
+    
+    @IBOutlet var txtLabel1: UILabel!
+    @IBOutlet var txtLabel2: UILabel!
+    @IBOutlet var txtLabel3: UILabel!
+    @IBOutlet var txtRightLabel1: UILabel!
+    @IBOutlet var txtRightLabel2: UILabel!
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> MyTableViewCell {
+        //let cell = tableView.dequeueReusableCellWithIdentifier("listcell", forIndexPath: indexPath) as! MyTableViewCell
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("listcell", forIndexPath: indexPath) as! MyTableViewCell
         
         
         let (type, id, name, status, datesubmitted, datelastupdated) = self.myAppArr[indexPath.row]
@@ -221,7 +233,6 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
             }
             cell.imageView!.image = imageView
         }
-
         
         return cell
     }
@@ -234,7 +245,7 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
         //do nthing for now
     }
 
-    
+    /*
     @IBOutlet var buttonMenuBack: UIButton!
     @IBAction func actionBackToMainMenu(sender: AnyObject) {
         if(self.id == "NON" || self.id == ""){
@@ -258,6 +269,7 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
         alert.addAction(action2)
         presentViewController(alert, animated: true, completion: nil)
     }
+    */
     
     func checkIfLogged(){
         //Load User defaults
@@ -274,11 +286,13 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
         
         //show/hide logout button
+        /*
         if(self.id == "NON" || self.id == ""){
             buttonLogout.hidden = true
         }else{
             buttonLogout.hidden = false
         }
+        */
     }
     
     func clearUserDefaults(){
@@ -325,14 +339,6 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func keyboardWasNotShown(notification: NSNotification) {
-        /*
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
-        self.bottomConstraint.constant = keyboardFrame.size.height - 20
-        })
-        */
         let userInfo: [NSObject : AnyObject] = notification.userInfo!
         let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
         if self.view.frame.origin.y + keyboardSize.height == 0 {
@@ -363,5 +369,4 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITableViewDataSo
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluateWithObject(testStr)
     }
-    
 }

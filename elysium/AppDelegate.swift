@@ -14,11 +14,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         //NSLog(applicationDocumentsDirectory.path!)
         
+        //LaunchScreen ubp_logo.png
+        //let navBackgroundImage:UIImage! = UIImage(named: "mast_head4.png")
+        //UINavigationBar.appearance().setBackgroundImage(navBackgroundImage, forBarMetrics: .Default)
+        UINavigationBar.appearance().setBackgroundImage(UIImage(named: "mast_head4.png")!.resizableImageWithCapInsets(UIEdgeInsetsMake(0, 0, 0, 0), resizingMode: .Stretch), forBarMetrics: .Default)
+        UINavigationBar.appearance().backgroundColor = UIColor.orangeColor()
+        UINavigationBar.appearance().barTintColor = UIColor.orangeColor()
+
         let openURLAction = UIMutableUserNotificationAction()
         openURLAction.identifier = "openURL"
         openURLAction.title = "View Details"
@@ -40,10 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: [urlOpenededCategory])
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: "loadBackgroundServices", userInfo: nil, repeats: true)
+        _ = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(AppDelegate.loadBackgroundServices), userInfo: nil, repeats: true)
         
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(180, target: self, selector: "loadAdsServices", userInfo: nil, repeats: true)
+        _ = NSTimer.scheduledTimerWithTimeInterval(180, target: self, selector: #selector(AppDelegate.loadAdsServices), userInfo: nil, repeats: true)
         
         return true
     }
