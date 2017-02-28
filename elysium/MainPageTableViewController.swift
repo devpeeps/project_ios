@@ -64,7 +64,6 @@ class MainPageTableViewController: UITableViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -102,7 +101,6 @@ class MainPageTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowCarBrandList"
                 destinationVC.rootVC = "autoMainMenu"
             }
-            
         }
         
         if segue.identifier == "ShowRecentlyViewedCarModel"
