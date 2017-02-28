@@ -171,8 +171,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
     }
     
-    
-
     func executeSubmitAppURL(){
         let manageObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
         let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: manageObjectContext)
