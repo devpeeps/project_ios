@@ -32,6 +32,8 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     var downpaymentArr = [20,30,40,50,60,70,80,90]
     var downpaymentArr_Home = [10,20,30,40,50,60,70,80,90]
     var civilStatusArr = [("S","Single"),("M","Married"),("W","Widow/er")]
+    
+    
     var emptypeArr = [("","")]
     var positionArr = [("","")]
     var selectedIncomeType = ""
@@ -53,6 +55,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     var selectedWithC1 = false
     var selectedWithC2 = false
     var promoStatus = ""
+    
     
     var selectedPercent = ""
     
@@ -470,45 +473,33 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         if (txtSellingPrice.text == ""){
             txtSellingPrice.text = "0.00"
         }
-
-        var term: Double
-        var temp_selectedTerm = "'"
-        if let termLabel = defaults.stringForKey("selectedTerm") {
-            temp_selectedTerm = termLabel
-            
-        }
-        term = Double(temp_selectedTerm)!
-        
-        var dp: Double
-        var temp_selectedDP = "'"
-        if let dpLabel = defaults.stringForKey("selectedDP") {
-            temp_selectedDP = dpLabel
-            
-        }
-        dp = Double(temp_selectedDP)!
         
         var aor = 0.00
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        if(userDefaults.objectForKey("autoRates_" + temp_selectedTerm) != nil) {
-            aor = NSUserDefaults.standardUserDefaults().objectForKey("autoRates_" + temp_selectedTerm) as! Double
+        
+        if (userDefaults.objectForKey("autoRates_" + self.selectedTerm) != nil) {
+            aor = NSUserDefaults.standardUserDefaults().objectForKey("autoRates_" + self.selectedTerm) as! Double
         }
         
-        NSLog("aor=" + String(aor))
+        let rate = getEIR(Int(selectedTerm)!, aor: aor ,isOMA: false);
+        var dp = Double(selectedDP)
         
-        let rate = getEIR(Int(term), aor: aor ,isOMA: false);
+        if (dp == nil){
+            dp = 60
+        }
         
         var amount_financed = Double(txtSellingPrice.text!.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
-        amount_financed = amount_financed! - (amount_financed! * (dp / 100))
+        amount_financed = amount_financed! - (amount_financed! * (dp! / 100))
         NSLog("dp = " + String(dp))
         NSLog("sellingprice = " + String(txtSellingPrice.text!.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)))
         NSLog("amount_financed = " + String(amount_financed))
         
         let sellingPrice = Double(txtSellingPrice.text!.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
         var amount_downpayment = Double(0)
-        amount_downpayment = (sellingPrice! * (dp / 100));
+        amount_downpayment = (sellingPrice! * (dp! / 100));
         NSLog("amount_downpayment = " + String(amount_downpayment))
         
-        //let term = Double(selectedTerm)!
+        let term = Double(selectedTerm)!
         
         var amort = ((rate / 1200) * (0 - amount_financed!))
         amort = amort * (pow((1 + (rate / 1200)), term) / (1 - pow((1 + (rate / 1200)), term)));
@@ -521,7 +512,6 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         
         let nper = Double(termInMonths);
         let pmt = (Double(0) - (1 + (aor/100))) / Double(termInMonths);
-        NSLog("pmt=" + String(pmt))
         let pv = Double(1);
         let fv = 0.0;
         var type = 0.00;
@@ -548,15 +538,14 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             y = y * (f - 1) + fv;
         }
         y0 = pv + pmt * nper + fv;
-        NSLog("y0=" + String(y0))
         y1 = pv * f + pmt * (1 / rate + type)
         y1 = y1 * (f - 1) + fv;
-
+        
         // find root by secant method
         var i = 0.0;
         x1 = rate;
         while ((abs(y0 - y1) > 0.00000001) && (i < 128)) {
-            rate = (y1 * x0 - y0 * x1) / (y1 - y0)
+            rate = (y1 * x0 - y0 * x1) / (y1 - y0);
             x0 = x1;
             x1 = rate;
             
@@ -571,7 +560,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             y1 = y;
             i += 1;
         }
-        NSLog(String(rate))
+        
         NSLog(String(rate * 12.00 * 100.00));
         return rate * 12.00 * 100.00;
     }
@@ -1831,6 +1820,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
                 destinationVC.rootVC = "autoApplication"
             }
         }
+        
         
         if (segue.identifier == "ShowDownpaymentPercentList")
         {

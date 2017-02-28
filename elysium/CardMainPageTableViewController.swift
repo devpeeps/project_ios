@@ -55,6 +55,8 @@ class CardMainPageTableViewController: UITableViewController {
             if let destinationVC = segue.destinationViewController as? FAQViewController{
                 destinationVC.vcAction = "ShowCardFAQ"
             }
+            
+            
         }
         
         if segue.identifier == "ShowCardType"
@@ -70,5 +72,33 @@ class CardMainPageTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowCardPromo"
             }
         }
+        
+        
+        if segue.identifier == "ShowApplyCard"
+        {
+            if let destinationVC = segue.destinationViewController as? CardTableViewController{
+                destinationVC.vcAction = "ShowApplyCard"
+            }
+
+            defaults.setObject("", forKey: "selectedSalutation")
+            defaults.setObject("", forKey: "selectedC1Salutation")
+            defaults.setObject("", forKey: "selectedC2Salutation")
+            defaults.setObject("", forKey: "selectedCivilStatus")
+            defaults.setObject("", forKey: "selectedProvince")
+            defaults.setObject("", forKey: "selectedProvinceBiz")
+            defaults.setObject("", forKey: "selectedOccupation")
+            defaults.setObject("", forKey: "selectedCity")
+            defaults.setObject("", forKey: "selectedCityBiz")
+            defaults.setObject("", forKey: "selectedIncomeType")
+            defaults.setObject("", forKey: "selectedOccupationGroup")
+            defaults.setObject("", forKey: "selectedIndustry")
+            defaults.setObject("", forKey: "selectedBank")
+        }
+        
+        
+        
+        
+        
+        
     }
 }

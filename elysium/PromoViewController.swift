@@ -13,7 +13,7 @@ class PromoViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var vcAction = ""
     var urlLib = ""
     var withConnection = false
-    var promoArr = [("", "", "", "", "", "", "", "", "")]
+    var promoArr = [("", "", "")]
     var selectedAutoPromo = ""
     var selectedAutoPromoCode = ""
     
@@ -85,7 +85,7 @@ class PromoViewController: UIViewController, UITableViewDelegate, UITableViewDat
                             for i in 0...str.count - 1{
                                 if(str[i] != ""){
                                     let str2 = str[i].componentsSeparatedByString("***")
-                                    self.promoArr.append((str2[1], str2[3], str2[4], str2[11], str2[12], str2[13], str2[8], str2[9], str2[10]))
+                                    self.promoArr.append((str2[1], str2[3], str2[4]))
                                 }
                             }
                             
@@ -176,7 +176,7 @@ class PromoViewController: UIViewController, UITableViewDelegate, UITableViewDat
                             for i in 0...str.count - 1{
                                 if(str[i] != ""){
                                     let str2 = str[i].componentsSeparatedByString("***")
-                                    self.promoArr.append((str2[0], str2[3], str2[4], str2[11], str2[12], str2[13], str2[8], str2[9], str2[10]))
+                                    self.promoArr.append((str2[0], str2[3], str2[4]))
                                 }
                             }
                             
@@ -225,7 +225,7 @@ class PromoViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let taskController = segue.destinationViewController as? PromoDetailsViewController
         let indexPath = self.tableViewPromo.indexPathForCell(sender as! UITableViewCell)
-        let (promocode, promodesc, promourl, _, _, _, _, _, _) = self.promoArr[indexPath!.row]
+        let (promocode, promodesc, promourl) = self.promoArr[indexPath!.row]
         taskController!.promoUrl = promourl
         taskController!.promoDesc = promodesc
         self.defaults.setObject(promocode, forKey: "selectedAutoPromoCode")
@@ -251,7 +251,7 @@ class PromoViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var listcell = tableView.dequeueReusableCellWithIdentifier("listcell") as? PromoTableViewCell
-        let (_, _, promourl, _, _, _, _, _, _) = self.promoArr[indexPath.row]
+        let (_, _, promourl) = self.promoArr[indexPath.row]
         
         if listcell == nil{
             tableView .registerNib(UINib(nibName: "PromoTableViewCell", bundle: nil), forCellReuseIdentifier: "listcell")
@@ -278,18 +278,12 @@ class PromoViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let (promocode, promodesc, promourl, a, b, c, d, e, f) = self.promoArr[indexPath.row]
+        let (promocode, promodesc, promourl) = self.promoArr[indexPath.row]
         
         if(vcAction == "ShowAutoPromo"){
             NSLog("promocode: " + promocode)
             NSLog("promodesc: " + promodesc)
             NSLog("promourl: " + promourl)
-            NSLog("a: " + a)
-            NSLog("b: " + b)
-            NSLog("c: " + c)
-            NSLog("d: " + d)
-            NSLog("e: " + e)
-            NSLog("f: " + f)
             performSegueWithIdentifier("ShowAutoPromoDetails", sender: cell)
             self.defaults.setObject("Free Gas Promo", forKey: "selectedAutoPromo")
             self.defaults.setObject(promocode, forKey: "selectedAutoPromoCode")

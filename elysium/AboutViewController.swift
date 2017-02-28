@@ -18,8 +18,6 @@ class AboutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //sample code
-        
         if revealViewController() != nil {
             revealViewController().rearViewRevealWidth = 280
             menuButton.target = revealViewController()
@@ -35,6 +33,9 @@ class AboutViewController: UIViewController {
         let appver = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
         
         labelAppVersion.text = appver
+        labelAppVersion.hidden = true
+        
+        
     }
     
     override func viewDidAppear(animated: Bool) {

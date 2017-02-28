@@ -1966,6 +1966,7 @@ class ViewControllerCard: UIViewController, UIPickerViewDataSource, UIPickerView
                                 let str2 = str[i].componentsSeparatedByString("***")
                                 if(str2[0] != ""){
                                     self.provinceArr.append((str2[1], str2[0]))
+                                    
                                 }
                             }
                             self.province.reloadAllComponents()

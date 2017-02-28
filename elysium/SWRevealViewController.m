@@ -762,10 +762,16 @@ const int FrontViewPositionNone = 0xff;
 }
 
 
-- (NSUInteger)supportedInterfaceOrientations
-{
+//- (NSUInteger)supportedInterfaceOrientations
+//{
     // we could have simply not implemented this, but we choose to call super to make explicit that we
     // want the default behavior.
+//    return [super supportedInterfaceOrientations];
+//}
+
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
     return [super supportedInterfaceOrientations];
 }
 
