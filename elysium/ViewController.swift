@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         self.loadingIndicator.stopAnimating()
 
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: "ShowMainMenu", userInfo: nil, repeats: false)
+        _ = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(ViewController.ShowMainMenu), userInfo: nil, repeats: false)
     }
     override func viewDidAppear(animated: Bool) {
         /*

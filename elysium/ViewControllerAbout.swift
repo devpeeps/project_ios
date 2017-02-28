@@ -13,6 +13,7 @@ class ViewControllerAbout: UIViewController {
 
     var id = ""
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -111,8 +112,4 @@ class ViewControllerAbout: UIViewController {
 
 }
 
-extension String {
-    var html2String:String {
-        return try! NSAttributedString(data: dataUsingEncoding(NSUTF8StringEncoding)!, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil).string
-    }
-}
+

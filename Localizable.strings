@@ -4,9 +4,22 @@
 
   Created by Joshua Eleazar Bosinos on 08/01/2016.
   Copyright © 2016 UnionBank. All rights reserved.
+ 
+ 
+ 
 */
-
 urlLib = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchlib_csv.php?libtype=@@LIBTYPE&param1=@@PARAM1&param2=@@PARAM2&param3=@@PARAM3&param4=@@PARAM4&param5=@@PARAM5&param6=@@PARAM6";
+
+urlLibPromos = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchpromo.php?product=@@PARAM1";
+
+urlLUMINOUS = "https://eclipse.unionbankph.com/custom/newappservice_luminous_mobile.php?";
+
+urlLUMINOUS_IMAGE = "https://eclipse.unionbankph.com/custom/newappservice_luminous_img_mobile.php?";
+
+urlLUMINOUS_LOGIN = "https://eclipse.unionbankph.com/custom/luminousLogin_ws.php?";
+
+urlOTP = "https://eclipse.unionbankph.com/custom/luminousCheckOTP_ws.php?";
+
 
 urlECLIPSE = "https://eclipse.unionbankph.com/custom/newappservice_eclipse_mobile.php?";
 urlCREST = "https://eclipse.unionbankph.com/custom/newappservice_crest_mobile.php?";
@@ -15,13 +28,9 @@ urlINQ = "https://eclipse.unionbankph.com/custom/newappservice_elysium_inquire.p
 
 disclaimer_amortHome = "Computed monthly amortization is rough estimation only based on a standard fixing-term rate. This may vary on the actual monthly amortization based on the developer rates.";
 
-tnc_apply = "<b>Credit Information Authority </b><br><br>
-I/We hereby certify  that all information and statements in this application are correct and  complete, and that they are made for the purpose of obtaining credit. I/We  authorize UnionBank of the Philippines to obtain such information as may be  required concerning the statements made in this application. I/We agree that  this application may remain your property whether the credit is granted or not.<br><br>
-<b>SMS Notification Authority</b><br><br>
-This is to  authorize UnionBank of the Philippines to notify me/us electronically, included  but not limited to Short Message Service (SMS), using the information given  above at any time. Moreover, I/We shall hold responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br><br>";
+tnc_apply = "<b>Credit Information Authority </b><br><br>I/We hereby certify  that all information and statements in this application are correct and  complete, and that they are made for the purpose of obtaining credit. I/We  authorize UnionBank of the Philippines to obtain such information as may be  required concerning the statements made in this application. I/We agree that  this application may remain your property whether the credit is granted or not.<br><br><b>SMS Notification Authority</b><br><br>This is to  authorize UnionBank of the Philippines to notify me/us electronically, included  but not limited to Short Message Service (SMS), using the information given  above at any time. Moreover, I/We shall hold responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br><br>";
 
-terms_conditions = "<b>Credit Information Authority </b><br><br>
-I/We hereby certify  that all information and statements in this application are correct and  complete, and that they are made for the purpose of obtaining credit. I/We  authorize UnionBank of the Philippines to obtain such information as may be  required concerning the statements made in this application. I/We agree that  this application may remain your property whether the credit is granted or not.<br><br>
+terms_conditions = "<b>Credit Information Authority </b><br><br>I/We hereby certify  that all information and statements in this application are correct and  complete, and that they are made for the purpose of obtaining credit. I/We  authorize UnionBank of the Philippines to obtain such information as may be  required concerning the statements made in this application. I/We agree that  this application may remain your property whether the credit is granted or not.<br><br>
 <b>SMS Notification Authority</b><br><br>
 This is to  authorize UnionBank of the Philippines to notify me/us electronically, included  but not limited to Short Message Service (SMS), using the information given  above at any time. Moreover, I/We shall hold responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br><br>";
 
@@ -180,6 +189,88 @@ Collateral Documents
 <br><br>
 ";
 
+salary_terms = "<b>Consumer Finance: Auto Loans, Credit Cards, Home Loans, Salary Loans</b>
+<br><b>Undertaking</b><br>
+<br><br>
+I/we hereby certify that all information and statements in this application are correct and complete, and that they are made for the purpose of obtaining credit. I/we likewise certify that the signatures appearing herein are genuine. <br>
+<br>
+I/We authorize UNIONBANK OF THE PHILIPPINES(“the Bank”) to obtain such information as may be required concerning the statements made in this application. The specified names herein are authorized to provide any information relative to this application. <br>
+<br>
+I hereby certify that all data and statements in this application are true, correct and complete, and are made for the purpose of obtaining credit. <br>
+<br>
+I/we agree that this application and the documents I provide may remain in your property whether credit is granted or not.<br>
+<br>
+I/we hereby waive my/our right in favour of the Bank to the confidentiality of client information. <br>
+<br>
+I/we authorise the Bank to conduct random verification with the Bureau of Internal Revenue (“BIR”) in order to establish authenticity of the Income Tax Return and accompanying Financial Statements.
+<br>
+<br>
+I/we hereby acknowledge and authorize: 1) the regular submission and disclosure of my /our basic credit data (as defined under Republic Act No. 9510 and its Implementing Rules and Regulations) to the Credit Information Corporation (CIC) as well as any updates or corrections thereof; and 2) the sharing of my/our basic credit data with other lenders authorized by the CIC, and credit reporting agencies duly accredited by the CIC.<br>
+<br> I/we authorise the Bank to notify me/us electronically, included but not limited to emails, short message service (SMS), and/or multimedia messaging service (MMS) using the information given in this application at any time. Moreover, I/we shall hold responsible for the electronic notification received; as such, I/we declare the Bank free and harmless from any liability if the information contained in the electronic notification is, by any means, accessed by any person other than myself / ourselves.<br>
+<br><br>
+I/We expressly consent to and authorize the Bank to process my/our Personal Information and/or Sensitive Personal Information (as defined by Republic Act No. 10173, otherwise known as the Data Privacy Act of 2012 and any amendments thereto, and all other data and information, collectively referred to as “Personal Data”) which will be collected by the Bank in connection with or arising from this application. I/We also consent and authorize the Bank to share the Personal Data with and to allow further processing by the Bank’s affiliates, subsidiaries and third party processors.
+<br><br>
+Processing includes the collection, recording, organization, storage, updating or modification, retrieval, use, consolidation, of my/our Personal Data which are necessary for the Bank’s evaluation my/our eligibility to apply for and avail of the existing and future products and services of the Bank.  Processing may also be done for the purpose of conducting market research, product development or any advertising, marketing or any related commercial purposes.
+<br><br>
+I/we hereby authorize the Bank to contact and/or send me marketing materials through mail, email, fax, SMS or other means of communication pertaining to the other products and services of the Bank which the Bank believes may be of interest to me/us. <br>
+<br>
+<br><b> For Home Loan applications</b><br><br>
+I/we authorise the Bank to conduct an appraisal of the Real Estate property/properties given in the address/addresses above<br>
+
+<br><b> For Credit Card applications </b><br><br>
+<br>
+I/we expressly authorise the Bank to a) transfer and disclose to any Credit Institutions such as financial institutions, credit bureau, banking or credit industry associations, credit information service provider, credit and loan providers and their respective outsourced service providers and b) any such Credit Institutions to transfer and disclose to any fellow user, member, subscriber, whether a financial or non-financial institution, or to such Credit Institution’s outsourced provider any information (updates or corrections), whether positive or negative, relating to me/us or any of my/our accounts with the Bank (and for such purposes) for the duration of and even after the closure or cancellation of the Account/s.<br>
+<br>
+I/we hereby agree to be bound by the Terms and Conditions governing the issuance and use of a UnionBank Credit Card.";
+
+
+
 faq_card = "";
 
-faq_salary = "";
+faq_salary = "1. What is Payroll Loan? <br><br>
+<ul>
+<li>
+Payroll Loan is a multi-purpose loan which you can use for any of your needs – education, emergency, travel, etc.
+</li>
+</ul>
+<br>
+
+2. Who can borrow?<br><br>
+<ul>
+<li>
+Any employee who has been with the company for at least 2 years.
+</li>
+</ul>
+<br>
+
+3. How much can I borrow?<br><br>
+<ul>
+<li>
+Minimum Loan – Php 30k
+</li>
+<li>
+Maximum Loan – Php 1 million*
+*depending on your take home pay
+</li>
+</ul>
+<br>
+
+4. How long can I borrow?<br><br>
+<ul>
+<li>
+You can borrow for one, two, or three years.
+</li>
+</ul>
+<br>
+
+5. How often do I pay?<br><br>
+<ul>
+<li>Payment will be deducted every month.</li>
+</ul>
+<br>
+
+6. What do I need to include in my application?<br><br>
+<ul>
+<li>Photocopy of your company ID and a government-issued ID.</li>
+</ul>
+<br>";
