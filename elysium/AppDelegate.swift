@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //NSLog(applicationDocumentsDirectory.path!)
         
+        //HELLO
+        
         //LaunchScreen ubp_logo.png
         //let navBackgroundImage:UIImage! = UIImage(named: "mast_head4.png")
         //UINavigationBar.appearance().setBackgroundImage(navBackgroundImage, forBarMetrics: .Default)

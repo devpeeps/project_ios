@@ -12,7 +12,7 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var menuButton: UIBarButtonItem!
     
     var salutationArr = [("MR","Mr"),("MRS","Mrs"),("MS","Ms")]
-    
+    //HELLO
     var selectedSalutation = ""
     var selectedCivilStatusCode = ""
     var selectedC1Salutation = ""
