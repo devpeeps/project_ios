@@ -33,6 +33,7 @@ class HomePageTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowAutoLoanMainPage"
                 NSLog("ShowAutoLoanMainPage")
             }
-        }*/
+        }
+        */
     }
 }

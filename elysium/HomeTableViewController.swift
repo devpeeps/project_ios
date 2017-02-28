@@ -1148,6 +1148,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         }
         
         return sectionHeader
+        
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
