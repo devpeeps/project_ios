@@ -75,7 +75,6 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelega
     @IBOutlet var buttonLogout: UIButton!
     @IBOutlet var tableViewMyApp: UITableView!
     
-    
     func loadMyAppList(){
         if let mobilenoLabel = defaults.stringForKey("MOBILENO") {
           mobileNo = mobilenoLabel

@@ -103,13 +103,11 @@ class ViewControllerCard: UIViewController, UIPickerViewDataSource, UIPickerView
             loadCardTypeMC()
         }
         
-        
         if(vcAction == "ShowCardTypeList_GETGO"){
             prevPage = "ShowCardCategoryList"
             cardTypeArr.removeAll()
             loadCardTypeGETGO()
         }
-        
         
         if(vcAction == "ShowCardTypeList"){
             prevPage = "ShowCardCategoryList"

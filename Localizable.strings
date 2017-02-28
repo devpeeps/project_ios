@@ -4,10 +4,8 @@
 
   Created by Joshua Eleazar Bosinos on 08/01/2016.
   Copyright © 2016 UnionBank. All rights reserved.
- 
- 
- 
 */
+
 urlLib = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchlib_csv.php?libtype=@@LIBTYPE&param1=@@PARAM1&param2=@@PARAM2&param3=@@PARAM3&param4=@@PARAM4&param5=@@PARAM5&param6=@@PARAM6";
 
 urlLibPromos = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchpromo.php?product=@@PARAM1";

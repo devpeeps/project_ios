@@ -18,5 +18,4 @@ extension UrlStrings {
     @NSManaged var refid: String?
     @NSManaged var datecreated: String?
     @NSManaged var datesuccess: String?
-
 }

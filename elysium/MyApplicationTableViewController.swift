@@ -21,7 +21,6 @@ class MyApplicationTableViewController: UITableViewController {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
         }
     }
     

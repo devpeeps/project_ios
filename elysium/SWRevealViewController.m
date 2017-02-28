@@ -28,7 +28,6 @@
 
 #import "SWRevealViewController.h"
 
-
 #pragma mark - StatusBar Helper Function
 
 // computes the required offset adjustment due to the status bar for the passed in view,

@@ -18,8 +18,6 @@ class AboutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //super.viewDidLoad()
-        
         if revealViewController() != nil {
             revealViewController().rearViewRevealWidth = 280
             menuButton.target = revealViewController()

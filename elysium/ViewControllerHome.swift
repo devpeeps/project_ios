@@ -64,7 +64,6 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerHome.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerHome.keyboardWasNotShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
         
-        // Do any additional setup after loading the view.
         checkIfLogged()
         
         if(vcAction == ""){
@@ -92,7 +91,6 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
         if(vcAction == "HomeLoanCalculator"){
             loadCalculatorValues()
         }
-        
     }
     
     override func viewWillDisappear(animated: Bool) {

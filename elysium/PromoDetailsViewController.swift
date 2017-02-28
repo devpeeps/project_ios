@@ -52,7 +52,6 @@ class PromoDetailsViewController: UIViewController {
                 task.resume()
             }
         }
-        
         webPromoDesc.loadHTMLString(promoDesc, baseURL: nil)
         webPromoDesc.dataDetectorTypes = UIDataDetectorTypes.Link
     }

@@ -57,7 +57,6 @@ class ViewController: UIViewController {
     
     func ShowMainMenu() {
         //self.performSegueWithIdentifier("ShowMainMenu", sender: self)
-        
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if (userDefaults.objectForKey("id") != nil) {

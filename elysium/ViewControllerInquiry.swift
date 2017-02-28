@@ -44,7 +44,6 @@ class ViewControllerInquiry: UIViewController, UIPickerViewDataSource, UIPickerV
     
     var showRecent = false
     
-    
     @IBOutlet var buttonLogout: UIButton!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     

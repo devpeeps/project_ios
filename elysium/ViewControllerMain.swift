@@ -67,12 +67,10 @@ class ViewControllerMain: UIViewController {
         }*/
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     

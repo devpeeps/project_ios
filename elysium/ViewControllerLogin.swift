@@ -49,7 +49,6 @@ class ViewControllerLogin: UIViewController, UITextFieldDelegate {
         self.performSegueWithIdentifier("IDontHavePassword", sender: self)
     }
     
-    
     @IBAction func actionLogin(sender: AnyObject) {
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         var contProc = true

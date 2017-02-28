@@ -32,11 +32,8 @@ class CardTableViewController: UITableViewController {
     
     var bdaydatePickerHidden = true
     
-    
-    
     @IBOutlet var bdaydatePicker: UIDatePicker!
     @IBOutlet var bday: UILabel!
-    
     
     @IBOutlet var city: UILabel!
     @IBOutlet var C2salutation: UILabel!

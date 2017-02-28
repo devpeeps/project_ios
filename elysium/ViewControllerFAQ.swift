@@ -57,7 +57,6 @@ class ViewControllerFAQ: UIViewController {
         //labelAppTitle.text = "Frequently Asked Question - Auto Loan"
         let attributedString = NSAttributedString(string: str)
         textAbout.attributedText = attributedString
-        
     }
     
     override func didReceiveMemoryWarning() {

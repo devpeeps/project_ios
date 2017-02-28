@@ -66,11 +66,8 @@ class ViewControllerSalary: UIViewController, UITableViewDelegate, UITextFieldDe
         txtMonthlyAmort.text = x.stringFormattedWithSepator
         
     }
-
     
     let manageObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-    
-    
     
     override func viewDidLoad() {
         

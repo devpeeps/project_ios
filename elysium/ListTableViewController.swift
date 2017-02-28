@@ -163,7 +163,8 @@ class ListTableViewController: UITableViewController {
             })
             jsonQuery.resume()
             
-        }else{
+        }
+        else{
             self.view.userInteractionEnabled = true
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()

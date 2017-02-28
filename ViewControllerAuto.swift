@@ -69,8 +69,6 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
             scrollview.contentSize = CGSize(width:400, height:2200)
             
             loadAppForm()
-
-            
         }
         
         if(vcAction == "ShowCarModelList"){

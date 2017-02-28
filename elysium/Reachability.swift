@@ -58,7 +58,6 @@ public class Reach {
         return ReachabilityStatus(reachabilityFlags: flags)
     }
     
-    
     func monitorReachabilityChanges() {
         let host = "google.com"
         var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)

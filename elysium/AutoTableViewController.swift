@@ -33,7 +33,6 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     var downpaymentArr_Home = [10,20,30,40,50,60,70,80,90]
     var civilStatusArr = [("S","Single"),("M","Married"),("W","Widow/er")]
     
-    
     var emptypeArr = [("","")]
     var positionArr = [("","")]
     var selectedIncomeType = ""
@@ -55,7 +54,6 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     var selectedWithC1 = false
     var selectedWithC2 = false
     var promoStatus = ""
-    
     
     var selectedPercent = ""
     
@@ -1820,7 +1818,6 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
                 destinationVC.rootVC = "autoApplication"
             }
         }
-        
         
         if (segue.identifier == "ShowDownpaymentPercentList")
         {
