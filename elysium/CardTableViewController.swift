@@ -31,56 +31,102 @@ class CardTableViewController: UITableViewController {
     var selectedBankCode = ""
     
     var bdaydatePickerHidden = true
-    
-    @IBOutlet var bdaydatePicker: UIDatePicker!
-    @IBOutlet var bday: UILabel!
-    
-    @IBOutlet var city: UILabel!
-    @IBOutlet var C2salutation: UILabel!
-    @IBOutlet var salutation: UILabel!
-    @IBOutlet var civilstatus: UILabel!
-    @IBOutlet var C1salutation: UILabel!
-    @IBOutlet var province: UILabel!
-    @IBOutlet var incometype: UILabel!
-    @IBOutlet var occupation: UILabel!
-    @IBOutlet var occupationgroup: UILabel!
-    @IBOutlet var cityBiz: UILabel!
-    @IBOutlet var provincebiz: UILabel!
-    @IBOutlet var industry: UILabel!
-    @IBOutlet var bank: UILabel!
-    
-    
-    @IBOutlet var toggleCard: UISwitch!
-    
+    var c1bdaydatePickerHidden = true
+    var c2bdaydatePickerHidden = true
     
     let defaults = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /*
-        
-        if revealViewController() != nil {
-            revealViewController().rearViewRevealWidth = 280
-            menuButton.target = revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-        }
-         */
+
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AutoTableViewController.DismissKeyboard))
         view.addGestureRecognizer(dismiss)
         dismiss.cancelsTouchesInView = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AutoTableViewController.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AutoTableViewController.keyboardWasNotShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
-
-        datePickerChangedCard()
         
-        
+        datePickerChanged()
+        c1datePickerChanged()
+        c2datePickerChanged()
     }
     
+    override func viewDidLayoutSubviews() {
+        if let rect = self.navigationController?.navigationBar.frame {
+            let y = rect.size.height + rect.origin.y
+            self.tableView.contentInset = UIEdgeInsetsMake( y, 0, 0, 0)
+        }
+    }
     
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func DismissKeyboard(){
+        view.endEditing(true)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        /*
+        if let civilStatusLabel = defaults.stringForKey("selectedCivilStatus") {
+            self.civilStatusCell.detailTextLabel?.text = civilStatusLabel
+        }
+        
+        if let salutationLabel = defaults.stringForKey("selectedSalutation") {
+            self.salutationCell.detailTextLabel?.text = salutationLabel
+        }
+        
+        if let C1salutationLabel = defaults.stringForKey("selectedC1Salutation") {
+            self.C1salutationCell.detailTextLabel?.text = C1salutationLabel
+        }
+        
+        if let C2salutationLabel = defaults.stringForKey("selectedC2Salutation") {
+            self.C2salutationCell.detailTextLabel?.text = C2salutationLabel
+        }
+        
+        if let provinceLabel = defaults.stringForKey("selectedProvince") {
+            self.provinceCell.detailTextLabel?.text = provinceLabel
+        }
+        
+        if let provinceBizLabel = defaults.stringForKey("selectedProvinceBiz") {
+            self.provinceBizCell.detailTextLabel?.text = provinceBizLabel
+        }
+        
+        if let cityLabel = defaults.stringForKey("selectedCity") {
+            self.cityCell.detailTextLabel?.text = cityLabel
+        }
+        
+        if let cityBizLabel = defaults.stringForKey("selectedCityBiz") {
+            self.cityBizCell.detailTextLabel?.text = cityBizLabel
+        }
+        
+        if let incomeLabel = defaults.stringForKey("selectedIncomeType") {
+            self.incomeTypeCell.detailTextLabel?.text = incomeLabel
+        }
+        
+        if let occupationLabel = defaults.stringForKey("selectedOccupation") {
+            self.occupationCell.detailTextLabel?.text = occupationLabel
+        }
+        
+        if let occupationGroupLabel = defaults.stringForKey("selectedOccupationGroup") {
+            self.occupationGroupCell.detailTextLabel?.text = occupationGroupLabel
+        }
+        
+        if let industryLabel = defaults.stringForKey("selectedIndustry") {
+            self.industryCell.detailTextLabel?.text = industryLabel
+        }
+        
+        if let bankLabel = defaults.stringForKey("selectedBank") {
+            self.bankCell.detailTextLabel?.text = bankLabel
+        }
+        */
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    /*
     @IBOutlet var cityCell: UITableViewCell!
     @IBOutlet var provinceCell: UITableViewCell!
     @IBOutlet var C1salutationCell: UITableViewCell!
@@ -93,22 +139,181 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var occupationGroupCell: UITableViewCell!
     @IBOutlet var provinceBizCell: UITableViewCell!
     @IBOutlet var cityBizCell: UITableViewCell!
-    
     @IBOutlet var bankCell: UITableViewCell!
     
+    @IBOutlet var incometype: UILabel!
+    @IBOutlet var occupation: UILabel!
+    @IBOutlet var occupationgroup: UILabel!
+    @IBOutlet var cityBiz: UILabel!
+    @IBOutlet var provincebiz: UILabel!
+    @IBOutlet var industry: UILabel!
+    @IBOutlet var bank: UILabel!
     
-    @IBAction func datePickerChangedCard() {
+    @IBOutlet var toggleCard: UISwitch!
+    */
+    
+    @IBOutlet var salutation: UILabel!
+    @IBOutlet var lastname: UITextField!
+    @IBOutlet var firstname: UITextField!
+    @IBOutlet var middlename: UITextField!
+    
+    @IBOutlet var birthday: UILabel!
+    @IBOutlet var civilstatus: UILabel!
+    @IBOutlet var phonenumber: UITextField!
+    @IBOutlet var mobilenumber: UITextField!
+    @IBOutlet var emailaddress: UITextField!
+    
+    @IBOutlet var address1: UITextField!
+    @IBOutlet var address2: UITextField!
+    @IBOutlet var province: UILabel!
+    @IBOutlet var city: UILabel!
+    @IBOutlet var postalcode: UITextField!
+    
+    @IBOutlet var withpermaddress: UISwitch!
+    @IBOutlet var permaddress1: UITextField!
+    @IBOutlet var permaddress2: UITextField!
+    @IBOutlet var permprovince: UILabel!
+    @IBOutlet var permcity: UILabel!
+    @IBOutlet var permpostalcode: UITextField!
+    @IBOutlet var homeownership: UILabel!
+    
+    
+    @IBOutlet var emptype: UILabel!
+    @IBOutlet var empname: UITextField!
+    @IBOutlet var position: UILabel!
+    @IBOutlet var positiongroup: UILabel!
+    @IBOutlet var bizindustry: UILabel!
+    @IBOutlet var empyears: UITextField!
+    @IBOutlet var empaddress1: UITextField!
+    @IBOutlet var empaddress2: UITextField!
+    @IBOutlet var empprovince: UILabel!
+    @IBOutlet var empcity: UILabel!
+    @IBOutlet var emppostalcode: UITextField!
+    @IBOutlet var empphone: UITextField!
+    @IBOutlet var tin: UITextField!
+    @IBOutlet var sss: UITextField!
+    @IBOutlet var gsis: UITextField!
+    @IBOutlet var empincome: UITextField!
+    @IBOutlet var empsourcefunds: UILabel!
+    
+    @IBOutlet var withexistingcard: UISwitch!
+    @IBOutlet var withexistingbankname: UILabel!
+    @IBOutlet var withexistingcardno: UITextField!
+    
+    @IBOutlet var withc1: UISwitch!
+    
+    @IBOutlet var c1salutation: UILabel!
+    @IBOutlet var c1lastname: UITextField!
+    @IBOutlet var c1firstname: UITextField!
+    @IBOutlet var c1middlename: UITextField!
+    @IBOutlet var c1birthday: UILabel!
+    /*@IBOutlet var c1phonenumber: UITextField!
+    @IBOutlet var c1mobilenumber: UITextField!
+    @IBOutlet var c1address1: UITextField!
+    @IBOutlet var c1address2: UITextField!
+    */
+    @IBOutlet var withc2: UISwitch!
+    
+    @IBOutlet var c2salutation: UILabel!
+    @IBOutlet var c2lastname: UITextField!
+    @IBOutlet var c2firstname: UITextField!
+    @IBOutlet var c2middlename: UITextField!
+    @IBOutlet var c2birthday: UILabel!
+    /*@IBOutlet var c2phonenumber: UITextField!
+    @IBOutlet var c2mobilenumber: UITextField!
+    @IBOutlet var c2address1: UITextField!
+    @IBOutlet var c2address2: UITextField!
+    */
+    //@IBOutlet var c2permaddress: UITextField!
+    @IBOutlet var billingaddress: UILabel!
+    @IBOutlet var deliveryaddress: UILabel!
+    
+    @IBOutlet var bdaydatePicker: UIDatePicker!
+    @IBOutlet var bdaydetailLabel: UILabel!
+    @IBOutlet var c1bdaydatePicker: UIDatePicker!
+    @IBOutlet var c1bdaydetailLabel: UILabel!
+    @IBOutlet var c2bdaydatePicker: UIDatePicker!
+    @IBOutlet var c2bdaydetailLabel: UILabel!
+    
+    @IBAction func datePickerChanged() {
         if(vcAction == "ShowApplyCard")
         {
-            bday.text = NSDateFormatter.localizedStringFromDate(bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+            bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
-    @IBAction func bdaydatePickerValue(sender: UIDatePicker) {
-        
-         datePickerChangedCard()
+    @IBAction func c1datePickerChanged() {
+        if(vcAction == "ShowApplyCard")
+        {
+            c1bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c1bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+        }
     }
     
+    @IBAction func c2datePickerChanged() {
+        if(vcAction == "ShowApplyCard")
+        {
+            c2bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c2bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
+        }
+    }
+    
+    func toggleDatepicker() {
+        bdaydatePickerHidden = !bdaydatePickerHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func c1bdaytoggleDatepicker() {
+        c1bdaydatePickerHidden = !c1bdaydatePickerHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    func c2bdaytoggleDatepicker() {
+        c2bdaydatePickerHidden = !c2bdaydatePickerHidden
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if(vcAction == "ShowApplyCard")
+        {
+            if indexPath.section == 0 && indexPath.row == 8 {
+                toggleDatepicker()
+            }
+            
+            if indexPath.section == 6 && indexPath.row == 4 {
+                c1bdaytoggleDatepicker()
+            }
+            
+            if indexPath.section == 8 && indexPath.row == 4 {
+                c2bdaytoggleDatepicker()
+            }
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        if(vcAction == "ShowApplyCard")
+        {
+            if bdaydatePickerHidden && indexPath.section == 0 && indexPath.row == 9 {
+                return 0
+            }
+            else if c1bdaydatePickerHidden && indexPath.section == 6 && indexPath.row == 5 {
+                return 0
+            }
+            else if c2bdaydatePickerHidden && indexPath.section == 8 && indexPath.row == 5 {
+                return 0
+            }
+            else {
+                return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+            }
+        }
+        else {
+            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        }
+    }
+    
+    /*
     @IBAction func toggleSwitchCard(sender: UISwitch) {
         if(self.toggleCard.on == true) {
             bank.enabled = true
@@ -118,11 +323,302 @@ class CardTableViewController: UITableViewController {
             
         }
     }
+    */
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    /*
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        var itemCount = 0
+        
+        if(vcAction == "ShowApplyCard" ){
+            if(section == 0){
+                itemCount = 20
+            } else if(section == 1){
+                if(self.civilstatus.text == "Married"){
+                    itemCount = 18
+                }else{
+                    itemCount = 0
+                }
+            } else if(section == 2){
+                itemCount = 1
+            } else if(section == 3 || section == 4 || section == 5){
+                /*
+                if(section == 3){
+                    if(self.withc1.on){
+                        itemCount = 19
+                    } else{
+                        itemCount = 0
+                    }
+                }
+                
+                if(section == 4){
+                    if(self.withc1.on){
+                        itemCount = 1
+                    } else{
+                        itemCount = 0
+                    }
+                }
+                
+                if(section == 5){
+                    if(!self.withc1.on){
+                        itemCount = 0
+                    }else{
+                        if(self.withc2.on){
+                            itemCount = 19
+                        } else{
+                            itemCount = 0
+                        }
+                    }
+                }
+                 */
+            } else if(section == 6){
+                itemCount = 1
+            } else if(section == 7){
+                itemCount = 1
+            }
+        }
+        return itemCount
     }
+
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        var headerHeight: CGFloat = 0
+        
+        if(vcAction == "ShowApplyCard" ){
+            if(section == 0){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+        }
+        
+
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+            if(section == 0){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 1){
+                if(self.civilstatus.text == "Married"){
+                    headerHeight = tableView.sectionHeaderHeight
+                }
+                else{
+                    headerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 2){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 3){
+                //if(self.withc1.on){
+                //    headerHeight = tableView.sectionHeaderHeight
+                //}
+                //else {
+                //headerHeight = CGFloat.min
+                //}
+            }
+            
+            if(section == 4){
+                //if(self.withc1.on){
+                 //   headerHeight = tableView.sectionHeaderHeight
+                //}
+                //else {
+                //    headerHeight = CGFloat.min
+                //}
+            }
+            
+            if(section == 5){
+                //if(!self.withc1.on){
+                 //   headerHeight = CGFloat.min
+                //}else{
+                 //   if(self.withc2.on){
+                        headerHeight = tableView.sectionHeaderHeight
+                 //   }
+                  //  else {
+                        headerHeight = CGFloat.min
+                   // }
+                //}
+            }
+            
+            if(section == 6){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 7){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+        }
+
+        return headerHeight
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        var footerHeight: CGFloat = 0
+        
+        if(vcAction == "ShowApplyCard"){
+            if(section == 0){
+                footerHeight = tableView.sectionFooterHeight
+            }
+        }
+        
+        /*
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+            if(section == 0){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 1){
+                if(self.civilstatus.text == "Married"){
+                    footerHeight = tableView.sectionFooterHeight
+                }
+                else{
+                    footerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 2){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 3){
+                if(self.withc1.on){
+                    footerHeight = tableView.sectionFooterHeight
+                }
+                else {
+                    footerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 4){
+                if(self.withc1.on){
+                    footerHeight = tableView.sectionFooterHeight
+                }
+                else {
+                    footerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 5){
+                if(self.withc2.on){
+                    footerHeight = tableView.sectionFooterHeight
+                }
+                else {
+                    footerHeight = CGFloat.min
+                }
+ 
+            }
+            
+            if(section == 6){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 7){
+                footerHeight = tableView.sectionFooterHeight
+            }
+        }
+ 
+        return footerHeight
+    }
+    */
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        var sectionHeader = ""
+        
+        if(vcAction == "ShowApplyCard"){
+            if(section == 0){
+                sectionHeader = "Personal Information"
+            }
+            else if(section == 1){
+                sectionHeader = "Present Address"
+            }
+            else if(section == 2){
+                sectionHeader = "Permanent Address"
+            }
+            else if(section == 3){
+                sectionHeader = "Financial Information"
+            }
+            else if(section == 4){
+                sectionHeader = "Credit Card Information"
+            }
+            else if(section == 5){
+                sectionHeader = "Additional Supplementary"
+            }
+            else if(section == 6){
+                sectionHeader = "Supplementary 1 Information"
+            }
+            else if(section == 7){
+                sectionHeader = "Additional Supplementary"
+            }
+            else if(section == 8){
+                sectionHeader = "Supplementary 2 Information"
+            }
+            else if(section == 9){
+                sectionHeader = "Other Instructions"
+            }
+            else if(section == 10){
+                sectionHeader = ""
+            }
+        }
+        
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+            if(section == 0){
+                var promoLabel = ""
+                
+                sectionHeader = "New Auto Laon Application"
+                
+                if let promoStatusLabel = defaults.stringForKey("promoStatus") {
+                    promoStatus = promoStatusLabel
+                }
+                
+                if(promoStatus == "OptIn"){
+                    promoLabel = "\n(You are currently subscribed to FREE GAS Promo)"
+                    sectionHeader += promoLabel
+                }
+                
+            } else if(section == 1){
+                if(self.civilstatus.text == "Married"){
+                    sectionHeader = "Spouse Information"
+                }else{
+                    sectionHeader = ""
+                }
+            } else if(section == 2){
+                sectionHeader = "Additional Co-maker"
+            } else if(section == 3 || section == 4){
+                if(section == 3){
+                    if(self.withc1.on){
+                        sectionHeader = "Co-maker 1 Information"
+                    }else{
+                        sectionHeader = ""
+                    }
+                }
+                
+                if(section == 4){
+                    if(self.withc1.on){
+                        sectionHeader = "Additional Co-maker"
+                    }else{
+                        sectionHeader = ""
+                    }
+                }
+                
+            } else if(section == 5){
+                if(!self.withc1.on){
+                    sectionHeader = ""
+                }else{
+                    if(self.withc2.on){
+                        sectionHeader = "Co-maker 2 Information"
+                    }else{
+                        sectionHeader = ""
+                    }
+                }
+            } else if(section == 6){
+                sectionHeader = "Remarks"
+            } else if(section == 7){
+                sectionHeader = ""
+            }
+        }
+        return sectionHeader
+    }
+    */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -183,7 +679,7 @@ class CardTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowCivilStatusList"
             }
         }
-
+        
         if segue.identifier == "ShowSalutationList"
         {
             if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
@@ -204,7 +700,7 @@ class CardTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowC2SalutationList"
             }
         }
-
+        
         if segue.identifier == "ShowProvinceList"
         {
             if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
@@ -218,7 +714,7 @@ class CardTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowBizProvinceList"
             }
         }
-
+        
         if segue.identifier == "ShowCityList"
         {
             if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
@@ -249,379 +745,54 @@ class CardTableViewController: UITableViewController {
         
     }
     
-    func toggleDatepicker() {
-        bdaydatePickerHidden = !bdaydatePickerHidden
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+    func keyboardWasShown(notification: NSNotification) {
         
-        if let civilStatusLabel = defaults.stringForKey("selectedCivilStatus") {
-            self.civilStatusCell.detailTextLabel?.text = civilStatusLabel
-        }
+        let userInfo: [NSObject : AnyObject] = notification.userInfo!
         
-        if let salutationLabel = defaults.stringForKey("selectedSalutation") {
-            self.salutationCell.detailTextLabel?.text = salutationLabel
-        }
-  
-        if let C1salutationLabel = defaults.stringForKey("selectedC1Salutation") {
-            self.C1salutationCell.detailTextLabel?.text = C1salutationLabel
-        }
-
-        if let C2salutationLabel = defaults.stringForKey("selectedC2Salutation") {
-            self.C2salutationCell.detailTextLabel?.text = C2salutationLabel
-        }
-
-        if let provinceLabel = defaults.stringForKey("selectedProvince") {
-            self.provinceCell.detailTextLabel?.text = provinceLabel
-        }
-
-        if let provinceBizLabel = defaults.stringForKey("selectedProvinceBiz") {
-            self.provinceBizCell.detailTextLabel?.text = provinceBizLabel
-        }
+        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
+        let offset: CGSize = userInfo[UIKeyboardFrameEndUserInfoKey]!.CGRectValue.size
         
-        if let cityLabel = defaults.stringForKey("selectedCity") {
-            self.cityCell.detailTextLabel?.text = cityLabel
-        }
-        
-        if let cityBizLabel = defaults.stringForKey("selectedCityBiz") {
-            self.cityBizCell.detailTextLabel?.text = cityBizLabel
-        }
-        
-        if let incomeLabel = defaults.stringForKey("selectedIncomeType") {
-            self.incomeTypeCell.detailTextLabel?.text = incomeLabel
-        }
-        
-        if let occupationLabel = defaults.stringForKey("selectedOccupation") {
-            self.occupationCell.detailTextLabel?.text = occupationLabel
-        }
-        
-        if let occupationGroupLabel = defaults.stringForKey("selectedOccupationGroup") {
-            self.occupationGroupCell.detailTextLabel?.text = occupationGroupLabel
-        }
-        
-        if let industryLabel = defaults.stringForKey("selectedIndustry") {
-            self.industryCell.detailTextLabel?.text = industryLabel
-        }
-        
-        if let bankLabel = defaults.stringForKey("selectedBank") {
-            self.bankCell.detailTextLabel?.text = bankLabel
+        if keyboardSize.height == offset.height {
+            if self.view.frame.origin.y == 0 {
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                    self.view.frame.origin.y -= 0
+                })
+            }
+        } else {
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.view.frame.origin.y += keyboardSize.height - offset.height
+            })
         }
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func keyboardWasNotShown(notification: NSNotification) {
         
-        var itemCount = 0
-        
-        if(vcAction == "ShowApplyCard" ){
-            if(section == 0){
-                itemCount = 20
-            } else if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    itemCount = 18
-                }else{
-                    itemCount = 0
-                }
-            } else if(section == 2){
-                itemCount = 1
-            } else if(section == 3 || section == 4 || section == 5){
-                /*
-                if(section == 3){
-                    if(self.withc1.on){
-                        itemCount = 19
-                    } else{
-                        itemCount = 0
-                    }
-                }
-                
-                if(section == 4){
-                    if(self.withc1.on){
-                        itemCount = 1
-                    } else{
-                        itemCount = 0
-                    }
-                }
-                
-                if(section == 5){
-                    if(!self.withc1.on){
-                        itemCount = 0
-                    }else{
-                        if(self.withc2.on){
-                            itemCount = 19
-                        } else{
-                            itemCount = 0
-                        }
-                    }
-                }
-                 */
-            } else if(section == 6){
-                itemCount = 1
-            } else if(section == 7){
-                itemCount = 1
-            }
-        }
-        return itemCount
-    }
-    
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        var headerHeight: CGFloat = 0
-        
-        if(vcAction == "ShowApplyCard" ){
-            if(section == 0){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-        }
-        
-        /*
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
-            if(section == 0){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-            
-            if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    headerHeight = tableView.sectionHeaderHeight
-                }
-                else{
-                    headerHeight = CGFloat.min
-                }
-            }
-            
-            if(section == 2){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-            
-            if(section == 3){
-                //if(self.withc1.on){
-                //    headerHeight = tableView.sectionHeaderHeight
-                //}
-                //else {
-                //headerHeight = CGFloat.min
-                //}
-            }
-            
-            if(section == 4){
-                //if(self.withc1.on){
-                 //   headerHeight = tableView.sectionHeaderHeight
-                //}
-                //else {
-                //    headerHeight = CGFloat.min
-                //}
-            }
-            
-            if(section == 5){
-                //if(!self.withc1.on){
-                 //   headerHeight = CGFloat.min
-                //}else{
-                 //   if(self.withc2.on){
-                        headerHeight = tableView.sectionHeaderHeight
-                 //   }
-                  //  else {
-                        headerHeight = CGFloat.min
-                   // }
-                //}
-            }
-            
-            if(section == 6){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-            
-            if(section == 7){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-        }
- */        
-        return headerHeight
-    }
-    
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        var footerHeight: CGFloat = 0
-        
-        if(vcAction == "ShowApplyCard"){
-            if(section == 0){
-                footerHeight = tableView.sectionFooterHeight
-            }
-        }
-        
-        /*
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
-            if(section == 0){
-                footerHeight = tableView.sectionFooterHeight
-            }
-            
-            if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else{
-                    footerHeight = CGFloat.min
-                }
-            }
-            
-            if(section == 2){
-                footerHeight = tableView.sectionFooterHeight
-            }
-            
-            if(section == 3){
-                /*
-                if(self.withc1.on){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else {
-                    footerHeight = CGFloat.min
-                }
- */
-            }
-            
-            if(section == 4){
-                /*
-                if(self.withc1.on){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else {
-                    footerHeight = CGFloat.min
-                }
- */
-            }
-            
-            if(section == 5){
-                /*
-                if(self.withc2.on){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else {
-                    footerHeight = CGFloat.min
-                }
- */
-                
-            }
-            
-            if(section == 6){
-                footerHeight = tableView.sectionFooterHeight
-            }
-            
-            if(section == 7){
-                footerHeight = tableView.sectionFooterHeight
-            }
-        }
- */
-        
-        return footerHeight
-    }
-    
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        var sectionHeader = ""
-        
-        if(vcAction == "ShowApplyCard"){
-            if(section == 0){
-                sectionHeader = "Personal Information"
-            }
-        }
-        
-        /*
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
-            if(section == 0){
-                var promoLabel = ""
-                
-                sectionHeader = "New Auto Laon Application"
-                
-                if let promoStatusLabel = defaults.stringForKey("promoStatus") {
-                    promoStatus = promoStatusLabel
-                }
-                
-                if(promoStatus == "OptIn"){
-                    promoLabel = "\n(You are currently subscribed to FREE GAS Promo)"
-                    sectionHeader += promoLabel
-                }
-                
-            } else if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    sectionHeader = "Spouse Information"
-                }else{
-                    sectionHeader = ""
-                }
-            } else if(section == 2){
-                sectionHeader = "Additional Co-maker"
-            } else if(section == 3 || section == 4){
-                if(section == 3){
-                    if(self.withc1.on){
-                        sectionHeader = "Co-maker 1 Information"
-                    }else{
-                        sectionHeader = ""
-                    }
-                }
-                
-                if(section == 4){
-                    if(self.withc1.on){
-                        sectionHeader = "Additional Co-maker"
-                    }else{
-                        sectionHeader = ""
-                    }
-                }
-                
-            } else if(section == 5){
-                if(!self.withc1.on){
-                    sectionHeader = ""
-                }else{
-                    if(self.withc2.on){
-                        sectionHeader = "Co-maker 2 Information"
-                    }else{
-                        sectionHeader = ""
-                    }
-                }
-            } else if(section == 6){
-                sectionHeader = "Remarks"
-            } else if(section == 7){
-                sectionHeader = ""
-            }
-        }
- */
-        
-        
-        return sectionHeader
-    }
-
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp")
-        {
-            if indexPath.section == 0 && indexPath.row == 10 {
-                toggleDatepicker()
-            }
-            
-            if indexPath.section == 1 && indexPath.row == 3 {
-                //spousebdaytoggleDatepicker()
-            }
-            
-            if indexPath.section == 3 && indexPath.row == 3 {
-                //c1bdaytoggleDatepicker()
-            }
-            
-            if indexPath.section == 5 && indexPath.row == 3 {
-                //c2bdaytoggleDatepicker()
-            }
+        let userInfo: [NSObject : AnyObject] = notification.userInfo!
+        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
+        if self.view.frame.origin.y + keyboardSize.height == 0 {
+            self.view.frame.origin.y += keyboardSize.height
+        }else{
+            self.view.frame.origin.y = 0
         }
     }
     
-/*
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-        if(vcAction == "ShowApplyCard")
-        {
-            if bdaydatePickerHidden && indexPath.section == 0 && indexPath.row == 11 {
-                return 0
-            }
-            
-        }
-        else {
-            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
-        }
+    //touches the screen
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
     }
-*/
     
+    //presses the return button from the keypad
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        self.view.endEditing(true)
+        return false;
+    }
     
-    
+    func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluateWithObject(testStr)
+    }
 }
