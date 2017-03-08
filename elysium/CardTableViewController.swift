@@ -127,18 +127,17 @@ class CardTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     /*
-    @IBOutlet var cityCell: UITableViewCell!
-    @IBOutlet var provinceCell: UITableViewCell!
+    
+    
     @IBOutlet var C1salutationCell: UITableViewCell!
-    @IBOutlet var salutationCell: UITableViewCell!
-    @IBOutlet var civilStatusCell: UITableViewCell!
+    
+    
     @IBOutlet var C2salutationCell: UITableViewCell!
-    @IBOutlet var incomeTypeCell: UITableViewCell!
-    @IBOutlet var occupationCell: UITableViewCell!
-    @IBOutlet var industryCell: UITableViewCell!
-    @IBOutlet var occupationGroupCell: UITableViewCell!
-    @IBOutlet var provinceBizCell: UITableViewCell!
-    @IBOutlet var cityBizCell: UITableViewCell!
+    
+    
+    
+    
+    
     @IBOutlet var bankCell: UITableViewCell!
     
     @IBOutlet var incometype: UILabel!
@@ -151,6 +150,23 @@ class CardTableViewController: UITableViewController {
     
     @IBOutlet var toggleCard: UISwitch!
     */
+    
+    @IBOutlet var salutationCell: UITableViewCell!
+    @IBOutlet var civilStatusCell: UITableViewCell!
+    @IBOutlet var provinceCell: UITableViewCell!
+    @IBOutlet var cityCell: UITableViewCell!
+    
+    @IBOutlet var permprovinceCell: UITableViewCell!
+    @IBOutlet var permcityCell: UITableViewCell!
+    @IBOutlet var homeownershipCell: UITableViewCell!
+    
+    @IBOutlet var incomeTypeCell: UITableViewCell!
+    @IBOutlet var occupationCell: UITableViewCell!
+    @IBOutlet var occupationGroupCell: UITableViewCell!
+    @IBOutlet var industryCell: UITableViewCell!
+    @IBOutlet var provinceBizCell: UITableViewCell!
+    @IBOutlet var cityBizCell: UITableViewCell!
+    @IBOutlet var empsourcefundsCell: UITableViewCell!
     
     @IBOutlet var salutation: UILabel!
     @IBOutlet var lastname: UITextField!
@@ -176,7 +192,7 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var permcity: UILabel!
     @IBOutlet var permpostalcode: UITextField!
     @IBOutlet var homeownership: UILabel!
-    
+    //yearsofstay
     
     @IBOutlet var emptype: UILabel!
     @IBOutlet var empname: UITextField!
