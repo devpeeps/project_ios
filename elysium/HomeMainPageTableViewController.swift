@@ -46,6 +46,11 @@ class HomeMainPageTableViewController: UITableViewController {
             if let destinationVC = segue.destinationViewController as? HomeTableViewController{
                 destinationVC.vcAction = "ShowSearchPropertyPage"
             }
+            
+            defaults.setObject("", forKey: "selectedPropertyType")
+            defaults.setObject("", forKey: "selectedProvince")
+            defaults.setObject("", forKey: "selectedProvinceID")
+            defaults.setObject("", forKey: "selectedCity")
         }
         
         if segue.identifier == "ShowHomeLoanCalculator"
@@ -55,7 +60,7 @@ class HomeMainPageTableViewController: UITableViewController {
             }
             
             defaults.setObject("20", forKey: "selectedDP")
-            defaults.setObject("60", forKey: "selectedDP")
+            defaults.setObject("60", forKey: "selectedTerm")
         }
         
         if segue.identifier == "ShowHomeApplication"

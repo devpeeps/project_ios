@@ -104,13 +104,10 @@ class CardTableViewController: UITableViewController {
         }
     }
     
-    
-    
     @IBAction func bdaydatePickerValue(sender: UIDatePicker) {
         
          datePickerChangedCard()
     }
-    
     
     @IBAction func toggleSwitchCard(sender: UISwitch) {
         if(self.toggleCard.on == true) {
@@ -120,19 +117,14 @@ class CardTableViewController: UITableViewController {
             bank.enabled = false
             
         }
-        
-        
-        
-        
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
         
         if segue.identifier == "ShowAutoFAQ"
         {
@@ -191,9 +183,7 @@ class CardTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowCivilStatusList"
             }
         }
-        
-       
-        
+
         if segue.identifier == "ShowSalutationList"
         {
             if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
@@ -267,7 +257,6 @@ class CardTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        
         if let civilStatusLabel = defaults.stringForKey("selectedCivilStatus") {
             self.civilStatusCell.detailTextLabel?.text = civilStatusLabel
         }
@@ -291,7 +280,6 @@ class CardTableViewController: UITableViewController {
         if let provinceBizLabel = defaults.stringForKey("selectedProvinceBiz") {
             self.provinceBizCell.detailTextLabel?.text = provinceBizLabel
         }
-        
         
         if let cityLabel = defaults.stringForKey("selectedCity") {
             self.cityCell.detailTextLabel?.text = cityLabel
@@ -321,9 +309,10 @@ class CardTableViewController: UITableViewController {
             self.bankCell.detailTextLabel?.text = bankLabel
         }
     }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var itemCount = 0
         
+        var itemCount = 0
         
         if(vcAction == "ShowApplyCard" ){
             if(section == 0){
@@ -442,9 +431,7 @@ class CardTableViewController: UITableViewController {
                 headerHeight = tableView.sectionHeaderHeight
             }
         }
- */
-        
-        
+ */        
         return headerHeight
     }
     

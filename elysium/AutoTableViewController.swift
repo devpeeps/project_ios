@@ -479,6 +479,14 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             aor = NSUserDefaults.standardUserDefaults().objectForKey("autoRates_" + self.selectedTerm) as! Double
         }
         
+        if let dpLabel = defaults.stringForKey("selectedDP") {
+            selectedDP = dpLabel
+        }
+        
+        if let termLabel = defaults.stringForKey("selectedTerm") {
+            selectedTerm = termLabel
+        }
+        
         let rate = getEIR(Int(selectedTerm)!, aor: aor ,isOMA: false);
         var dp = Double(selectedDP)
         

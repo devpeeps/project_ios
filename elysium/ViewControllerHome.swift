@@ -1015,8 +1015,6 @@ class ViewControllerHome: UIViewController, UIPickerViewDataSource, UIPickerView
         
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM5", withString: selectedCity.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
         
-        
-        
         //NSLog(urlAsString)
         
         var contProc = true

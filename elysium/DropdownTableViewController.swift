@@ -61,6 +61,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     var positionArr = [("","")]
     var selectedPropertyType = ""
     var selectedProvince = ""
+    var selectedProvinceID = ""
     var selectedCity = ""
     
     @IBOutlet var tableViewCardCategory: UITableView!
@@ -89,7 +90,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             self.loadingIndicator.stopAnimating()
         }
         
-        if(vcAction == "ShowCarTermList" || vcAction == "ShowHomeTermList"){
+        if(vcAction == "ShowCarTermList" || vcAction == "ShowHomeTermList" || vcAction == "ShowTermList"){
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
         }
@@ -120,7 +121,10 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         
         if(vcAction == "ShowCityList"){
-            loadCityList(selectedProvince)
+            if let provinceID = defaults.stringForKey("selectedProvinceID") {
+                selectedProvinceID = provinceID
+            }
+            loadCityList(selectedProvinceID)
         }
     }
     
@@ -815,6 +819,9 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         else if(vcAction == "ShowProvinceList"){
             itemCount = provinceArr.count
         }
+        else if(vcAction == "ShowCityList"){
+            itemCount = cityArr.count
+        }
         else if(vcAction == "ShowOccupationList" || vcAction == "ShowSPOccupationList" || vcAction == "ShowC1OccupationList" || vcAction == "ShowC2OccupationList"){
             itemCount = positionArr.count
         }
@@ -844,13 +851,16 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             dropdownName = "Select Car Term (in Months)"
         }
         else if(vcAction == "ShowHomeTermList"){
-            dropdownName = "Select Home Term (in Months)";
+            dropdownName = "Select Home Term (in Months)"
         }
         else if(vcAction == "ShowPropertyType"){
             dropdownName = "Select Property Type"
         }
         else if(vcAction == "ShowProvinceList"){
             dropdownName = "Select Province"
+        }
+        else if(vcAction == "ShowCityList"){
+            dropdownName = "Select City"
         }
         else if(vcAction == "ShowOccupationList" || vcAction == "ShowSPOccupationList" || vcAction == "ShowC1OccupationList" || vcAction == "ShowC2OccupationList"){
             dropdownName = "Select Occupation"
@@ -923,6 +933,15 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                 listcell.textLabel?.text = String(province)
             }else{
                 listcell.textLabel!.text = ""
+            }
+        }
+        else if(vcAction == "ShowCityList"){
+            let (id_city, city, id_province) = self.cityArr[indexPath.row]
+            
+            if(Int(id_city) != 0 && Int(id_province) != 0){
+                listcell.textLabel?.text = String(city)
+            }else{
+                listcell.textLabel?.text = ""
             }
         }
         else if(vcAction == "ShowOccupationList" || vcAction == "ShowSPOccupationList" || vcAction == "ShowC1OccupationList" || vcAction == "ShowC2OccupationList"){
@@ -1016,8 +1035,15 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         
         if(vcAction == "ShowProvinceList"){
-            selectedProvince = currentCell.textLabel!.text!
-            defaults.setObject(currentCell.textLabel!.text!, forKey: "selectedProvince")
+            let (id_province, province) = self.provinceArr[indexPath.row]
+            defaults.setObject(province, forKey: "selectedProvince")
+            defaults.setObject(id_province, forKey: "selectedProvinceID")
+            defaults.setObject("", forKey: "selectedCity")
+        }
+        
+        if(vcAction == "ShowCityList"){
+            selectedCity = currentCell.textLabel!.text!
+            defaults.setObject(currentCell.textLabel!.text!, forKey: "selectedCity")
         }
         
         if(vcAction == "ShowCarBrandList" || vcAction == "SelectCarBrandModel"){
@@ -1131,6 +1157,13 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         if(vcAction == "ShowProvinceList"){
             if let oldIndex = tableView.indexPathForSelectedRow {
                 tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
+        if(vcAction == "ShowCityList"){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .Checkmark
             }
             tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
         }

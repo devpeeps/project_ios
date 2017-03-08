@@ -15,6 +15,7 @@ class ListTableViewController: UITableViewController {
     var rootVC = ""
     var passedValue = ""
     var withConnection = false
+    var propertyModelArr = [("modelid","modeldesc", "proj", "type",0.00,0.00,"areafrom","areato","developer","prov","city")]
     var carModelArr = [("","","","")]
     var cardTypeArr = [("","","","","")]
     var selectedCarBrand = ""
@@ -28,11 +29,21 @@ class ListTableViewController: UITableViewController {
     var selectedCardCategory = ""
     var selectedCardType = ""
     var selectedCardTypeName = ""
+    var selectedPropertyType = ""
+    var selectedProvince = ""
+    var selectedCity = ""
+    var selectedPriceFrom = ""
+    var selectedPriceTo = ""
+    var selectedPropertyModelId = ""
+    var selectedPropertyProj = ""
+    var selectedPropertyDeveloper = ""
+    var selectedPropertyModelSRP = 0
     
     var showRecent = false
     
     @IBOutlet var tableViewCardType: UITableView!
     @IBOutlet var tableViewCarModels: UITableView!
+    @IBOutlet var tableViewPropertyModels: UITableView!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -74,6 +85,31 @@ class ListTableViewController: UITableViewController {
                 selectedCardCategory = cardCategory
             }
             loadCardTypeList()
+        }
+        
+        if(vcAction == "ShowPropertyModelList"){
+            
+            if let propertyTypeLabel = defaults.stringForKey("selectedPropertyType") {
+                selectedPropertyType = propertyTypeLabel
+            }
+            
+            if let priceFromLabel = defaults.stringForKey("selectedPriceFrom") {
+                selectedPriceFrom = priceFromLabel
+            }
+            
+            if let priceToLabel = defaults.stringForKey("selectedPriceTo") {
+                selectedPriceTo = priceToLabel
+            }
+            
+            if let provinceLabel = defaults.stringForKey("selectedProvince") {
+                selectedProvince = provinceLabel
+            }
+            
+            if let cityLabel = defaults.stringForKey("selectedCity") {
+                selectedCity = cityLabel
+            }
+            
+            loadPropertyModels()
         }
     }
     
@@ -391,6 +427,129 @@ class ListTableViewController: UITableViewController {
         
     }
     
+    func loadPropertyModels(){
+        
+        urlLib = NSLocalizedString("urlLib", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "HOMEMODELS")
+        
+        NSLog("function: loadPropertyModels")
+        NSLog("selectedPropertyType: " + selectedPropertyType)
+        NSLog("selectedPriceFrom: " + selectedPriceFrom)
+        NSLog("selectedPriceTo: " + selectedPriceTo)
+        NSLog("selectedProvince: " + selectedProvince)
+        NSLog("selectedCity: " + selectedCity)
+ 
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: selectedPropertyType.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: selectedPriceFrom.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM3", withString: selectedPriceTo.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM4", withString: selectedProvince.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM5", withString: selectedCity.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+ 
+        //NSLog(urlAsString)
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            
+            loadingIndicator.hidden = false
+            loadingIndicator.startAnimating()
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            //NSLog("url: " + String(url))
+            //NSLog("urlSession: " + String(urlSession))
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            self.propertyModelArr.removeAll()
+                            for i in 0...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2.count >= 3){
+                                    self.propertyModelArr.append((str2[0], str2[1], str2[3], str2[4], Double(str2[13])!, Double(str2[14])!, str2[5], str2[6], str2[10], str2[11], str2[12]))
+                                }
+                            }
+                            self.tableViewPropertyModels.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        })
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.tableViewPropertyModels.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            
+                            let alert = UIAlertController(title: "No Record Found", message: "No properties found using the specified search criteria.", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            })
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                            
+                        })
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        self.loadingIndicator.hidden = true
+                        self.loadingIndicator.stopAnimating()
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            //exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -408,6 +567,10 @@ class ListTableViewController: UITableViewController {
         
         if(vcAction == "ShowCardTypeList" || vcAction == "CardCategoryTravel" || vcAction == "CardCategoryCashBack"){
             itemCount = cardTypeArr.count
+        }
+        
+        if(vcAction == "ShowPropertyModelList"){
+            itemCount = propertyModelArr.count
         }
         
         return itemCount
@@ -439,8 +602,23 @@ class ListTableViewController: UITableViewController {
                 let imageView = UIImage(named: img)
                 listcell.imageView!.image = imageView
             }
+        } else if(vcAction == "ShowPropertyModelList"){
+            let (_, modeldesc, proj, _, _, srpto, areafrom, areato, _, prov, city) = self.propertyModelArr[indexPath.row]
+            
+            if(modeldesc != ""){
+                listcell.detailTextLabel!.numberOfLines = 1
+                listcell.textLabel?.text = modeldesc.capitalizedString + " - " + proj.capitalizedString
+                let x = Int(srpto)
+                //let sub = city + ", " + prov + "\n PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
+                listcell.detailTextLabel?.text = city + ", " + prov + "\n PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
+                //listcell.detailTextLabel?.text = "PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
+                //listcell.textLabel?.text = "PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
+                //listcell.lblFirstRow?.text = modeldesc.capitalizedString + " - " + proj.capitalizedString
+                //listcell.lblThirdRow.text = city + ", " + prov
+                //let x = Int(srpto)
+                //listcell.lblSecondRow.text = "PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
+            }
         }
-        
         return listcell
     }
     
@@ -465,6 +643,10 @@ class ListTableViewController: UITableViewController {
         
         if(vcAction == "CardCategoryCashBack"){
             dropdownName = "Cash Back"
+        }
+        
+        if(vcAction == "ShowPropertyModelList"){
+            dropdownName = "Choose Property Model"
         }
         
         return dropdownName
