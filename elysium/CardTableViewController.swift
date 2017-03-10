@@ -34,6 +34,8 @@ class CardTableViewController: UITableViewController {
     var c1bdaydatePickerHidden = true
     var c2bdaydatePickerHidden = true
     
+    @IBOutlet var creditCardApplicationTable: UITableView!
+    
     let defaults = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
@@ -327,6 +329,347 @@ class CardTableViewController: UITableViewController {
         else {
             return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
         }
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        var itemCount = 0
+        
+        if(vcAction == "ShowApplyCard" ){
+            if(section == 0){
+                itemCount = 14
+            }
+            else if(section == 1){
+                itemCount = 5
+            }
+            else if(section == 2){
+                itemCount = 8
+            }
+            else if(section == 3){
+                itemCount = 17
+            }
+            else if(section == 4){
+                itemCount = 3
+            }
+            else if(section == 5){
+                itemCount = 1
+            }
+            else if(section == 6 || section == 7 || section == 8){
+                if(section == 6){
+                    if(self.withc1.on){
+                        itemCount = 18
+                    }
+                    else {
+                        itemCount = 0
+                    }
+                }
+                
+                if(section == 7){
+                    if(self.withc1.on){
+                        itemCount = 1
+                    }
+                    else {
+                        itemCount = 0
+                    }
+                }
+                
+                if(section == 8){
+                    if(!self.withc1.on){
+                        itemCount = 0
+                    }else{
+                        if(self.withc2.on){
+                            itemCount = 18
+                        }
+                        else {
+                            itemCount = 0
+                        }
+                    }
+                }
+            }
+            else if(section == 9){
+                itemCount = 2
+            }
+            else if(section == 10){
+                itemCount = 1
+            }
+        }
+        return itemCount
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        var headerHeight: CGFloat = 0
+        
+        if(vcAction == "ShowApplyCard"){
+            
+            if(section == 0){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 1){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 2){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 3){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 4){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 5){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 6){
+                if(self.withc1.on){
+                    headerHeight = tableView.sectionHeaderHeight
+                }
+                else {
+                    headerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 7){
+                if(self.withc1.on){
+                    headerHeight = tableView.sectionHeaderHeight
+                }
+                else {
+                    headerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 8){
+                if(!self.withc1.on){
+                    headerHeight = CGFloat.min
+                }else{
+                    if(self.withc2.on){
+                        headerHeight = tableView.sectionHeaderHeight
+                    }
+                    else {
+                        headerHeight = CGFloat.min
+                    }
+                }
+            }
+            
+            if(section == 9){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 10){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+        }
+        
+        return headerHeight
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        var footerHeight: CGFloat = 0
+        
+        if(vcAction == "ShowApplyCard"){
+            
+            if(section == 0){
+               footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 1){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 2){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 3){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 4){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 5){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 6){
+                if(self.withc1.on){
+                    footerHeight = tableView.sectionFooterHeight
+                }
+                else {
+                    footerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 7){
+                if(self.withc1.on){
+                    footerHeight = tableView.sectionFooterHeight
+                }
+                else {
+                    footerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 8){
+                if(!self.withc1.on){
+                    footerHeight = CGFloat.min
+                }else{
+                    if(self.withc2.on){
+                        footerHeight = tableView.sectionFooterHeight
+                    }
+                    else {
+                        footerHeight = CGFloat.min
+                    }
+                }
+            }
+            
+            if(section == 9){
+                footerHeight = tableView.sectionFooterHeight
+            }
+            
+            if(section == 10){
+                footerHeight = tableView.sectionFooterHeight
+            }
+        }
+
+        return footerHeight
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        var sectionHeader = ""
+        
+        if(vcAction == "ShowApplyCard"){
+            if(section == 0){
+                sectionHeader = "Personal Information"
+            }
+            else if(section == 1){
+                sectionHeader = "Present Address"
+            }
+            else if(section == 2){
+                sectionHeader = "Permanent Address"
+            }
+            else if(section == 3){
+                sectionHeader = "Financial Information"
+            }
+            else if(section == 4){
+                sectionHeader = "Credit Card Information"
+            }
+            else if(section == 5){
+                sectionHeader = "Additional Supplementary"
+            }
+            else if(section == 6){
+                if(self.withc1.on){
+                    sectionHeader = "Supplementary 1 Information"
+                }
+                else {
+                    sectionHeader = ""
+                }
+            }
+            else if(section == 7){
+                if(self.withc1.on){
+                    sectionHeader = "Additional Supplementary"
+                }
+                else {
+                    sectionHeader = ""
+                }
+            }
+            else if(section == 8){
+                if(!self.withc1.on){
+                    sectionHeader = ""
+                }else{
+                    if(self.withc2.on){
+                        sectionHeader = "Supplementary 2 Information"
+                    }
+                    else {
+                        sectionHeader = ""
+                    }
+                }
+            }
+            else if(section == 9){
+                sectionHeader = "Other Instructions"
+            }
+            else if(section == 10){
+                sectionHeader = ""
+            }
+        }
+        
+        return sectionHeader
+    }
+    
+    
+    @IBAction func toggleWithC1(sender: AnyObject) {
+        if(self.withc1.on == true){
+            c1lastname.enabled = true
+            c1firstname.enabled = true
+            c1middlename.enabled = true
+            c1birthday.userInteractionEnabled = true
+            //c1civilstatus.userInteractionEnabled = true
+            //c1gender.enabled = true
+            //c1phonenumber.enabled = true
+            //c1mobilenumber.enabled = true
+            //c1address1.enabled = true
+            //c1address2.enabled = true
+
+            withc2.enabled = true
+            
+        }else{
+            c1lastname.enabled = false
+            c1firstname.enabled = false
+            c1middlename.enabled = false
+            c1birthday.userInteractionEnabled = false
+            //c1civilstatus.userInteractionEnabled = false
+            //c1gender.enabled = false
+            //c1phonenumber.enabled = false
+            //c1mobilenumber.enabled = false
+            //c1address1.enabled = false
+            //c1address2.enabled = false
+            
+            withc2.enabled = false
+            
+            withc2.on = false
+            c2lastname.enabled = false
+            c2firstname.enabled = false
+            c2middlename.enabled = false
+            c2birthday.userInteractionEnabled = false
+            //c2civilstatus.userInteractionEnabled = false
+            //c2gender.enabled = false
+            //c2phonenumber.enabled = false
+            //c2mobilenumber.enabled = false
+            //c2address1.enabled = false
+            //c2address2.enabled = false
+        }
+        
+        creditCardApplicationTable.reloadData()
+    }
+    
+    @IBAction func toggleWithC2(sender: AnyObject) {
+        if(self.withc2.on == true){
+            c2lastname.enabled = true
+            c2firstname.enabled = true
+            c2middlename.enabled = true
+            //c2gender.enabled = true
+            //c2phonenumber.enabled = true
+            //c2mobilenumber.enabled = true
+            //c2address1.enabled = true
+            //c2address2.enabled = true
+        }else{
+            c2lastname.enabled = false
+            c2firstname.enabled = false
+            c2middlename.enabled = false
+            //c2gender.enabled = false
+            //c2phonenumber.enabled = false
+            //c2mobilenumber.enabled = false
+            //c2address1.enabled = false
+            //c2address2.enabled = false
+        }
+        
+        creditCardApplicationTable.reloadData()
     }
     
     /*

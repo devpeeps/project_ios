@@ -1240,8 +1240,6 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         }
         
         if(self.withc2.on == true){
-            
-            
             if(self.c2lastname.text == ""){
                 errorctr += 1;
                 errormsg += "C2 Last Name\n";
