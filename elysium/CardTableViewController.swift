@@ -82,25 +82,13 @@ class CardTableViewController: UITableViewController {
             if let C2salutationLabel = defaults.stringForKey("selectedC2Salutation") {
                 self.C2salutationCell.detailTextLabel?.text = C2salutationLabel
             }
+            
+            if let civilStatusLabel = defaults.stringForKey("selectedCivilStatus") {
+                self.civilStatusCell.detailTextLabel?.text = civilStatusLabel
+            }
         }
         
         /*
-        if let civilStatusLabel = defaults.stringForKey("selectedCivilStatus") {
-            self.civilStatusCell.detailTextLabel?.text = civilStatusLabel
-        }
-        
-        if let salutationLabel = defaults.stringForKey("selectedSalutation") {
-            self.salutationCell.detailTextLabel?.text = salutationLabel
-        }
-        
-        if let C1salutationLabel = defaults.stringForKey("selectedC1Salutation") {
-            self.C1salutationCell.detailTextLabel?.text = C1salutationLabel
-        }
-        
-        if let C2salutationLabel = defaults.stringForKey("selectedC2Salutation") {
-            self.C2salutationCell.detailTextLabel?.text = C2salutationLabel
-        }
-        
         if let provinceLabel = defaults.stringForKey("selectedProvince") {
             self.provinceCell.detailTextLabel?.text = provinceLabel
         }
