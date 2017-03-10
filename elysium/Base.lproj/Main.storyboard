@@ -8398,7 +8398,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="6CX-eg-GOJ" kind="show" identifier="salutation" id="hMM-VT-D4Y"/>
+                                            <segue destination="6CX-eg-GOJ" kind="show" identifier="ShowSalutationList" id="hMM-VT-D4Y"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="SwV-ta-NHS">
@@ -9532,6 +9532,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="6CX-eg-GOJ" kind="show" identifier="ShowC1SalutationList" id="VQ2-rr-arV"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="umF-rT-6Aq">
                                         <rect key="frame" x="0.0" y="2687.5" width="600" height="44"/>
@@ -9978,6 +9981,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="6CX-eg-GOJ" kind="show" identifier="ShowC2SalutationList" id="MrD-qc-JM2"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="pIU-hd-J7x">
                                         <rect key="frame" x="0.0" y="3741.5" width="600" height="44"/>
@@ -10449,6 +10455,8 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="C1salutationCell" destination="Oo1-IW-wDt" id="aWT-dw-P95"/>
+                        <outlet property="C2salutationCell" destination="33a-J1-dZo" id="n8t-AU-Q1s"/>
                         <outlet property="address1" destination="dEB-R4-VcS" id="7Y0-Ds-gDM"/>
                         <outlet property="address2" destination="C87-tE-PJr" id="1Om-GK-bC2"/>
                         <outlet property="bdaydatePicker" destination="2Pv-2v-IgM" id="Kfz-tV-mOG"/>
@@ -18021,7 +18029,6 @@
         <segue reference="4kN-9j-0g2"/>
         <segue reference="S6z-sd-0dp"/>
         <segue reference="AqJ-IS-hPn"/>
-        <segue reference="L6v-Yo-drm"/>
         <segue reference="3iQ-v6-pg3"/>
         <segue reference="lNB-M2-eRq"/>
         <segue reference="BzD-4U-ZxB"/>
@@ -18031,6 +18038,7 @@
         <segue reference="e1x-ph-Gen"/>
         <segue reference="s4l-H5-wEc"/>
         <segue reference="m11-Rr-8sX"/>
+        <segue reference="iWz-RQ-C1W"/>
         <segue reference="tLo-g8-1fT"/>
         <segue reference="hMM-VT-D4Y"/>
         <segue reference="W1t-uI-oHy"/>

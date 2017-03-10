@@ -29,6 +29,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     var provinceArr = [("","")]
     var cityArr = [("","","")]
     var civilStatusArr = [("S","Single"),("M","Married"),("W","Widow/er")]
+    var salutationArr = [("MR","Mr"),("MS","Ms"),("MRS","Mrs")]
     var selectedCarModelId = ""
     var selectedCarModelSRP = 0
     var selectedTerm = "60"
@@ -91,6 +92,11 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         
         if(vcAction == "ShowCarTermList" || vcAction == "ShowHomeTermList" || vcAction == "ShowTermList"){
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        }
+        
+        if(vcAction == "ShowSalutationList" || vcAction == "ShowC1SalutationList" || vcAction == "ShowC2SalutationList"){
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
         }
@@ -834,6 +840,9 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         else if(vcAction == "ShowCivilStatusList" || vcAction == "ShowC1CivilStatusList" || vcAction == "ShowC2CivilStatusList"){
             itemCount = civilStatusArr.count
         }
+        else if(vcAction == "ShowSalutationList" || vcAction == "ShowC1SalutationList" || vcAction == "ShowC2SalutationList"){
+            itemCount = salutationArr.count
+        }
         
         return itemCount
     }
@@ -873,6 +882,9 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         else if(vcAction == "ShowCivilStatusList" || vcAction == "ShowC1CivilStatusList" || vcAction == "ShowC2CivilStatusList"){
             dropdownName = "Select Civil Status"
+        }
+        else if(vcAction == "ShowSalutationList" || vcAction == "ShowC1SalutationList" || vcAction == "ShowC2SalutationList"){
+            dropdownName = "Select Salutation"
         }
         
         return dropdownName
@@ -1004,6 +1016,15 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                 listcell.textLabel!.text = ""
             }
         }
+        else if(vcAction == "ShowSalutationList" || vcAction == "ShowC1SalutationList" || vcAction == "ShowC2SalutationList" ){
+            let (id_salutationCode, salutationCode) = self.salutationArr[indexPath.row]
+            
+            if(id_salutationCode != ""){
+                listcell.textLabel?.text = salutationCode
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
         
         return listcell
     }
@@ -1123,6 +1144,24 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             defaults.setObject(C2civilStat, forKey: "selectedC2CivilStatus")
             defaults.setObject(id_C2civilStat, forKey: "selectedC2CivilStatusCode")
         }
+        
+        if(vcAction == "ShowSalutationList"){
+            let (id_salutationCode, salutationCode) = self.salutationArr[indexPath.row]
+            defaults.setObject(salutationCode, forKey: "selectedSalutation")
+            defaults.setObject(id_salutationCode, forKey: "selectedSalutationCode")
+        }
+        
+        if(vcAction == "ShowC1SalutationList"){
+            let (id_C1salutationCode, C1salutationCode) = self.salutationArr[indexPath.row]
+            defaults.setObject(C1salutationCode, forKey: "selectedC1Salutation")
+            defaults.setObject(id_C1salutationCode, forKey: "selectedC1SalutationCode")
+        }
+        
+        if(vcAction == "ShowC2SalutationList"){
+            let (id_C2salutationCode, C2salutationCode) = self.salutationArr[indexPath.row]
+            defaults.setObject(C2salutationCode, forKey: "selectedC2Salutation")
+            defaults.setObject(id_C2salutationCode, forKey: "selectedC2SalutationCode")
+        }
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -1183,6 +1222,13 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         
         if(vcAction == "ShowCivilStatusList" || vcAction == "ShowC1CivilStatusList" || vcAction == "ShowC2CivilStatusList"){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
+        if(vcAction == "ShowSalutationList" || vcAction == "ShowC1SalutationList" || vcAction == "ShowC2SalutationList"){
             if let oldIndex = tableView.indexPathForSelectedRow {
                 tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
             }

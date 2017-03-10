@@ -69,6 +69,21 @@ class CardTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        
+        if(vcAction == "ShowApplyCard"){
+            if let salutationLabel = defaults.stringForKey("selectedSalutation") {
+                self.salutationCell.detailTextLabel?.text = salutationLabel
+            }
+            
+            if let C1salutationLabel = defaults.stringForKey("selectedC1Salutation") {
+                self.C1salutationCell.detailTextLabel?.text = C1salutationLabel
+            }
+            
+            if let C2salutationLabel = defaults.stringForKey("selectedC2Salutation") {
+                self.C2salutationCell.detailTextLabel?.text = C2salutationLabel
+            }
+        }
+        
         /*
         if let civilStatusLabel = defaults.stringForKey("selectedCivilStatus") {
             self.civilStatusCell.detailTextLabel?.text = civilStatusLabel
@@ -129,17 +144,6 @@ class CardTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     /*
-    
-    
-    @IBOutlet var C1salutationCell: UITableViewCell!
-    
-    
-    @IBOutlet var C2salutationCell: UITableViewCell!
-    
-    
-    
-    
-    
     @IBOutlet var bankCell: UITableViewCell!
     
     @IBOutlet var incometype: UILabel!
@@ -169,6 +173,9 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var provinceBizCell: UITableViewCell!
     @IBOutlet var cityBizCell: UITableViewCell!
     @IBOutlet var empsourcefundsCell: UITableViewCell!
+    
+    @IBOutlet var C1salutationCell: UITableViewCell!
+    @IBOutlet var C2salutationCell: UITableViewCell!
     
     @IBOutlet var salutation: UILabel!
     @IBOutlet var lastname: UITextField!

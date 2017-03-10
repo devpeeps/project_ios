@@ -642,7 +642,7 @@
 				TargetAttributes = {
 					4F40A37A1C22A2F500C9FD42 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = SL3TH38Y7N;
+						DevelopmentTeam = TK7Q7CNCAF;
 					};
 					4F40A3911C22A2F500C9FD42 = {
 						CreatedOnToolsVersion = 7.1.1;
