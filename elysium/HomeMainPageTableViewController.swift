@@ -60,7 +60,7 @@ class HomeMainPageTableViewController: UITableViewController {
             }
             
             defaults.setObject("20", forKey: "selectedDP")
-            defaults.setObject("60", forKey: "selectedTerm")
+            defaults.setObject("20", forKey: "selectedTerm")
         }
         
         if segue.identifier == "ShowHomeApplication"
@@ -69,10 +69,10 @@ class HomeMainPageTableViewController: UITableViewController {
                 destinationVC.vcAction = "ShowHomeApplication"
             }
             
-            self.defaults.setObject("ShowHomeLoanApplication", forKey: "vcAction")
+            self.defaults.setObject("ShowHomeApplication", forKey: "vcAction")
             
             defaults.setObject("20", forKey: "selectedDP")
-            defaults.setObject("60", forKey: "selectedTerm")
+            defaults.setObject("20", forKey: "selectedTerm")
             defaults.setObject("", forKey: "selectedCarModel")
             defaults.setObject("", forKey: "selectedCarBrand")
             defaults.setObject("", forKey: "selectedCarModelId")

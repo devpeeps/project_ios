@@ -266,9 +266,8 @@ class ViewControllerAuto: UIViewController, UIPickerViewDataSource, UIPickerView
         
         var amort = ((rate / 1200) * (0 - amount_financed!))
         amort = amort * (pow((1 + (rate / 1200)), term) / (1 - pow((1 + (rate / 1200)), term)));
+        
         return amort
-        
-        
     }
     
     func getEIR(termInMonths: Int,aor: Double,isOMA: Bool) -> Double{

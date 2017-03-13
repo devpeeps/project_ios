@@ -508,7 +508,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         txtMonthlyAmort.text = formatter.stringFromNumber(x)!
     }
     
-    func calculateAmort() -> (Double){
+    func calculateAmort() -> Double{
         
         if (txtSellingPrice.text == ""){
             txtSellingPrice.text = "0.00"
@@ -544,13 +544,18 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         let term = Double(selectedTerm)!
         
         NSLog("term = " + String(term))
-
         NSLog("aor: " + String(aor))
         NSLog("rate: " + String(rate))
-        
-        
+        print(amount_financed)
+        print(rate)
+        print(term)
         var amort = ((rate / 12) * (0 - amount_financed!))
+        
+        print(amort)
+        
         amort = amort * (pow((1 + (rate / 12)), 12 * term) / (1 - pow((1 + (rate / 12)), 12 * term)));
+        print(amort)
+
         return amort
     }
     

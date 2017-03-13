@@ -486,10 +486,11 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         if let termLabel = defaults.stringForKey("selectedTerm") {
             selectedTerm = termLabel
         }
-        
-        let rate = getEIR(Int(selectedTerm)!, aor: aor ,isOMA: false);
+
+        let rate = getEIR(Int(selectedTerm)!, aor: aor, isOMA: false);
+        print(rate)
+        NSLog("rate = ", rate)
         var dp = Double(selectedDP)
-        
         if (dp == nil){
             dp = 60
         }
@@ -506,9 +507,10 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         NSLog("amount_downpayment = " + String(amount_downpayment))
         
         let term = Double(selectedTerm)!
-        
+        print(term)
         var amort = ((rate / 1200) * (0 - amount_financed!))
         amort = amort * (pow((1 + (rate / 1200)), term) / (1 - pow((1 + (rate / 1200)), term)));
+        
         return (amort, amount_financed!, amount_downpayment)
     }
     

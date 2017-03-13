@@ -187,7 +187,18 @@ class PromoViewController: UIViewController, UITableViewDelegate, UITableViewDat
                             
                         })
                     }else{
-                        
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            let alert = UIAlertController(title: "No Record Found", message: "Promos and Exclusive Offers not available", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                //exit(1)
+                            })
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        })
                     }
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
