@@ -10855,13 +10855,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="FAQ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Or3-V0-sI0">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAQ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Or3-V0-sI0">
                                 <rect key="frame" x="20" y="84" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lX9-we-jQv">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lX9-we-jQv">
                                 <rect key="frame" x="17" y="119" width="563" height="481"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <attributedString key="attributedText">
@@ -15160,13 +15160,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qbW-iR-qeH">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qbW-iR-qeH">
                                 <rect key="frame" x="0.0" y="64" width="600" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="KlA-D2-4Cb"/>
                                 </constraints>
                             </imageView>
-                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eni-7f-HRt">
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eni-7f-HRt">
                                 <rect key="frame" x="0.0" y="191" width="600" height="344"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
                             </webView>
@@ -15240,13 +15240,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ic_auto_promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="nTL-jS-xBM">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_auto_promo.png" translatesAutoresizingMaskIntoConstraints="NO" id="nTL-jS-xBM">
                                 <rect key="frame" x="0.0" y="64" width="600" height="118"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="118" id="JRx-7P-Pp4"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="VHL-NB-aV9">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="VHL-NB-aV9">
                                 <rect key="frame" x="0.0" y="182" width="600" height="418"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <activityIndicatorView key="tableHeaderView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="RYJ-uO-cV1">
@@ -18021,37 +18021,37 @@
         <segue reference="YeN-Vh-ff6"/>
         <segue reference="bim-qy-i6V"/>
         <segue reference="XCt-AV-QdG"/>
-        <segue reference="SGz-Pm-uBX"/>
-        <segue reference="qqo-IO-C6M"/>
-        <segue reference="pg2-oV-BKq"/>
-        <segue reference="6Pi-cU-jE7"/>
-        <segue reference="o7u-W1-rLC"/>
-        <segue reference="4kN-9j-0g2"/>
-        <segue reference="S6z-sd-0dp"/>
-        <segue reference="AqJ-IS-hPn"/>
-        <segue reference="3iQ-v6-pg3"/>
-        <segue reference="lNB-M2-eRq"/>
-        <segue reference="BzD-4U-ZxB"/>
-        <segue reference="nXe-YB-f3D"/>
-        <segue reference="r04-pM-PPL"/>
-        <segue reference="Yz6-js-C5K"/>
-        <segue reference="e1x-ph-Gen"/>
-        <segue reference="s4l-H5-wEc"/>
-        <segue reference="m11-Rr-8sX"/>
-        <segue reference="iWz-RQ-C1W"/>
-        <segue reference="tLo-g8-1fT"/>
-        <segue reference="EVx-fR-sdk"/>
-        <segue reference="W1t-uI-oHy"/>
-        <segue reference="fn9-CO-cw6"/>
-        <segue reference="hm6-NY-94e"/>
-        <segue reference="u20-0m-Qjl"/>
-        <segue reference="wOC-9L-5b9"/>
-        <segue reference="sWb-vh-Bbx"/>
-        <segue reference="ICH-Hh-rta"/>
-        <segue reference="hkk-Y0-chg"/>
         <segue reference="hHP-v4-cuB"/>
         <segue reference="gCS-LE-3Sd"/>
         <segue reference="7zp-ZM-g3U"/>
         <segue reference="zaZ-Uv-Mst"/>
+        <segue reference="pg2-oV-BKq"/>
+        <segue reference="qqo-IO-C6M"/>
+        <segue reference="o7u-W1-rLC"/>
+        <segue reference="SGz-Pm-uBX"/>
+        <segue reference="6Pi-cU-jE7"/>
+        <segue reference="S6z-sd-0dp"/>
+        <segue reference="4kN-9j-0g2"/>
+        <segue reference="BzD-4U-ZxB"/>
+        <segue reference="Yz6-js-C5K"/>
+        <segue reference="r04-pM-PPL"/>
+        <segue reference="nXe-YB-f3D"/>
+        <segue reference="e1x-ph-Gen"/>
+        <segue reference="s4l-H5-wEc"/>
+        <segue reference="m11-Rr-8sX"/>
+        <segue reference="iWz-RQ-C1W"/>
+        <segue reference="W1t-uI-oHy"/>
+        <segue reference="ThR-TF-3qJ"/>
+        <segue reference="EVx-fR-sdk"/>
+        <segue reference="AqJ-IS-hPn"/>
+        <segue reference="3iQ-v6-pg3"/>
+        <segue reference="lNB-M2-eRq"/>
+        <segue reference="fn9-CO-cw6"/>
+        <segue reference="u20-0m-Qjl"/>
+        <segue reference="hm6-NY-94e"/>
+        <segue reference="hkk-Y0-chg"/>
+        <segue reference="sWb-vh-Bbx"/>
+        <segue reference="ICH-Hh-rta"/>
+        <segue reference="wOC-9L-5b9"/>
     </inferredMetricsTieBreakers>
 </document>

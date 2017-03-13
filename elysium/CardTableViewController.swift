@@ -70,7 +70,7 @@ class CardTableViewController: UITableViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        if(vcAction == "ShowApplyCard"){
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             if let salutationLabel = defaults.stringForKey("selectedSalutation") {
                 self.salutationCell.detailTextLabel?.text = salutationLabel
             }
@@ -249,21 +249,21 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var c2bdaydetailLabel: UILabel!
     
     @IBAction func datePickerChanged() {
-        if(vcAction == "ShowApplyCard")
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard")
         {
             bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func c1datePickerChanged() {
-        if(vcAction == "ShowApplyCard")
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard")
         {
             c1bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c1bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func c2datePickerChanged() {
-        if(vcAction == "ShowApplyCard")
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard")
         {
             c2bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c2bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
@@ -288,7 +288,7 @@ class CardTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if(vcAction == "ShowApplyCard")
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard")
         {
             if indexPath.section == 0 && indexPath.row == 8 {
                 toggleDatepicker()
@@ -306,7 +306,7 @@ class CardTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        if(vcAction == "ShowApplyCard")
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard")
         {
             if bdaydatePickerHidden && indexPath.section == 0 && indexPath.row == 9 {
                 return 0
@@ -330,7 +330,7 @@ class CardTableViewController: UITableViewController {
         
         var itemCount = 0
         
-        if(vcAction == "ShowApplyCard" ){
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             if(section == 0){
                 itemCount = 14
             }
@@ -394,7 +394,7 @@ class CardTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         var headerHeight: CGFloat = 0
         
-        if(vcAction == "ShowApplyCard"){
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             
             if(section == 0){
                 headerHeight = tableView.sectionHeaderHeight
@@ -466,7 +466,7 @@ class CardTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         var footerHeight: CGFloat = 0
         
-        if(vcAction == "ShowApplyCard"){
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             
             if(section == 0){
                footerHeight = tableView.sectionFooterHeight
@@ -539,7 +539,7 @@ class CardTableViewController: UITableViewController {
         
         var sectionHeader = ""
         
-        if(vcAction == "ShowApplyCard"){
+        if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             if(section == 0){
                 sectionHeader = "Personal Information"
             }
@@ -666,313 +666,6 @@ class CardTableViewController: UITableViewController {
         
         creditCardApplicationTable.reloadData()
     }
-    
-    /*
-    @IBAction func toggleSwitchCard(sender: UISwitch) {
-        if(self.toggleCard.on == true) {
-            bank.enabled = true
-            
-        }else{
-            bank.enabled = false
-            
-        }
-    }
-    */
-    
-    /*
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        var itemCount = 0
-        
-        if(vcAction == "ShowApplyCard" ){
-            if(section == 0){
-                itemCount = 20
-            } else if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    itemCount = 18
-                }else{
-                    itemCount = 0
-                }
-            } else if(section == 2){
-                itemCount = 1
-            } else if(section == 3 || section == 4 || section == 5){
-                /*
-                if(section == 3){
-                    if(self.withc1.on){
-                        itemCount = 19
-                    } else{
-                        itemCount = 0
-                    }
-                }
-                
-                if(section == 4){
-                    if(self.withc1.on){
-                        itemCount = 1
-                    } else{
-                        itemCount = 0
-                    }
-                }
-                
-                if(section == 5){
-                    if(!self.withc1.on){
-                        itemCount = 0
-                    }else{
-                        if(self.withc2.on){
-                            itemCount = 19
-                        } else{
-                            itemCount = 0
-                        }
-                    }
-                }
-                 */
-            } else if(section == 6){
-                itemCount = 1
-            } else if(section == 7){
-                itemCount = 1
-            }
-        }
-        return itemCount
-    }
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        var headerHeight: CGFloat = 0
-        
-        if(vcAction == "ShowApplyCard" ){
-            if(section == 0){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-        }
-        
-
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
-            if(section == 0){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-            
-            if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    headerHeight = tableView.sectionHeaderHeight
-                }
-                else{
-                    headerHeight = CGFloat.min
-                }
-            }
-            
-            if(section == 2){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-            
-            if(section == 3){
-                //if(self.withc1.on){
-                //    headerHeight = tableView.sectionHeaderHeight
-                //}
-                //else {
-                //headerHeight = CGFloat.min
-                //}
-            }
-            
-            if(section == 4){
-                //if(self.withc1.on){
-                 //   headerHeight = tableView.sectionHeaderHeight
-                //}
-                //else {
-                //    headerHeight = CGFloat.min
-                //}
-            }
-            
-            if(section == 5){
-                //if(!self.withc1.on){
-                 //   headerHeight = CGFloat.min
-                //}else{
-                 //   if(self.withc2.on){
-                        headerHeight = tableView.sectionHeaderHeight
-                 //   }
-                  //  else {
-                        headerHeight = CGFloat.min
-                   // }
-                //}
-            }
-            
-            if(section == 6){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-            
-            if(section == 7){
-                headerHeight = tableView.sectionHeaderHeight
-            }
-        }
-
-        return headerHeight
-    }
-    
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        var footerHeight: CGFloat = 0
-        
-        if(vcAction == "ShowApplyCard"){
-            if(section == 0){
-                footerHeight = tableView.sectionFooterHeight
-            }
-        }
-        
-        /*
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
-            if(section == 0){
-                footerHeight = tableView.sectionFooterHeight
-            }
-            
-            if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else{
-                    footerHeight = CGFloat.min
-                }
-            }
-            
-            if(section == 2){
-                footerHeight = tableView.sectionFooterHeight
-            }
-            
-            if(section == 3){
-                if(self.withc1.on){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else {
-                    footerHeight = CGFloat.min
-                }
-            }
-            
-            if(section == 4){
-                if(self.withc1.on){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else {
-                    footerHeight = CGFloat.min
-                }
-            }
-            
-            if(section == 5){
-                if(self.withc2.on){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else {
-                    footerHeight = CGFloat.min
-                }
- 
-            }
-            
-            if(section == 6){
-                footerHeight = tableView.sectionFooterHeight
-            }
-            
-            if(section == 7){
-                footerHeight = tableView.sectionFooterHeight
-            }
-        }
- 
-        return footerHeight
-    }
-    */
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        var sectionHeader = ""
-        
-        if(vcAction == "ShowApplyCard"){
-            if(section == 0){
-                sectionHeader = "Personal Information"
-            }
-            else if(section == 1){
-                sectionHeader = "Present Address"
-            }
-            else if(section == 2){
-                sectionHeader = "Permanent Address"
-            }
-            else if(section == 3){
-                sectionHeader = "Financial Information"
-            }
-            else if(section == 4){
-                sectionHeader = "Credit Card Information"
-            }
-            else if(section == 5){
-                sectionHeader = "Additional Supplementary"
-            }
-            else if(section == 6){
-                sectionHeader = "Supplementary 1 Information"
-            }
-            else if(section == 7){
-                sectionHeader = "Additional Supplementary"
-            }
-            else if(section == 8){
-                sectionHeader = "Supplementary 2 Information"
-            }
-            else if(section == 9){
-                sectionHeader = "Other Instructions"
-            }
-            else if(section == 10){
-                sectionHeader = ""
-            }
-        }
-        
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
-            if(section == 0){
-                var promoLabel = ""
-                
-                sectionHeader = "New Auto Laon Application"
-                
-                if let promoStatusLabel = defaults.stringForKey("promoStatus") {
-                    promoStatus = promoStatusLabel
-                }
-                
-                if(promoStatus == "OptIn"){
-                    promoLabel = "\n(You are currently subscribed to FREE GAS Promo)"
-                    sectionHeader += promoLabel
-                }
-                
-            } else if(section == 1){
-                if(self.civilstatus.text == "Married"){
-                    sectionHeader = "Spouse Information"
-                }else{
-                    sectionHeader = ""
-                }
-            } else if(section == 2){
-                sectionHeader = "Additional Co-maker"
-            } else if(section == 3 || section == 4){
-                if(section == 3){
-                    if(self.withc1.on){
-                        sectionHeader = "Co-maker 1 Information"
-                    }else{
-                        sectionHeader = ""
-                    }
-                }
-                
-                if(section == 4){
-                    if(self.withc1.on){
-                        sectionHeader = "Additional Co-maker"
-                    }else{
-                        sectionHeader = ""
-                    }
-                }
-                
-            } else if(section == 5){
-                if(!self.withc1.on){
-                    sectionHeader = ""
-                }else{
-                    if(self.withc2.on){
-                        sectionHeader = "Co-maker 2 Information"
-                    }else{
-                        sectionHeader = ""
-                    }
-                }
-            } else if(section == 6){
-                sectionHeader = "Remarks"
-            } else if(section == 7){
-                sectionHeader = ""
-            }
-        }
-        return sectionHeader
-    }
-    */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
