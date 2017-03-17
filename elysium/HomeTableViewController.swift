@@ -1632,7 +1632,6 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
                         sectionHeader = ""
                     }
                 }
-                
             } else if(section == 5){
                 if(!self.withc1.on){
                     sectionHeader = ""
