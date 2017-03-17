@@ -982,11 +982,10 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     func submitApplication(){
         //self.loadingIndicator.hidden = false
         //self.loadingIndicator.startAnimating()
-        self.view.userInteractionEnabled = false
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        
         
         let url = NSLocalizedString("urlCREST", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         
         var stringUrl = url
         
@@ -1317,12 +1316,12 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
+        stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
         stringUrl = stringUrl + "&duid=" + UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&dtype=ios"
         
-        //stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         //stringUrl = stringUrl + "&loggeduser=" + EncodeURLString(loggedUSRUID);
-        
         
         if(errorctr > 0){
             let alert = UIAlertController(title: "Error in Form", message: "You have blank/invalid/errors on some required fields.\n" + errormsg, preferredStyle: .Alert)
@@ -1337,6 +1336,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             self.view.userInteractionEnabled = true
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }else{
+            
             NSUserDefaults.standardUserDefaults().setObject(self.lastname.text, forKey: "LASTNAME")
             NSUserDefaults.standardUserDefaults().setObject(self.firstname.text, forKey: "FIRSTNAME")
             NSUserDefaults.standardUserDefaults().setObject(self.middlename.text, forKey: "MIDDLENAME")
