@@ -1569,6 +1569,9 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             url.refid = "AUTO"
             url.datesuccess = "0"
 
+            NSLog("stringUrl: " + stringUrl)
+            NSLog("url: " + String(url))
+            
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
             //self.loadingIndicator.stopAnimating()

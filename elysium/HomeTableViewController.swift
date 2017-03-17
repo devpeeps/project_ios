@@ -1357,7 +1357,8 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             url.datecreated = String(NSDate())
             url.refid = "HOME"
             url.datesuccess = "0"
-            
+            NSLog("stringUrl: " + stringUrl)
+            NSLog("url: " + String(url))
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
             //self.loadingIndicator.stopAnimating()

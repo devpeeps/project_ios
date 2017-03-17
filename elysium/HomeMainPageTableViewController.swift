@@ -53,6 +53,12 @@ class HomeMainPageTableViewController: UITableViewController {
             defaults.setObject("", forKey: "selectedCity")
         }
         
+        if segue.identifier == "ShowRecentlyViewedPropertyModel" {
+            if let destinationVC = segue.destinationViewController as? ListTableViewController{
+                destinationVC.vcAction = "ShowRecentlyViewedPropertyModel"
+            }
+        }
+        
         if segue.identifier == "ShowHomeLoanCalculator"
         {
             if let destinationVC = segue.destinationViewController as? HomeTableViewController{

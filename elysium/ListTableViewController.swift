@@ -64,6 +64,10 @@ class ListTableViewController: UITableViewController {
             loadCarModelsRecent()
         }
         
+        if(vcAction == "ShowRecentlyViewedPropertyModel"){
+            loadPropertyModelsRecent()
+        }
+        
         if(vcAction == "CardCategoryTravel"){
             defaults.setObject("Travel", forKey: "selectedCardCategory")
             if let cardCategory = defaults.stringForKey("selectedCardCategory") {
@@ -325,6 +329,117 @@ class ListTableViewController: UITableViewController {
         }
     }
     
+    func loadPropertyModelsRecent(){
+        showRecent = true
+        urlLib = NSLocalizedString("urlLib", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "HOMEMODELS")
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: "HISTORY")
+        
+        var s = ""
+        if (NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") != nil) {
+            s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
+        }
+        
+        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: s)
+        NSLog(urlAsString)
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            
+            loadingIndicator.hidden = false
+            loadingIndicator.startAnimating()
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            self.propertyModelArr.removeAll()
+                            for i in 0...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2.count >= 3){
+                                    self.propertyModelArr.append((str2[0], str2[1], str2[3], str2[4], Double(str2[13])!, Double(str2[14])!, str2[5], str2[6], str2[10], str2[11], str2[12]))
+                                }
+                            }
+                            self.tableViewPropertyModels.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        })
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            let alert = UIAlertController(title: "Recently Viewed Properties Empty", message: "You have not recently viewed any property.", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                                //exit(1)
+                            })
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        })
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        self.loadingIndicator.hidden = true
+                        self.loadingIndicator.stopAnimating()
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            //exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
     func loadCardTypeList(){
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
@@ -565,6 +680,10 @@ class ListTableViewController: UITableViewController {
             itemCount = carModelArr.count
         }
         
+        if(vcAction == "ShowRecentlyViewedPropertyModel"){
+            itemCount = propertyModelArr.count
+        }
+        
         if(vcAction == "ShowCardTypeList" || vcAction == "CardCategoryTravel" || vcAction == "CardCategoryCashBack"){
             itemCount = cardTypeArr.count
         }
@@ -602,7 +721,7 @@ class ListTableViewController: UITableViewController {
                 let imageView = UIImage(named: img)
                 listcell.imageView!.image = imageView
             }
-        } else if(vcAction == "ShowPropertyModelList"){
+        } else if(vcAction == "ShowPropertyModelList" || vcAction == "ShowRecentlyViewedPropertyModel"){
             let (_, modeldesc, proj, _, _, srpto, areafrom, areato, _, prov, city) = self.propertyModelArr[indexPath.row]
             
             if(modeldesc != ""){
@@ -631,6 +750,10 @@ class ListTableViewController: UITableViewController {
         
         if(vcAction == "ShowRecentlyViewedCarModel"){
             dropdownName = "Recently Viewed Car Model"
+        }
+        
+        if(vcAction == "ShowRecentlyViewedPropertyModel"){
+            dropdownName = "Recently View Property Model"
         }
         
         if(vcAction == "ShowCardTypeList"){
@@ -830,6 +953,111 @@ class ListTableViewController: UITableViewController {
                 //nothing
             })
             alert.addAction(action5)
+            
+            presentViewController(alert, animated: true, completion: nil)
+        }
+        
+        if(vcAction == "ShowRecentlyViewedPropertyModel"){
+            let (modelid, modeldesc, proj, type, _, srpto, areafrom, areato, developer, prov, city) = self.propertyModelArr[indexPath.row]
+            
+            
+            let alert = UIAlertController(title: "Options for", message: modeldesc.capitalizedString + " - " + proj.capitalizedString, preferredStyle: .ActionSheet)
+            let action = UIAlertAction(title: "View Model Details", style: .Default, handler: { (alert) -> Void in
+                //self.selectedCarModelId = modelid
+                //self.performSegueWithIdentifier("ViewCarDetails", sender: self)
+                let x = Int(srpto).stringFormattedWithSepator
+                let alert_ = UIAlertController(title: "Model Details", message: "Type : " + type + "\r\n" + "Model : " + modeldesc + "\r\n" + "Project Name : " + proj + "\r\n" + "Developer : " + developer + "\r\n" + "SRP : PHP " + x + "\r\nArea (sqm) : " + areafrom + " - " + areato + "\r\nLocation : " + city + ", " + prov + "\r\n", preferredStyle: .Alert)
+                let action_ = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                })
+                alert_.addAction(action_)
+                self.presentViewController(alert_, animated: true, completion: nil)
+                
+                //SAVE SELECTED TO RECENTLY VIEWED ITEM
+                let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                if (userDefaults.objectForKey("viewedProperties") != nil) {
+                    let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
+                    
+                    let arr = s.characters.split{$0 == ","}.map(String.init)
+                    var selectedModelId_viewed = false
+                    for(mId) in arr{
+                        if(mId == modelid){
+                            selectedModelId_viewed = true
+                        }
+                    }
+                    if(!selectedModelId_viewed){
+                        NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedProperties")
+                    }
+                }else{
+                    NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
+                }
+                
+                
+                
+            })
+            alert.addAction(action)
+            let action2 = UIAlertAction(title: "Home Loan Calculator", style: .Default, handler: { (alert) -> Void in
+                self.selectedPropertyModelId = modelid
+                self.selectedPropertyModelSRP = Int(self.propertyModelArr[indexPath.row].5)
+                self.selectedPropertyProj = proj
+                self.selectedPropertyDeveloper = developer
+                
+                //SAVE SELECTED TO RECENTLY VIEWED ITEM
+                let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                if (userDefaults.objectForKey("viewedProperties") != nil) {
+                    let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
+                    
+                    let arr = s.characters.split{$0 == ","}.map(String.init)
+                    var selectedModelId_viewed = false
+                    for(mId) in arr{
+                        if(mId == modelid){
+                            selectedModelId_viewed = true
+                        }
+                    }
+                    if(!selectedModelId_viewed){
+                        NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedProperties")
+                    }
+                }else{
+                    NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
+                }
+                
+                self.performSegueWithIdentifier("HomeLoanCalculator", sender: self)
+            })
+            alert.addAction(action2)
+            let action3 = UIAlertAction(title: "Apply for Home Loan", style: .Default, handler: { (alert) -> Void in
+                self.selectedPropertyModelId = modelid
+                self.selectedPropertyModelSRP = Int(self.propertyModelArr[indexPath.row].5)
+                self.selectedPropertyProj = proj
+                self.selectedPropertyDeveloper = developer
+                
+                //SAVE SELECTED TO RECENTLY VIEWED ITEM
+                let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                if (userDefaults.objectForKey("viewedVehicles") != nil) {
+                    let s = NSUserDefaults.standardUserDefaults().valueForKey("viewedProperties") as! String
+                    
+                    let arr = s.characters.split{$0 == ","}.map(String.init)
+                    var selectedModelId_viewed = false
+                    for(mId) in arr{
+                        if(mId == modelid){
+                            selectedModelId_viewed = true
+                        }
+                    }
+                    if(!selectedModelId_viewed){
+                        NSUserDefaults.standardUserDefaults().setObject(s + "," + modelid, forKey: "viewedProperties")
+                    }
+                }else{
+                    NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
+                }
+                
+                
+                //self.performSegueWithIdentifier("ApplyLoanDirect", sender: self)
+                
+            })
+            alert.addAction(action3)
+            
+            let action4 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+                //nothing
+            })
+            alert.addAction(action4)
             
             presentViewController(alert, animated: true, completion: nil)
         }
