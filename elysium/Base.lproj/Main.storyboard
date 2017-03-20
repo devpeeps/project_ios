@@ -10840,6 +10840,8 @@
                     <connections>
                         <outlet property="loadingIndicator" destination="upA-h0-Ouq" id="R0A-Lx-0K9"/>
                         <outlet property="tableViewPropertyModels" destination="8IL-Wn-UVT" id="xLC-hB-fi0"/>
+                        <segue destination="rTs-lh-5NE" kind="show" identifier="ShowCalculateHomeLoan" id="Dbu-OT-G62"/>
+                        <segue destination="SIo-Jx-Z9z" kind="show" identifier="ApplyHomeLoanDirect" id="8st-wj-4kH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S6A-6L-NnN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -13970,7 +13972,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uVg-W4-3Dl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1025" y="612"/>
+            <point key="canvasLocation" x="-944" y="588"/>
         </scene>
         <!--View ControllerFAQ-->
         <scene sceneID="jN6-PB-UIO">
@@ -18016,18 +18018,13 @@
         <image name="tmb_promo" width="379" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="SGz-Pm-uBX"/>
-        <segue reference="qqo-IO-C6M"/>
-        <segue reference="pg2-oV-BKq"/>
-        <segue reference="o7u-W1-rLC"/>
-        <segue reference="4kN-9j-0g2"/>
         <segue reference="6Pi-cU-jE7"/>
+        <segue reference="qqo-IO-C6M"/>
+        <segue reference="o7u-W1-rLC"/>
+        <segue reference="SGz-Pm-uBX"/>
         <segue reference="S6z-sd-0dp"/>
-        <segue reference="AqJ-IS-hPn"/>
-        <segue reference="L6v-Yo-drm"/>
-        <segue reference="3iQ-v6-pg3"/>
-        <segue reference="Bx3-gI-XN6"/>
-        <segue reference="7Sh-mL-WDk"/>
+        <segue reference="4kN-9j-0g2"/>
+        <segue reference="pg2-oV-BKq"/>
         <segue reference="BzD-4U-ZxB"/>
         <segue reference="e1x-ph-Gen"/>
         <segue reference="nXe-YB-f3D"/>
@@ -18035,27 +18032,34 @@
         <segue reference="Yz6-js-C5K"/>
         <segue reference="r04-pM-PPL"/>
         <segue reference="m11-Rr-8sX"/>
+        <segue reference="3Wa-NA-hRn"/>
         <segue reference="W1t-uI-oHy"/>
         <segue reference="ThR-TF-3qJ"/>
         <segue reference="EVx-fR-sdk"/>
-        <segue reference="teQ-qp-wN3"/>
-        <segue reference="rUd-zf-A9j"/>
-        <segue reference="WNW-1b-TzT"/>
-        <segue reference="1xu-O6-hB2"/>
-        <segue reference="EDu-Jm-yls"/>
-        <segue reference="YeN-Vh-ff6"/>
-        <segue reference="bim-qy-i6V"/>
-        <segue reference="XCt-AV-QdG"/>
-        <segue reference="gCS-LE-3Sd"/>
-        <segue reference="7zp-ZM-g3U"/>
-        <segue reference="zaZ-Uv-Mst"/>
-        <segue reference="hHP-v4-cuB"/>
+        <segue reference="AqJ-IS-hPn"/>
+        <segue reference="Bx3-gI-XN6"/>
+        <segue reference="L6v-Yo-drm"/>
+        <segue reference="8st-wj-4kH"/>
+        <segue reference="Dbu-OT-G62"/>
+        <segue reference="mzj-d4-dpS"/>
         <segue reference="hkk-Y0-chg"/>
         <segue reference="sWb-vh-Bbx"/>
         <segue reference="ICH-Hh-rta"/>
         <segue reference="wOC-9L-5b9"/>
-        <segue reference="fn9-CO-cw6"/>
+        <segue reference="EDu-Jm-yls"/>
+        <segue reference="WNW-1b-TzT"/>
+        <segue reference="SKq-aG-qli"/>
+        <segue reference="teQ-qp-wN3"/>
+        <segue reference="XCt-AV-QdG"/>
+        <segue reference="1xu-O6-hB2"/>
+        <segue reference="YeN-Vh-ff6"/>
+        <segue reference="bim-qy-i6V"/>
         <segue reference="u20-0m-Qjl"/>
+        <segue reference="fn9-CO-cw6"/>
         <segue reference="hm6-NY-94e"/>
+        <segue reference="7zp-ZM-g3U"/>
+        <segue reference="gCS-LE-3Sd"/>
+        <segue reference="hHP-v4-cuB"/>
+        <segue reference="zaZ-Uv-Mst"/>
     </inferredMetricsTieBreakers>
 </document>

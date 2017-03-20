@@ -92,7 +92,7 @@ class ListTableViewController: UITableViewController {
         }
         
         if(vcAction == "ShowPropertyModelList"){
-            
+/*
             if let propertyTypeLabel = defaults.stringForKey("selectedPropertyType") {
                 selectedPropertyType = propertyTypeLabel
             }
@@ -112,8 +112,16 @@ class ListTableViewController: UITableViewController {
             if let cityLabel = defaults.stringForKey("selectedCity") {
                 selectedCity = cityLabel
             }
-            
-            loadPropertyModels()
+*/
+
+            NSLog("function: loadPropertyModels")
+            NSLog("selectedPropertyType: " + selectedPropertyType)
+            NSLog("selectedPriceFrom: " + selectedPriceFrom)
+            NSLog("selectedPriceTo: " + selectedPriceTo)
+            NSLog("selectedProvince: " + selectedProvince)
+            NSLog("selectedCity: " + selectedCity)
+
+            loadPropertyModels(selectedPropertyType, priceFrom: selectedPriceFrom, priceTo: selectedPriceTo, province: selectedProvince, city: selectedCity)
         }
     }
     
@@ -345,7 +353,6 @@ class ListTableViewController: UITableViewController {
         
         
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: s)
-        NSLog(urlAsString)
         
         var contProc = true
         let status = Reach().connectionStatus()
@@ -542,32 +549,38 @@ class ListTableViewController: UITableViewController {
         
     }
     
-    func loadPropertyModels(){
+    func loadPropertyModels(propertyType: String, priceFrom: String, priceTo: String, province: String, city: String){
         
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "HOMEMODELS")
         
+        NSLog("IBAction: actionSearchPropertyModel")
+        NSLog("priceFrom: " + String(priceFrom))
+        NSLog("priceTo: " + String(priceTo))
+        NSLog("provinceType: " + String(propertyType))
+        NSLog("province: " + String(province))
+        NSLog("city: " + String(city))
+        
+        /*
         NSLog("function: loadPropertyModels")
         NSLog("selectedPropertyType: " + selectedPropertyType)
         NSLog("selectedPriceFrom: " + selectedPriceFrom)
         NSLog("selectedPriceTo: " + selectedPriceTo)
         NSLog("selectedProvince: " + selectedProvince)
         NSLog("selectedCity: " + selectedCity)
- 
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: selectedPropertyType.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        */
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: propertyType.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
         
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: selectedPriceFrom.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: priceFrom.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
         
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM3", withString: selectedPriceTo.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM3", withString: priceTo.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
         
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM4", withString: selectedProvince.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM4", withString: province.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
         
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM5", withString: selectedCity.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
- 
-        //NSLog(urlAsString)
-        
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM5", withString: city.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        NSLog("urlAsString: " + urlAsString)
         var contProc = true
         let status = Reach().connectionStatus()
         switch status {
@@ -588,8 +601,6 @@ class ListTableViewController: UITableViewController {
             
             let url = NSURL(string: urlAsString)!
             let urlSession = NSURLSession.sharedSession()
-            //NSLog("url: " + String(url))
-            //NSLog("urlSession: " + String(urlSession))
             
             var err = false
             
@@ -1020,7 +1031,7 @@ class ListTableViewController: UITableViewController {
                     NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
                 }
                 
-                self.performSegueWithIdentifier("HomeLoanCalculator", sender: self)
+                self.performSegueWithIdentifier("ShowCalculateHomeLoan", sender: self)
             })
             alert.addAction(action2)
             let action3 = UIAlertAction(title: "Apply for Home Loan", style: .Default, handler: { (alert) -> Void in
@@ -1049,7 +1060,7 @@ class ListTableViewController: UITableViewController {
                 }
                 
                 
-                //self.performSegueWithIdentifier("ApplyLoanDirect", sender: self)
+                self.performSegueWithIdentifier("ApplyHomeLoanDirect", sender: self)
                 
             })
             alert.addAction(action3)
@@ -1080,7 +1091,7 @@ class ListTableViewController: UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+        //AUTOLOAN
         if (segue.identifier == "ShowAutoLoanCalculator")
         {
             if let destinationVC = segue.destinationViewController as? AutoTableViewController{
@@ -1099,6 +1110,28 @@ class ListTableViewController: UITableViewController {
         {
             if let destinationVC = segue.destinationViewController as? AutoTableViewController{
                 destinationVC.vcAction = "ApplyLoanDirect"
+            }
+        }
+        
+        //HOMELOAN
+        if (segue.identifier == "ShowHomeLoanCalculator")
+        {
+            if let destinationVC = segue.destinationViewController as? HomeTableViewController{
+                destinationVC.vcAction = "ShowHomeLoanCalculator"
+            }
+        }
+        
+        if (segue.identifier == "ShowCalculateHomeLoan")
+        {
+            if let destinationVC = segue.destinationViewController as? HomeTableViewController{
+                destinationVC.vcAction = "ShowCalculateHomeLoan"
+            }
+        }
+        
+        if (segue.identifier == "ApplyHomeLoanDirect")
+        {
+            if let destinationVC = segue.destinationViewController as? HomeTableViewController{
+                destinationVC.vcAction = "ApplyHomeLoanDirect"
             }
         }
     }

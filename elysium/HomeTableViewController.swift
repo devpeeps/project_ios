@@ -1,3 +1,5 @@
+
+
 //
 //  HomeTableViewController.swift
 //  elysium
@@ -102,7 +104,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var cityCell: UITableViewCell!
     
     override func viewDidAppear(animated: Bool) {
-        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp"){
+        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect" || vcAction == "ShowCalculateHomeLoan"){
             if let DPLabel = defaults.stringForKey("selectedDP") {
                 self.downpaymentCell.detailTextLabel?.text = DPLabel
             }
@@ -126,7 +128,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp"){
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect"){
             let date = NSDate()
             let calendar = NSCalendar.currentCalendar()
             let components = calendar.components([.Day , .Month , .Year], fromDate: date)
@@ -735,28 +737,28 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var txtPriceTo: UITextField!
     
     @IBAction func datePickerChanged() {
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedAutoApp")
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect")
         {
             bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func spousedatePickerChanged() {
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp")
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect")
         {
             spousebdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(spousebdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func c1datePickerChanged() {
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp")
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect")
         {
             c1bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c1bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func c2datePickerChanged() {
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp")
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect")
         {
             c2bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c2bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
@@ -924,12 +926,20 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func actionSearchPropertyModel(sender: AnyObject) {
-        let priceFrom = txtPriceFrom.text
-        let priceTo = txtPriceTo.text
-        let propertyType = propertyTypeCell.detailTextLabel?.text
-        let province = provinceCell.detailTextLabel?.text
-        let city = cityCell.detailTextLabel?.text
         
+        let selectedPriceFrom = txtPriceFrom.text
+        let selectedPriceTo = txtPriceTo.text
+        let selectedPropertyType = propertyTypeCell.detailTextLabel?.text
+        let selectedProvince = provinceCell.detailTextLabel?.text
+        let selectedCity = cityCell.detailTextLabel?.text
+        
+        /*
+         let priceFrom = txtPriceFrom.text
+         let priceTo = txtPriceTo.text
+         let propertyType = propertyTypeCell.detailTextLabel?.text
+         let province = provinceCell.detailTextLabel?.text
+         let city = cityCell.detailTextLabel?.text
+    
         defaults.setObject(propertyType, forKey: "selectedPropertyType")
         defaults.setObject(province, forKey: "selectedProvince")
         defaults.setObject(city, forKey: "selectedCity")
@@ -955,13 +965,22 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         if let cityLabel = defaults.stringForKey("selectedCity") {
             selectedCity = cityLabel
         }
-        
+ 
+         
+         NSLog("IBAction: actionSearchPropertyModel")
+         NSLog("priceFrom: " + String(priceFrom))
+         NSLog("priceTo: " + String(priceTo))
+         NSLog("provinceType: " + String(propertyType))
+         NSLog("province: " + String(province))
+         NSLog("city: " + String(city))
+        */
         NSLog("IBAction: actionSearchPropertyModel")
-        NSLog("selectedPropertyType: " + selectedPropertyType)
-        NSLog("selectedPriceFrom: " + selectedPriceFrom)
-        NSLog("selectedPriceTo: " + selectedPriceTo)
-        NSLog("selectedProvince: " + selectedProvince)
-        NSLog("selectedCity: " + selectedCity)
+        NSLog("selectedPropertyType: " + selectedPropertyType!)
+        NSLog("selectedPriceFrom: " + selectedPriceFrom!)
+        NSLog("selectedPriceTo: " + selectedPriceTo!)
+        NSLog("selectedProvince: " + selectedProvince!)
+        NSLog("selectedCity: " + selectedCity!)
+
     }
     
     @IBAction func actionSubmit(sender: AnyObject) {
@@ -1384,13 +1403,13 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateAutoLoan"){
+        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateHomeLoan"){
             if(section == 0){
                 itemCount = 8
             }
         }
         
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp"){
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect"){
             if(section == 0){
                 itemCount = 23
             } else if(section == 1){
@@ -1447,13 +1466,13 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateAutoLoan"){
+        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateHomeLoan"){
             if(section == 0){
                 headerHeight = tableView.sectionHeaderHeight
             }
         }
         
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp"){
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect"){
             if(section == 0){
                 headerHeight = tableView.sectionHeaderHeight
             }
@@ -1523,13 +1542,13 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateAutoLoan"){
+        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateHomeLoan"){
             if(section == 0){
                 footerHeight = tableView.sectionFooterHeight
             }
         }
         
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp"){
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect"){
             if(section == 0){
                 footerHeight = tableView.sectionFooterHeight
             }
@@ -1599,13 +1618,13 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateAutoLoan"){
+        if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowCalculateHomeLoan"){
             if(section == 0){
                 sectionHeader = "Home Loan Calculator"
             }
         }
         
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp"){
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect"){
             if(section == 0){
                 sectionHeader = "New Home Loan Application"
             }
@@ -1655,7 +1674,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp")
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect")
         {
             if indexPath.section == 0 && indexPath.row == 7 {
                 toggleDatepicker()
@@ -1677,7 +1696,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        if(vcAction == "ShowHomeApplication" || vcAction == "ShowComputedHomeApp")
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect")
         {
             if bdaydatePickerHidden && indexPath.section == 0 && indexPath.row == 8 {
                 return 0
@@ -1813,8 +1832,19 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         
         if segue.identifier == "ShowPropertyModelList"
         {
+            let selectedPriceFrom = txtPriceFrom.text
+            let selectedPriceTo = txtPriceTo.text
+            let selectedPropertyType = propertyTypeCell.detailTextLabel?.text
+            let selectedProvince = provinceCell.detailTextLabel?.text
+            let selectedCity = cityCell.detailTextLabel?.text
+            
             if let destinationVC = segue.destinationViewController as? ListTableViewController{
                 destinationVC.vcAction = "ShowPropertyModelList"
+                destinationVC.selectedPropertyType = selectedPropertyType!
+                destinationVC.selectedPriceFrom = selectedPriceFrom!
+                destinationVC.selectedPriceTo = selectedPriceTo!
+                destinationVC.selectedProvince = selectedProvince!
+                destinationVC.selectedCity = selectedCity!
             }
         }
         
