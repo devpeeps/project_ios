@@ -1,0 +1,274 @@
+/* 
+  Localizable.strings
+  elysium
+
+  Created by Joshua Eleazar Bosinos on 08/01/2016.
+  Copyright © 2016 UnionBank. All rights reserved.
+*/
+
+urlLib = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchlib_csv.php?libtype=@@LIBTYPE&param1=@@PARAM1&param2=@@PARAM2&param3=@@PARAM3&param4=@@PARAM4&param5=@@PARAM5&param6=@@PARAM6";
+
+urlLibPromos = "https://eclipse.unionbankph.com/custom/ws_eclipse_fetchpromo.php?product=@@PARAM1";
+
+urlLUMINOUS = "https://eclipse.unionbankph.com/custom/newappservice_luminous_mobile.php?";
+
+urlLUMINOUS_IMAGE = "https://eclipse.unionbankph.com/custom/newappservice_luminous_img_mobile.php?";
+
+urlLUMINOUS_LOGIN = "https://eclipse.unionbankph.com/custom/luminousLogin_ws.php?";
+
+urlOTP = "https://eclipse.unionbankph.com/custom/luminousCheckOTP_ws.php?";
+
+
+urlECLIPSE = "https://eclipse.unionbankph.com/custom/newappservice_eclipse_mobile.php?";
+urlCREST = "https://eclipse.unionbankph.com/custom/newappservice_crest_mobile.php?";
+urlCATS = "https://eclipse.unionbankph.com/custom/newappservice_cats_mobile.php?";
+urlINQ = "https://eclipse.unionbankph.com/custom/newappservice_elysium_inquire.php?";
+
+disclaimer_amortHome = "Computed monthly amortization is rough estimation only based on a standard fixing-term rate. This may vary on the actual monthly amortization based on the developer rates.";
+
+tnc_apply = "<b>Credit Information Authority </b><br><br>I/We hereby certify  that all information and statements in this application are correct and  complete, and that they are made for the purpose of obtaining credit. I/We  authorize UnionBank of the Philippines to obtain such information as may be  required concerning the statements made in this application. I/We agree that  this application may remain your property whether the credit is granted or not.<br><br><b>SMS Notification Authority</b><br><br>This is to  authorize UnionBank of the Philippines to notify me/us electronically, included  but not limited to Short Message Service (SMS), using the information given  above at any time. Moreover, I/We shall hold responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br><br>";
+
+terms_conditions = "<b>Credit Information Authority </b><br><br>I/We hereby certify  that all information and statements in this application are correct and  complete, and that they are made for the purpose of obtaining credit. I/We  authorize UnionBank of the Philippines to obtain such information as may be  required concerning the statements made in this application. I/We agree that  this application may remain your property whether the credit is granted or not.<br><br>
+<b>SMS Notification Authority</b><br><br>
+This is to  authorize UnionBank of the Philippines to notify me/us electronically, included  but not limited to Short Message Service (SMS), using the information given  above at any time. Moreover, I/We shall hold responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br><br>";
+
+about_text = "The Consumer Finance App is a mobile application wherein our clients can apply for our Consumer products  from their phones or tablets. Specifically, the app was designed to generate  applications for the following products: <b>Home Loans</b>, <b>Auto Loans</b> and<b>Credit Cards</b>.<br>
+
+<br><b><u>The UnionBank Consumer Finance App Terms & Conditions</u></b><br>
+<br><b>Credit  Information Authority </b><br>
+<br>I/We hereby certify that  all information and statements in this application are correct and complete,  and that they are made for the purpose of obtaining credit. I/We authorize  UnionBank of the Philippines to obtain such information as may be required  concerning the statements made in this application. I/We agree that this  application may remain your property whether the credit is granted or not.<br>
+<br><b>SMS Notification Authority</b><br>
+<br>This is to authorize  UnionBank of the Philippines to notify me/us electronically, included but not  limited to Short Message Service (SMS), using the information given above at  any time. Moreover, I/We shall be solely responsible for the electronic  notification received; as such, I/We declare the Bank free and harmless from  any liability if the information contained in the electronic notification is,  by any means, accessed by any other person than myself/ourselves.<br>
+<br><br>
+<br><b>About the UnionBank  Consumer Finance App</b> <br>
+<br>The App provides you with a  means to apply for a Home Loan, Auto Loan or UnionBank Credit Card. The App  also enables you to explore Real Estate properties and car models that are  available in the Philippines. <br>
+<br>In  these Terms and Conditions:<br>
+<br><b>\"the  App\", \"the app\" or \"app\"</b> refers to UnionBank Consumer Finance App <br>
+<br>
+<b>\"We\", \"Us\", \"Our\", and \"Bank\"</b> refer to UnionBank of the  Philippines.<br>
+<br><b>\"You\" and \"Your\"</b> refer to the client or the owner of the account.<br>
+<br><b>\"Workplace  Arrangement Program\", \"WAP\" </b>refers to UnionBank’s customized arrangement between the  Bank and a partner company wherein qualified or eligible employees of that same  partner company can avail of a Home or Auto loan. Applications are still  subject to further screening by the Bank.<br>
+<br><b>\"Password\",  \"special access code\" </b>refers  to the Mobile Personal Identification (MPIN) code that is given to the  qualified employees of the Bank’s partner WAP companies to access special  arrangements between the Bank and the partner company<br>
+<br><b>Terms & Conditions</b><br>
+<br>
+Please read through the  following Terms and Conditions before clicking on the \"accept\" button  found at the bottom of the page. By clicking on the \"accept\" button,  you are agreeing to the terms and conditions stated on the application and are  bound by these Terms and Conditions.<br>
+<br><b><u>Applicability </u></b><br>
+<br>Only persons who are  permitted by applicable law may browse the information and/or subscribe to the  services and products offered. Persons browsing these materials are required to  ensure that they are aware of and observe all relevant restrictions that apply  to them and are responsible for satisfying themselves that they may do so under  the laws or the jurisdiction to which they are bound or located. Eligibility of  any person for particular product or service is subject to the final  determination of the Bank.<br>
+<br><b><u>Disclaimer </u></b><br>
+<br>The information contained  in these materials is for general information only and is provided on an  \"as is\" basis without warranty of any kind (including without  limitation, merchantability, title, fitness for particular purpose, freedom  from computer virus, non-infringement, compatibility, security, accuracy and  completeness) and may be withdrawn and/or changed at any time without prior  notice.<b><u></u></b><br>
+<br>This app and/or these materials may not be available at all times  and there may be delays, failures, errors or omissions or loss of transmitted  information.<br>
+<br>
+No information contained in these materials should be regarded as an offer or  solicitation to sell, to subscribe to, or provide any recommendation to any person.  The information is not intended to be relied upon as the basis for any decision  which may affect you or your business. All persons should consult their own  professional adviser before making any purchasing of product or subscribing to  any service.<br>
+<br>
+The user should be aware that any information through this app might be on a  delayed basis. The Bank will endeavor to ensure the accuracy and reliability of  the information provided but do not guarantee its accuracy or reliability and  accept no liability (whether in tort or contract or otherwise) for any loss or  damage arising from any inaccuracies or omissions.<br>
+<br>
+To the extent permitted by applicable law, the Bank disclaims liability for any  error, omissions or inaccuracies in the information contained in these  materials and for any loss of damages, resulting from its use or reliance, or  inability to use, by any party or in connection with any error, interruption,  delay in operation or incomplete transmission, line or system failure or  computer virus. The Bank is not responsible in any manner for direct, indirect,  special, incidental or consequential damages arising out of the use of this app  and/or these materials.<br>
+<br>
+Your use of this app and these materials is entirely at your own risk. The Bank  does not represent or warrant that no viruses or other destructive properties  will be transmitted or that no damage will occur to your equipment or mobile  phone. You are solely responsible for adequate protection and back up of data  and/or equipment and for undertaking reasonable and appropriate precautions to  scan for computer viruses or other destructive properties and to prevent,  safeguard and ensure that no computer virus enters your equipment or mobile  phone. The Bank makes no representations or warranties concerning the accuracy,  functionality or performance of any third party software that may be used in  connection with this app.<br>
+<br>
+<b><u>Security Information</u></b><br>
+<br>
+The Bank endeavors to ensure the security of your data transmitted. To protect  your privacy and assets, please strictly observe at all times the following  security precautions: <br>
+(A) Do not  disclose your Mobile Banking PIN (MPIN) to anyone <br>
+(B)  Regularly change your MPIN<br>
+(C) Do not  let other people use your mobile phone enrolled in a mobile banking service<br>
+(D) If the  phone is lost or stolen, report the incident immediately to the Bank and  confirm the same in writing to the Bank within 24 hours from the loss of the  phone<a name=\"_GoBack\"></a><br>
+(E) Be  vigilant and refrain from doing mobile banking transactions in a place where  you observe the presence of \"shoulder surfers\"<br>
+(F) Keep a  copy of the transaction reference number provided by the Bank whenever you  perform a mobile banking transaction as an evidence that the specific transaction  was actually executed<br>
+(G) Download applications only from official app stores or  websites to avoid the dangers of malicious applications, which can overtly  collect personal and financial information you have entered.<br>
+<br>
+<b>Copyright</b><br>
+<br>This app and all contents in these materials are protected by  copyright. No part of those materials may be modified, reproduced, transmitted  and distributed in any format or by any means for commercial or public use  without the Bank\'s prior written consent.<br>
+<br><b><em>UnionBank of the  Philippines is regulated by the Bangko Sentral ng Pilipinas. For concerns, you  may contact us at (02) 841-8600 </em></b><em>or the<b> BSP Financial Consumer Protection  Department at (02) 708-7087. </b></em><br>";
+
+faq_auto = "1. What kind of vehicles can I purchase with UnionBank? What are the minimum and maximum loan amounts? What are the terms?<br><br>
+<ul>
+<li>
+The minimum loan amount is P200,000. To avail of an auto loan, the purpose of the vehicle to be acquired should be for personal or business use, not an accommodation.
+</li>
+<li>
+The maximum loan amount is 80\%% for Brand new cars and 70\%% of appraised value for used cars not over 3 years of age. Down payment will vary depending on the year model.
+</li>
+</ul>
+<br>
+
+2. Am I eligible to get a UnionBank auto loan?<br><br>
+<ul>
+<li>
+Yes, if you are between 21 to 64 years old during application or 65 years old upon maturity of the loan.
+</li>
+<li>
+Filipino citizen or Foreign nationals married to a Filipinos may apply for an auto loan.
+</li>
+<li>
+Client must be 65 years old upon maturity of loan.
+</li>
+<li>
+Net monthly amortization should not be over 40% of your total gross income.
+</li>
+</ul>
+<br>
+
+3. What do I need to submit when I apply for a UnionBank auto loan?<br><br>
+
+If you are employed, you will need to submit the following:<br><br>
+
+<ul>
+<li>COE - Certificate of employment with compensation</li>
+<li>ITR - Latest (for loans amounting to more than P3 Million)</li>
+<li>CFUSCA - Completely filled up application form</li>
+</ul>
+<br>
+4. What are the modes of payment available/offered by UnionBank?<br><br>
+<ul>
+<li>
+Auto Debit Arrangement (ADA) - Automatically deducted from your account
+</li>
+<li>
+Post-Dated Checks (PDC) - Minimum of 12 checks of your monthly amortization
+</li>
+</ul>
+<br>
+5. What are the usual fees/charges do I have to pay before availing of an auto loan?<br><br>
+<ul>
+<li>Chattel Mortgage Fee</li>
+<li>Comprehensive Insurance</li>
+<li>Appraisal fee (for 2nd hand vehicles)</li>
+</ul>
+<br>";
+
+faq_home = "
+1. What types of loan can I avail of?<br><br>
+<ul>
+<li>Purchase of Lot</li>
+<li>Purchase of House & Lot</li>
+<li>Purchase of Townhouse</li>
+<li>Purchase of Residential Condominium</li>
+</ul>
+<br><br>
+From UnionBank Accredited Developers *<br>
+* Accredited Developers - have special arrangement with the Bank. The property needs not to be appraised since the net selling price is considered by the Bank as the valuation of the property<br><br>
+2. What is the maximum term for my housing loan?<br><br>
+Maximum of 20 years<br><br>
+3. What is the maximum and minimum loanable amount?<br><br>
+Maximum loanable amount is up to 90\% of selling price, whichever is lower<br>
+Minimum loanable amount is P500,000.00<br><br>
+4. Who are qualified to borrow?<br><br>
+<ul>
+<li>Individuals who are gainfully employed and with permanent status from our Workplace Arrangement Program partner companies.</li>
+<li>Must be legal age, not more than 65 years old upon application and must not exceed the age of 70 years upon loan maturity</li>
+<li>Must have a good credit standing</li>
+</ul>
+<br><br>
+5. How fast is the approval?<br><br>
+Maximum turnaround time in processing application is 5 working days. (assuming complete requirements are submitted and all documents were verified with favorable findings)
+<br><br>
+6. What are the pre-approval requirements?<br><br>
+
+Personal Data Documents
+<ul>
+<li>Duly filled out Application form</li>
+<li>Photocopy of any government-issued ID with picture and signature</li>
+<li>Photocopy of Marriage Contract (if applicable)</li>
+<li>Photocopy of any government-issued ID with picture and signature of spouse (if applicable)</li>
+</ul>
+<br><br>
+Income Documents
+<ul>
+<li>E-mail confirmation from WAP Partner or</li>
+<li>Certificate of Employment / ITR</li>
+</ul>
+<br><br>
+Collateral Documents
+<ul>
+<li>Contract to Sell or Reservation Agreement</li>
+<li>Statement of Account</li>
+</ul>
+<br><br>
+";
+
+salary_terms = "<b>Consumer Finance: Auto Loans, Credit Cards, Home Loans, Salary Loans</b>
+<br><b>Undertaking</b><br>
+<br><br>
+I/we hereby certify that all information and statements in this application are correct and complete, and that they are made for the purpose of obtaining credit. I/we likewise certify that the signatures appearing herein are genuine. <br>
+<br>
+I/We authorize UNIONBANK OF THE PHILIPPINES(“the Bank”) to obtain such information as may be required concerning the statements made in this application. The specified names herein are authorized to provide any information relative to this application. <br>
+<br>
+I hereby certify that all data and statements in this application are true, correct and complete, and are made for the purpose of obtaining credit. <br>
+<br>
+I/we agree that this application and the documents I provide may remain in your property whether credit is granted or not.<br>
+<br>
+I/we hereby waive my/our right in favour of the Bank to the confidentiality of client information. <br>
+<br>
+I/we authorise the Bank to conduct random verification with the Bureau of Internal Revenue (“BIR”) in order to establish authenticity of the Income Tax Return and accompanying Financial Statements.
+<br>
+<br>
+I/we hereby acknowledge and authorize: 1) the regular submission and disclosure of my /our basic credit data (as defined under Republic Act No. 9510 and its Implementing Rules and Regulations) to the Credit Information Corporation (CIC) as well as any updates or corrections thereof; and 2) the sharing of my/our basic credit data with other lenders authorized by the CIC, and credit reporting agencies duly accredited by the CIC.<br>
+<br> I/we authorise the Bank to notify me/us electronically, included but not limited to emails, short message service (SMS), and/or multimedia messaging service (MMS) using the information given in this application at any time. Moreover, I/we shall hold responsible for the electronic notification received; as such, I/we declare the Bank free and harmless from any liability if the information contained in the electronic notification is, by any means, accessed by any person other than myself / ourselves.<br>
+<br><br>
+I/We expressly consent to and authorize the Bank to process my/our Personal Information and/or Sensitive Personal Information (as defined by Republic Act No. 10173, otherwise known as the Data Privacy Act of 2012 and any amendments thereto, and all other data and information, collectively referred to as “Personal Data”) which will be collected by the Bank in connection with or arising from this application. I/We also consent and authorize the Bank to share the Personal Data with and to allow further processing by the Bank’s affiliates, subsidiaries and third party processors.
+<br><br>
+Processing includes the collection, recording, organization, storage, updating or modification, retrieval, use, consolidation, of my/our Personal Data which are necessary for the Bank’s evaluation my/our eligibility to apply for and avail of the existing and future products and services of the Bank.  Processing may also be done for the purpose of conducting market research, product development or any advertising, marketing or any related commercial purposes.
+<br><br>
+I/we hereby authorize the Bank to contact and/or send me marketing materials through mail, email, fax, SMS or other means of communication pertaining to the other products and services of the Bank which the Bank believes may be of interest to me/us. <br>
+<br>
+<br><b> For Home Loan applications</b><br><br>
+I/we authorise the Bank to conduct an appraisal of the Real Estate property/properties given in the address/addresses above<br>
+
+<br><b> For Credit Card applications </b><br><br>
+<br>
+I/we expressly authorise the Bank to a) transfer and disclose to any Credit Institutions such as financial institutions, credit bureau, banking or credit industry associations, credit information service provider, credit and loan providers and their respective outsourced service providers and b) any such Credit Institutions to transfer and disclose to any fellow user, member, subscriber, whether a financial or non-financial institution, or to such Credit Institution’s outsourced provider any information (updates or corrections), whether positive or negative, relating to me/us or any of my/our accounts with the Bank (and for such purposes) for the duration of and even after the closure or cancellation of the Account/s.<br>
+<br>
+I/we hereby agree to be bound by the Terms and Conditions governing the issuance and use of a UnionBank Credit Card.";
+
+
+
+faq_card = "";
+
+faq_salary = "1. What is Payroll Loan? <br><br>
+<ul>
+<li>
+Payroll Loan is a multi-purpose loan which you can use for any of your needs – education, emergency, travel, etc.
+</li>
+</ul>
+<br>
+
+2. Who can borrow?<br><br>
+<ul>
+<li>
+Any employee who has been with the company for at least 2 years.
+</li>
+</ul>
+<br>
+
+3. How much can I borrow?<br><br>
+<ul>
+<li>
+Minimum Loan – Php 30k
+</li>
+<li>
+Maximum Loan – Php 1 million*
+*depending on your take home pay
+</li>
+</ul>
+<br>
+
+4. How long can I borrow?<br><br>
+<ul>
+<li>
+You can borrow for one, two, or three years.
+</li>
+</ul>
+<br>
+
+5. How often do I pay?<br><br>
+<ul>
+<li>Payment will be deducted every month.</li>
+</ul>
+<br>
+
+6. What do I need to include in my application?<br><br>
+<ul>
+<li>Photocopy of your company ID and a government-issued ID.</li>
+</ul>
+<br>";
