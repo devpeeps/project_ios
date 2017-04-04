@@ -474,11 +474,15 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         
         var aor = 0.00
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        
-        if (userDefaults.objectForKey("autoRates_" + self.selectedTerm) != nil) {
-            aor = NSUserDefaults.standardUserDefaults().objectForKey("autoRates_" + self.selectedTerm) as! Double
+        //autoRates_
+    
+        if (userDefaults.objectForKey("autoRates_" + selectedTerm) != nil) {
+            aor = NSUserDefaults.standardUserDefaults().objectForKey("autoRates_" + selectedTerm) as! Double
+            
         }
         
+        //aor = Double(selectedTerm)!
+        NSLog("aor1: " + String(aor))
         if let dpLabel = defaults.stringForKey("selectedDP") {
             selectedDP = dpLabel
         }
@@ -486,9 +490,9 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         if let termLabel = defaults.stringForKey("selectedTerm") {
             selectedTerm = termLabel
         }
-
+        NSLog("selectedTerm1: " + selectedTerm)
         let rate = getEIR(Int(selectedTerm)!, aor: aor, isOMA: false);
-        print(rate)
+        
         NSLog("rate = ", rate)
         var dp = Double(selectedDP)
         if (dp == nil){
@@ -507,9 +511,11 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         NSLog("amount_downpayment = " + String(amount_downpayment))
         
         let term = Double(selectedTerm)!
-        print(term)
+        
         var amort = ((rate / 1200) * (0 - amount_financed!))
+        NSLog("amort1: " + String(amort))
         amort = amort * (pow((1 + (rate / 1200)), term) / (1 - pow((1 + (rate / 1200)), term)));
+        NSLog("amort2: " + String(amort))
         
         return (amort, amount_financed!, amount_downpayment)
     }

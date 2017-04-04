@@ -94,6 +94,18 @@ class HomeMainPageTableViewController: UITableViewController {
             defaults.setObject("", forKey: "selectedC2IncomeType")
             defaults.setObject("", forKey: "selectedCivilStatus")
             defaults.setObject("", forKey: "selectedCivilStatusCode")
+            defaults.setObject("", forKey: "selectedProvince_present")
+            defaults.setObject("", forKey: "selectedProvinceID_present")
+            defaults.setObject("", forKey: "selectedCity_present")
+            defaults.setObject("", forKey: "selectedCityID_present")
+            defaults.setObject("", forKey: "selectedProvince_permanent")
+            defaults.setObject("", forKey: "selectedProvinceID_permanent")
+            defaults.setObject("", forKey: "selectedCity_permanent")
+            defaults.setObject("", forKey: "selectedCityID_permanent")
+            defaults.setObject("", forKey: "selectedProvinceBiz")
+            defaults.setObject("", forKey: "selectedProvinceBizCode")
+            defaults.setObject("", forKey: "selectedCityBiz")
+            defaults.setObject("", forKey: "selectedCityBizCode")
         }
         
         if segue.identifier == "ShowHomeInquiry"

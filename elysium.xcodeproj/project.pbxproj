@@ -129,6 +129,7 @@
 		4F728F321C3F6B4B00703575 /* property.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F728F311C3F6B4B00703575 /* property.plist */; };
 		4F728F341C3F6DD900703575 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F728F331C3F6DD900703575 /* Localizable.strings */; };
 		4F728F361C3F806800703575 /* ViewControllerAuto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F728F351C3F806800703575 /* ViewControllerAuto.swift */; };
+		CE9586D01E92481C0022C5AA /* SideMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9586CF1E92481C0022C5AA /* SideMenuTableViewController.swift */; };
 		D70FA9CC1DCAE7AF00F750FA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70FA9CB1DCAE7AF00F750FA /* HomeTableViewController.swift */; };
 		D712113C1E2F077E00644A6B /* HomeMainPageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D712113B1E2F077E00644A6B /* HomeMainPageTableViewController.swift */; };
 		D71468061DCABD3E0001AE8F /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D71468051DCABD3E0001AE8F /* SWRevealViewController.m */; };
@@ -305,6 +306,7 @@
 		4F728F311C3F6B4B00703575 /* property.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = property.plist; path = ../property.plist; sourceTree = "<group>"; };
 		4F728F331C3F6DD900703575 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ../Localizable.strings; sourceTree = "<group>"; };
 		4F728F351C3F806800703575 /* ViewControllerAuto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerAuto.swift; path = ../ViewControllerAuto.swift; sourceTree = "<group>"; };
+		CE9586CF1E92481C0022C5AA /* SideMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewController.swift; sourceTree = "<group>"; };
 		D70FA9CB1DCAE7AF00F750FA /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		D712113B1E2F077E00644A6B /* HomeMainPageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeMainPageTableViewController.swift; sourceTree = "<group>"; };
 		D71468031DCABD3D0001AE8F /* elysium-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "elysium-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 				D7B2A9E41E00D8C800F51F03 /* PromoTableViewCell.xib */,
 				D7B2A9E51E00D8C800F51F03 /* PromoViewController.swift */,
 				D7B2A9E91E00DD6400F51F03 /* PromoDetailsViewController.swift */,
+				CE9586CF1E92481C0022C5AA /* SideMenuTableViewController.swift */,
 				4F40A3881C22A2F500C9FD42 /* Assets.xcassets */,
 				4F40A3851C22A2F500C9FD42 /* elysium.xcdatamodeld */,
 				4F40A38A1C22A2F500C9FD42 /* LaunchScreen.storyboard */,
@@ -850,6 +853,7 @@
 				D7EA33951DF539B600ABF8D8 /* DateTableViewController.swift in Sources */,
 				4F5A73E11C3B74C4007EC33C /* ViewControllerMain.swift in Sources */,
 				D75588B41DD968EF006A49E5 /* ListTableViewController.swift in Sources */,
+				CE9586D01E92481C0022C5AA /* SideMenuTableViewController.swift in Sources */,
 				D7C618491E1F70D300569867 /* AutoTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

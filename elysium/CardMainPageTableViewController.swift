@@ -84,20 +84,22 @@ class CardMainPageTableViewController: UITableViewController {
             defaults.setObject("", forKey: "selectedC2Salutation")
             defaults.setObject("", forKey: "selectedCivilStatus")
             defaults.setObject("", forKey: "selectedProvince")
+            defaults.setObject("", forKey: "selectedProvince_present")
+            defaults.setObject("", forKey: "selectedProvince_permanent")
             defaults.setObject("", forKey: "selectedProvinceBiz")
             defaults.setObject("", forKey: "selectedOccupation")
             defaults.setObject("", forKey: "selectedCity")
+            defaults.setObject("", forKey: "selectedCity_present")
+            defaults.setObject("", forKey: "selectedCity_permanent")
             defaults.setObject("", forKey: "selectedCityBiz")
             defaults.setObject("", forKey: "selectedIncomeType")
             defaults.setObject("", forKey: "selectedOccupationGroup")
             defaults.setObject("", forKey: "selectedIndustry")
             defaults.setObject("", forKey: "selectedBank")
+            defaults.setObject("", forKey: "selectedHomeOwnership")
+            defaults.setObject("", forKey: "selectedHomeOwnershipID")
+            defaults.setObject("", forKey: "selectedSourceOfFund")
+            defaults.setObject("", forKey: "selectedSourceOfFundID")
         }
-        
-        
-        
-        
-        
-        
     }
 }

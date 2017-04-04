@@ -86,62 +86,396 @@ class CardTableViewController: UITableViewController {
             if let civilStatusLabel = defaults.stringForKey("selectedCivilStatus") {
                 self.civilStatusCell.detailTextLabel?.text = civilStatusLabel
             }
+            
+            if let provinceLabel = defaults.stringForKey("selectedProvince_present") {
+                self.provinceCell.detailTextLabel?.text = provinceLabel
+            }
+            
+            if let cityLabel = defaults.stringForKey("selectedCity_present") {
+                self.cityCell.detailTextLabel?.text = cityLabel
+            }
+            
+            if let permprovinceLabel = defaults.stringForKey("selectedProvince_permanent") {
+                self.permprovinceCell.detailTextLabel?.text = permprovinceLabel
+            }
+            
+            if let permcityLabel = defaults.stringForKey("selectedCity_permanent") {
+                self.permcityCell.detailTextLabel?.text = permcityLabel
+            }
+            
+            if let provinceBizLabel = defaults.stringForKey("selectedProvinceBiz") {
+                self.provinceBizCell.detailTextLabel?.text = provinceBizLabel
+            }
+            
+            if let cityBizLabel = defaults.stringForKey("selectedCityBiz") {
+                self.cityBizCell.detailTextLabel?.text = cityBizLabel
+            }
+            
+            if let occupationLabel = defaults.stringForKey("selectedOccupation") {
+                self.occupationCell.detailTextLabel?.text = occupationLabel
+            }
+            
+            if let occupationGroupLabel = defaults.stringForKey("selectedOccupationGroup") {
+                self.occupationGroupCell.detailTextLabel?.text = occupationGroupLabel
+            }
+            
+            if let industryLabel = defaults.stringForKey("selectedIndustry") {
+                self.industryCell.detailTextLabel?.text = industryLabel
+            }
+            
+            if let bankLabel = defaults.stringForKey("selectedBank") {
+                self.bankCell.detailTextLabel?.text = bankLabel
+            }
+            
+            if let incomeTypeLabel = defaults.stringForKey("selectedIncomeType") {
+                self.incomeTypeCell.detailTextLabel?.text = incomeTypeLabel
+            }
+            
+            if let homeOwnershipLabel = defaults.stringForKey("selectedHomeOwnership") {
+                self.homeownershipCell.detailTextLabel?.text = homeOwnershipLabel
+            }
+            
+            if let sourceOfFundLabel = defaults.stringForKey("selectedSourceOfFund") {
+                self.empsourcefundsCell.detailTextLabel?.text = sourceOfFundLabel
+            }
         }
-        
-        /*
-        if let provinceLabel = defaults.stringForKey("selectedProvince") {
-            self.provinceCell.detailTextLabel?.text = provinceLabel
-        }
-        
-        if let provinceBizLabel = defaults.stringForKey("selectedProvinceBiz") {
-            self.provinceBizCell.detailTextLabel?.text = provinceBizLabel
-        }
-        
-        if let cityLabel = defaults.stringForKey("selectedCity") {
-            self.cityCell.detailTextLabel?.text = cityLabel
-        }
-        
-        if let cityBizLabel = defaults.stringForKey("selectedCityBiz") {
-            self.cityBizCell.detailTextLabel?.text = cityBizLabel
-        }
-        
-        if let incomeLabel = defaults.stringForKey("selectedIncomeType") {
-            self.incomeTypeCell.detailTextLabel?.text = incomeLabel
-        }
-        
-        if let occupationLabel = defaults.stringForKey("selectedOccupation") {
-            self.occupationCell.detailTextLabel?.text = occupationLabel
-        }
-        
-        if let occupationGroupLabel = defaults.stringForKey("selectedOccupationGroup") {
-            self.occupationGroupCell.detailTextLabel?.text = occupationGroupLabel
-        }
-        
-        if let industryLabel = defaults.stringForKey("selectedIndustry") {
-            self.industryCell.detailTextLabel?.text = industryLabel
-        }
-        
-        if let bankLabel = defaults.stringForKey("selectedBank") {
-            self.bankCell.detailTextLabel?.text = bankLabel
-        }
-        */
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    /*
-    @IBOutlet var bankCell: UITableViewCell!
     
+    
+    @IBAction func actionSubmit(sender: AnyObject) {
+        let tnc = NSLocalizedString("tnc_apply", comment: "").html2String
+        
+        let alert = UIAlertController(title: "Acceptance of Terms & Conditions", message: tnc, preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Yes, I accept", style: .Default, handler: { (alert) -> Void in
+            //self.submitApplication()
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "No, I do not accept", style: .Default, handler: { (alert) -> Void in
+            //do nothing
+        })
+        alert.addAction(action2)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    /*
+    func submitApplication(){
+        //self.loadingIndicator.hidden = false
+        //self.loadingIndicator.startAnimating()
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        
+        let url = NSLocalizedString("urlCATS", comment: "")
+        
+        var stringUrl = url
+        
+        var errorctr = 0;
+        var errormsg = "";
+        stringUrl = stringUrl + "&companyid=" + self.id;
+        
+        stringUrl = stringUrl + "&cardtype=" + selectedCardTypeName.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&appsource=" + (self.id != "NON" ? "WAP" : "Online Application").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //CHECK WITH LIBFIELDVALUES
+        stringUrl = stringUrl + "&rm=" + "";
+        stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&clientclass=" + (self.id != "NON" ? "WAP (WORKPLACE ARRANGEMENT PROGR" : "REGULAR").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //ADD TO LIBFIELDVALUES = REGULAR
+        stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        if(self.lastname.text == ""){
+            errorctr += 1;
+            errormsg += "Last Name\n";
+        }
+        if(self.firstname.text == ""){
+            errorctr += 1;
+            errormsg += "First Name\n";
+        }
+        if(self.mobilenumber.text == ""){ //CHECK IF VALID PHONE
+            errorctr += 1;
+            errormsg += "Mobile No\n";
+        }
+        if(self.emailaddress.text == "" || isValidEmail(self.emailaddress.text!) == false){ //CHECK IF VALID EMAIL
+            errorctr += 1;
+            errormsg += "Email Address\n";
+        }
+        if(self.address1.text == ""){
+            errorctr += 1;
+            errormsg += "Res Address\n";
+        }
+        
+        if(emptypeArr[self.emptype.selectedRowInComponent(0)].0 != "6"){
+            if(self.empname.text == ""){
+                errorctr += 1;
+                errormsg += "Emp/Biz Name\n";
+            }
+            if(self.empincome.text == ""){ //CHECK IF VALID AMOUNT
+                errorctr += 1;
+                errormsg += "Emp/Biz Income\n";
+            }
+            if(self.empaddress1.text == ""){
+                errorctr += 1;
+                errormsg += "Emp/Biz Address\n";
+            }
+            if(self.empphone.text == ""){
+                errorctr += 1;
+                errormsg += "Emp/Biz Phone\n";
+            }
+        }
+        
+        stringUrl = stringUrl + "&fullname=" + self.lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + (", " + self.firstname.text!).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + (" " + self.middlename.text!).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        
+        
+        stringUrl = stringUrl + "&lname=" + self.lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&fname=" + self.firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&mname=" + self.middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        let bday = self.birthday.date
+        let dateStr = bday.dateFormatted
+        
+        stringUrl = stringUrl + "&bday=" + dateStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        //stringUrl = stringUrl + "&gender=" + (self.gender.selectedSegmentIndex == 0 ? "0" : "1")
+        
+        stringUrl = stringUrl + "&salutation=" +
+            (salutationArr[self.salutation.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&homeownership=" + (homeownershipArr[self.homeownership.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empsourcefunds=" + (sourceFundsArr[self.empsourcefunds.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&civilstat=" + (civilStatusArr[self.civilstatus.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&resphone=" + self.phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&mobileno=" + self.mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&email=" + self.emailaddress.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empbiz_type=" + emptypeArr[self.emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&remarks=" + bankNameArr[self.withexistingbankname.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        
+        stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&jobpos=" + positionArr[self.position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empbiz_y=" + self.empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizadd1=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&monthly_income=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        
+        
+        if(self.withc1.on == true){
+            
+            
+            if(self.c1lastname.text == ""){
+                errorctr += 1;
+                errormsg += "S1 Last Name\n";
+            }
+            if(self.c1firstname.text == ""){
+                errorctr += 1;
+                errormsg += "S1 First Name\n";
+            }
+            if(self.c1mobilenumber.text == ""){
+                errorctr += 1;
+                errormsg += "S1 Mobile No\n";
+            }
+            if(self.c1address1.text == ""){
+                errorctr += 1;
+                errormsg += "S1 Res Address\n";
+            }
+            
+            /*
+             if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
+             if(self.c1empname.text == ""){
+             errorctr++;
+             errormsg += "S1 Emp/Biz Name\n";
+             }
+             if(self.c1empincome.text == ""){ //CHECK IF VALID AMOUNT
+             errorctr++;
+             errormsg += "S1 Emp/Biz Income\n";
+             }
+             if(self.c1empaddress1.text == ""){
+             errorctr++;
+             errormsg += "S1 Emp/Biz Address\n";
+             }
+             if(self.c1empphone.text == ""){
+             errorctr++;
+             errormsg += "S1 Emp/Biz Phone\n";
+             }
+             }
+             */
+            
+            
+            stringUrl = stringUrl + "&m1lname=" + self.c1lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1fname=" + self.c1firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1mname=" + self.c1middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            let bday = self.c1birthday.date
+            let dateStr = bday.dateFormatted
+            stringUrl = stringUrl + "&m1bday=" + dateStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1gender=" + (self.c1gender.selectedSegmentIndex == 0 ? "0" : "1")
+            stringUrl = stringUrl + "&m1resphone=" + self.c1phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1mobileno=" + self.c1mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1resadd1=" + self.c1address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1resadd2=" + self.c1address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1empbiz_type=" + emptypeArr[self.c1emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1empbizname=" + self.c1empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1jobpos=" + positionArr[self.c1position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1empbiz_y=" + self.c1empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizadd1=" + self.c1empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizadd2=" + self.c1empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizphone=" + self.c1empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizmoincome=" + self.c1empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }
+        
+        if(self.withc2.on == true){
+            
+            
+            if(self.c2lastname.text == ""){
+                errorctr += 1;
+                errormsg += "S2 Last Name\n";
+            }
+            if(self.c2firstname.text == ""){
+                errorctr += 1;
+                errormsg += "S2 First Name\n";
+            }
+            if(self.c2mobilenumber.text == ""){
+                errorctr += 1;
+                errormsg += "S2 Mobile No\n";
+            }
+            if(self.c2address1.text == ""){
+                errorctr += 1;
+                errormsg += "S2 Res Address\n";
+            }
+            
+            /*
+             if(emptypeArr[self.c2emptype.selectedRowInComponent(0)].0 != "6"){
+             if(self.c2empname.text == ""){
+             errorctr++;
+             errormsg += "S2 Emp/Biz Name\n";
+             }
+             if(self.c2empincome.text == ""){ //CHECK IF VALID AMOUNT
+             errorctr++;
+             errormsg += "S2 Emp/Biz Income\n";
+             }
+             if(self.c2empaddress1.text == ""){
+             errorctr++;
+             errormsg += "S2 Emp/Biz Address\n";
+             }
+             if(self.c2empphone.text == ""){
+             errorctr++;
+             errormsg += "S2 Emp/Biz Phone\n";
+             }
+             }
+             */
+            
+            
+            stringUrl = stringUrl + "&m2lname=" + self.c2lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2fname=" + self.c2firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2mname=" + self.c2middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            let bday = self.c2birthday.date
+            let dateStr = bday.dateFormatted
+            stringUrl = stringUrl + "&m2bday=" + dateStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2gender=" + (self.c2gender.selectedSegmentIndex == 0 ? "0" : "1")
+            stringUrl = stringUrl + "&m2resphone=" + self.c2phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2mobileno=" + self.c2mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2resadd1=" + self.c2address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2resadd2=" + self.c2address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2empbiz_type=" + emptypeArr[self.c2emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2empbizname=" + self.c2empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2jobpos=" + positionArr[self.c2position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2empbiz_y=" + self.c2empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizadd1=" + self.c2empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizadd2=" + self.c2empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizphone=" + self.c2empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }
+        
+        stringUrl = stringUrl + "&duid=" + UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&dtype=ios"
+        
+        //stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&loggeduser=" + EncodeURLString(loggedUSRUID);
+        
+        
+        if(errorctr > 0){
+            let alert = UIAlertController(title: "Error in Form", message: "You have blank/invalid/errors on some required fields.\n" + errormsg, preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            self.view.userInteractionEnabled = true
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        }else{
+            NSUserDefaults.standardUserDefaults().setObject(self.lastname.text, forKey: "LASTNAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.firstname.text, forKey: "FIRSTNAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.middlename.text, forKey: "MIDDLENAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.birthday.date, forKey: "BIRTHDAY")
+            NSUserDefaults.standardUserDefaults().setObject(self.mobilenumber.text, forKey: "MOBILENO")
+            NSUserDefaults.standardUserDefaults().setObject(self.emailaddress.text, forKey: "EMAIL")
+            NSUserDefaults.standardUserDefaults().setObject(self.phonenumber.text, forKey: "RESPHONE")
+            NSUserDefaults.standardUserDefaults().setObject(self.empphone.text, forKey: "EMPBIZPHONE")
+            NSUserDefaults.standardUserDefaults().setObject(self.address1.text, forKey: "RESADDLINE1")
+            NSUserDefaults.standardUserDefaults().setObject(self.address2.text, forKey: "RESADDLINE2")
+            NSUserDefaults.standardUserDefaults().setObject(self.empaddress1.text, forKey: "EMPBIZADDLINE1")
+            NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
+            NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
+            
+            
+            let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: manageObjectContext)
+            let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: manageObjectContext)
+            url.url = stringUrl
+            url.datecreated = String(NSDate())
+            url.refid = "CARD"
+            url.datesuccess = "0"
+            
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            
+            let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                self.performSegueWithIdentifier("BackToMain", sender: self)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    */
+    
+    /*
     @IBOutlet var incometype: UILabel!
     @IBOutlet var occupation: UILabel!
     @IBOutlet var occupationgroup: UILabel!
     @IBOutlet var cityBiz: UILabel!
     @IBOutlet var provincebiz: UILabel!
-    @IBOutlet var industry: UILabel!
-    @IBOutlet var bank: UILabel!
-    
     @IBOutlet var toggleCard: UISwitch!
     */
     
@@ -158,6 +492,7 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var occupationCell: UITableViewCell!
     @IBOutlet var occupationGroupCell: UITableViewCell!
     @IBOutlet var industryCell: UITableViewCell!
+    @IBOutlet var bankCell: UITableViewCell!
     @IBOutlet var provinceBizCell: UITableViewCell!
     @IBOutlet var cityBizCell: UITableViewCell!
     @IBOutlet var empsourcefundsCell: UITableViewCell!
@@ -190,6 +525,8 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var permpostalcode: UITextField!
     @IBOutlet var homeownership: UILabel!
     //yearsofstay
+    @IBOutlet var industry: UILabel!
+    @IBOutlet var bank: UILabel!
     
     @IBOutlet var emptype: UILabel!
     @IBOutlet var empname: UITextField!
@@ -762,10 +1099,38 @@ class CardTableViewController: UITableViewController {
             }
         }
         
+        if segue.identifier == "ShowProvinceList_present"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowProvinceList_present"
+            }
+        }
+        
+        if segue.identifier == "ShowProvinceList_permanent"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowProvinceList_permanent"
+            }
+        }
+        
         if segue.identifier == "ShowCityList"
         {
             if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
                 destinationVC.vcAction = "ShowCityList"
+            }
+        }
+        
+        if segue.identifier == "ShowCityList_present"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowCityList_present"
+            }
+        }
+        
+        if segue.identifier == "ShowCityList_permanent"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowCityList_permanent"
             }
         }
         
@@ -780,6 +1145,27 @@ class CardTableViewController: UITableViewController {
         {
             if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
                 destinationVC.vcAction = "ShowIndustryList"
+            }
+        }
+        
+        if segue.identifier == "ShowIncomeType"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowIncomeType"
+            }
+        }
+        
+        if segue.identifier == "ShowHomeOwnershipList"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowHomeOwnershipList"
+            }
+        }
+        
+        if segue.identifier == "ShowSourceOfFundList"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowSourceOfFundList"
             }
         }
         

@@ -38,7 +38,9 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     var positionArr = [("","")]
     var selectedPropertyType = ""
     var selectedProvince = ""
+    var selectedProvinceID = ""
     var selectedCity = ""
+    var selectedCityID = ""
     var selectedPriceFrom = ""
     var selectedPriceTo = ""
     var selectedPropertyModelId = ""
@@ -104,6 +106,21 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var cityCell: UITableViewCell!
     
     override func viewDidAppear(animated: Bool) {
+        
+        if(vcAction == "ShowCalculateHomeLoan"){
+            if let selectedPropertyModelSRPLabel = defaults.stringForKey("selectedPropertyModelSRP") {
+                self.txtSellingPrice.text = selectedPropertyModelSRPLabel
+                
+                let x = calculateAmort()
+                
+                let formatter = NSNumberFormatter()
+                formatter.numberStyle = .DecimalStyle
+                formatter.maximumFractionDigits = 0;
+                
+                txtMonthlyAmort.text = formatter.stringFromNumber(x)!
+            }
+        }
+        
         if(vcAction == "ShowHomeLoanCalculator" || vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect" || vcAction == "ShowCalculateHomeLoan"){
             if let DPLabel = defaults.stringForKey("selectedDP") {
                 self.downpaymentCell.detailTextLabel?.text = DPLabel
@@ -927,60 +944,17 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func actionSearchPropertyModel(sender: AnyObject) {
         
-        let selectedPriceFrom = txtPriceFrom.text
-        let selectedPriceTo = txtPriceTo.text
         let selectedPropertyType = propertyTypeCell.detailTextLabel?.text
         let selectedProvince = provinceCell.detailTextLabel?.text
         let selectedCity = cityCell.detailTextLabel?.text
+        let selectedPriceFrom = txtPriceFrom.text
+        let selectedPriceTo = txtPriceTo.text
         
-        /*
-         let priceFrom = txtPriceFrom.text
-         let priceTo = txtPriceTo.text
-         let propertyType = propertyTypeCell.detailTextLabel?.text
-         let province = provinceCell.detailTextLabel?.text
-         let city = cityCell.detailTextLabel?.text
-    
-        defaults.setObject(propertyType, forKey: "selectedPropertyType")
-        defaults.setObject(province, forKey: "selectedProvince")
-        defaults.setObject(city, forKey: "selectedCity")
-        defaults.setObject(priceFrom, forKey: "selectedPriceFrom")
-        defaults.setObject(priceTo, forKey: "selectedPriceTo")
-        
-        if let propertyTypeLabel = defaults.stringForKey("selectedPropertyType") {
-            selectedPropertyType = propertyTypeLabel
-        }
-        
-        if let priceFromLabel = defaults.stringForKey("selectedPriceFrom") {
-            selectedPriceFrom = priceFromLabel
-        }
-        
-        if let priceToLabel = defaults.stringForKey("selectedPriceTo") {
-            selectedPriceTo = priceToLabel
-        }
-        
-        if let provinceLabel = defaults.stringForKey("selectedProvince") {
-            selectedProvince = provinceLabel
-        }
-        
-        if let cityLabel = defaults.stringForKey("selectedCity") {
-            selectedCity = cityLabel
-        }
- 
-         
-         NSLog("IBAction: actionSearchPropertyModel")
-         NSLog("priceFrom: " + String(priceFrom))
-         NSLog("priceTo: " + String(priceTo))
-         NSLog("provinceType: " + String(propertyType))
-         NSLog("province: " + String(province))
-         NSLog("city: " + String(city))
-        */
-        NSLog("IBAction: actionSearchPropertyModel")
-        NSLog("selectedPropertyType: " + selectedPropertyType!)
-        NSLog("selectedPriceFrom: " + selectedPriceFrom!)
-        NSLog("selectedPriceTo: " + selectedPriceTo!)
-        NSLog("selectedProvince: " + selectedProvince!)
-        NSLog("selectedCity: " + selectedCity!)
-
+        defaults.setObject(selectedPropertyType, forKey: "selectedPropertyType")
+        defaults.setObject(selectedProvince, forKey: "selectedProvince")
+        defaults.setObject(selectedCity, forKey: "selectedCity")
+        defaults.setObject(selectedPriceFrom, forKey: "selectedPriceFrom")
+        defaults.setObject(selectedPriceTo, forKey: "selectedPriceTo")
     }
     
     @IBAction func actionSubmit(sender: AnyObject) {
@@ -1832,19 +1806,8 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         
         if segue.identifier == "ShowPropertyModelList"
         {
-            let selectedPriceFrom = txtPriceFrom.text
-            let selectedPriceTo = txtPriceTo.text
-            let selectedPropertyType = propertyTypeCell.detailTextLabel?.text
-            let selectedProvince = provinceCell.detailTextLabel?.text
-            let selectedCity = cityCell.detailTextLabel?.text
-            
             if let destinationVC = segue.destinationViewController as? ListTableViewController{
                 destinationVC.vcAction = "ShowPropertyModelList"
-                destinationVC.selectedPropertyType = selectedPropertyType!
-                destinationVC.selectedPriceFrom = selectedPriceFrom!
-                destinationVC.selectedPriceTo = selectedPriceTo!
-                destinationVC.selectedProvince = selectedProvince!
-                destinationVC.selectedCity = selectedCity!
             }
         }
         
@@ -1860,6 +1823,13 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         {
             if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
                 destinationVC.vcAction = "ShowHomeTermList"
+            }
+        }
+        
+        if segue.identifier == "ShowOccupationGroupList"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowOccupationGroupList"
             }
         }
         

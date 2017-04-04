@@ -31,13 +31,22 @@ class ListTableViewController: UITableViewController {
     var selectedCardTypeName = ""
     var selectedPropertyType = ""
     var selectedProvince = ""
+    var selectedProvinceID = ""
     var selectedCity = ""
+    var selectedCityID = ""
     var selectedPriceFrom = ""
     var selectedPriceTo = ""
     var selectedPropertyModelId = ""
     var selectedPropertyProj = ""
     var selectedPropertyDeveloper = ""
     var selectedPropertyModelSRP = 0
+    var propertyType = ""
+    var priceFrom = ""
+    var priceTo = ""
+    var province = ""
+    var provinceID = ""
+    var city = ""
+    var cityID = ""
     
     var showRecent = false
     
@@ -64,7 +73,57 @@ class ListTableViewController: UITableViewController {
             loadCarModelsRecent()
         }
         
+        if(vcAction == "ShowPropertyModelList"){
+            if let propertyTypeLabel = defaults.stringForKey("selectedPropertyType") {
+                selectedPropertyType = propertyTypeLabel
+            }
+            
+            if let priceFromLabel = defaults.stringForKey("selectedPriceFrom") {
+                selectedPriceFrom = priceFromLabel
+            }
+            
+            if let priceToLabel = defaults.stringForKey("selectedPriceTo") {
+                selectedPriceTo = priceToLabel
+            }
+            
+            if let provinceLabel = defaults.stringForKey("selectedProvince") {
+                selectedProvince = provinceLabel
+            }
+            
+            if let provinceIDLabel = defaults.stringForKey("selectedProvinceID") {
+                selectedProvinceID = provinceIDLabel
+            }
+            
+            if let cityLabel = defaults.stringForKey("selectedCity") {
+                selectedCity = cityLabel
+            }
+            
+            if let cityIDLabel = defaults.stringForKey("selectedCityID") {
+                selectedCityID = cityIDLabel
+            }
+            
+            propertyType = selectedPropertyType
+            priceFrom = selectedPriceFrom
+            priceTo = selectedPriceTo
+            province = selectedProvince
+            if(province == ""){
+                provinceID = ""
+            }else{
+                provinceID = selectedProvinceID
+            }
+            city = selectedCity
+            if(city == ""){
+                cityID = ""
+            }else{
+                cityID = selectedCityID
+            }
+            
+            propertyModelArr.removeAll()
+            loadPropertyModels()
+        }
+        
         if(vcAction == "ShowRecentlyViewedPropertyModel"){
+            propertyModelArr.removeAll()
             loadPropertyModelsRecent()
         }
         
@@ -89,39 +148,6 @@ class ListTableViewController: UITableViewController {
                 selectedCardCategory = cardCategory
             }
             loadCardTypeList()
-        }
-        
-        if(vcAction == "ShowPropertyModelList"){
-/*
-            if let propertyTypeLabel = defaults.stringForKey("selectedPropertyType") {
-                selectedPropertyType = propertyTypeLabel
-            }
-            
-            if let priceFromLabel = defaults.stringForKey("selectedPriceFrom") {
-                selectedPriceFrom = priceFromLabel
-            }
-            
-            if let priceToLabel = defaults.stringForKey("selectedPriceTo") {
-                selectedPriceTo = priceToLabel
-            }
-            
-            if let provinceLabel = defaults.stringForKey("selectedProvince") {
-                selectedProvince = provinceLabel
-            }
-            
-            if let cityLabel = defaults.stringForKey("selectedCity") {
-                selectedCity = cityLabel
-            }
-*/
-
-            NSLog("function: loadPropertyModels")
-            NSLog("selectedPropertyType: " + selectedPropertyType)
-            NSLog("selectedPriceFrom: " + selectedPriceFrom)
-            NSLog("selectedPriceTo: " + selectedPriceTo)
-            NSLog("selectedProvince: " + selectedProvince)
-            NSLog("selectedCity: " + selectedCity)
-
-            loadPropertyModels(selectedPropertyType, priceFrom: selectedPriceFrom, priceTo: selectedPriceTo, province: selectedProvince, city: selectedCity)
         }
     }
     
@@ -549,38 +575,23 @@ class ListTableViewController: UITableViewController {
         
     }
     
-    func loadPropertyModels(propertyType: String, priceFrom: String, priceTo: String, province: String, city: String){
+    func loadPropertyModels(){
         
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         var urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "HOMEMODELS")
-
-        NSLog("IBAction: actionSearchPropertyModel")
-        NSLog("priceFrom: " + String(priceFrom))
-        NSLog("priceTo: " + String(priceTo))
-        NSLog("provinceType: " + String(propertyType))
-        NSLog("province: " + String(province))
-        NSLog("city: " + String(city))
         
-        /*
-        NSLog("function: loadPropertyModels")
-        NSLog("selectedPropertyType: " + selectedPropertyType)
-        NSLog("selectedPriceFrom: " + selectedPriceFrom)
-        NSLog("selectedPriceTo: " + selectedPriceTo)
-        NSLog("selectedProvince: " + selectedProvince)
-        NSLog("selectedCity: " + selectedCity)
-        */
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: propertyType.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
         
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: priceFrom.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
         
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM3", withString: priceTo.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))
         
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM4", withString: province.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM4", withString: provinceID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
         
-        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM5", withString: city.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
-        NSLog("urlAsString: " + urlAsString)
+        urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM5", withString: cityID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
+        
         var contProc = true
         let status = Reach().connectionStatus()
         switch status {
@@ -733,20 +744,14 @@ class ListTableViewController: UITableViewController {
                 listcell.imageView!.image = imageView
             }
         } else if(vcAction == "ShowPropertyModelList" || vcAction == "ShowRecentlyViewedPropertyModel"){
+            let listcell = tableView.dequeueReusableCellWithIdentifier("listcell", forIndexPath: indexPath) as! PropertyModelTableViewCell
             let (_, modeldesc, proj, _, _, srpto, areafrom, areato, _, prov, city) = self.propertyModelArr[indexPath.row]
             
             if(modeldesc != ""){
-                listcell.detailTextLabel!.numberOfLines = 1
-                listcell.textLabel?.text = modeldesc.capitalizedString + " - " + proj.capitalizedString
+                listcell.lblFirstRow.text = modeldesc.capitalizedString + " - " + proj.capitalizedString
+                listcell.lblThirdRow.text = city + ", " + prov
                 let x = Int(srpto)
-                //let sub = city + ", " + prov + "\n PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
-                listcell.detailTextLabel?.text = city + ", " + prov + "\n PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
-                //listcell.detailTextLabel?.text = "PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
-                //listcell.textLabel?.text = "PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
-                //listcell.lblFirstRow?.text = modeldesc.capitalizedString + " - " + proj.capitalizedString
-                //listcell.lblThirdRow.text = city + ", " + prov
-                //let x = Int(srpto)
-                //listcell.lblSecondRow.text = "PHP " + x.stringFormattedWithSepator + "(From " + areafrom + "sqm to " + areato + "sqm)"
+                listcell.lblSecondRow.text = "PHP " + x.stringFormattedWithSepator + " (From " + areafrom + "sqm to " + areato + "sqm)"
             }
         }
         return listcell
@@ -968,9 +973,8 @@ class ListTableViewController: UITableViewController {
             presentViewController(alert, animated: true, completion: nil)
         }
         
-        if(vcAction == "ShowRecentlyViewedPropertyModel"){
+        if(vcAction == "ShowPropertyModelList" || vcAction == "ShowRecentlyViewedPropertyModel"){
             let (modelid, modeldesc, proj, type, _, srpto, areafrom, areato, developer, prov, city) = self.propertyModelArr[indexPath.row]
-            
             
             let alert = UIAlertController(title: "Options for", message: modeldesc.capitalizedString + " - " + proj.capitalizedString, preferredStyle: .ActionSheet)
             let action = UIAlertAction(title: "View Model Details", style: .Default, handler: { (alert) -> Void in
@@ -982,6 +986,13 @@ class ListTableViewController: UITableViewController {
                 })
                 alert_.addAction(action_)
                 self.presentViewController(alert_, animated: true, completion: nil)
+                
+                self.defaults.setObject(modelid, forKey: "selectedPropertyModelId")
+                self.defaults.setObject(x, forKey: "selectedPropertyModelSRP")
+                self.defaults.setObject(proj, forKey: "selectedPropertyProj")
+                self.defaults.setObject(developer, forKey: "selectedPropertyDeveloper")
+                
+                NSLog("selectedPropertyModelSRP = " + String(srpto))
                 
                 //SAVE SELECTED TO RECENTLY VIEWED ITEM
                 let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -1001,9 +1012,6 @@ class ListTableViewController: UITableViewController {
                 }else{
                     NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
                 }
-                
-                
-                
             })
             alert.addAction(action)
             let action2 = UIAlertAction(title: "Home Loan Calculator", style: .Default, handler: { (alert) -> Void in
@@ -1011,6 +1019,12 @@ class ListTableViewController: UITableViewController {
                 self.selectedPropertyModelSRP = Int(self.propertyModelArr[indexPath.row].5)
                 self.selectedPropertyProj = proj
                 self.selectedPropertyDeveloper = developer
+                
+                let x = Int(srpto).stringFormattedWithSepator
+                self.defaults.setObject(modelid, forKey: "selectedPropertyModelId")
+                self.defaults.setObject(x, forKey: "selectedPropertyModelSRP")
+                self.defaults.setObject(proj, forKey: "selectedPropertyProj")
+                self.defaults.setObject(developer, forKey: "selectedPropertyDeveloper")
                 
                 //SAVE SELECTED TO RECENTLY VIEWED ITEM
                 let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
@@ -1040,6 +1054,12 @@ class ListTableViewController: UITableViewController {
                 self.selectedPropertyProj = proj
                 self.selectedPropertyDeveloper = developer
                 
+                let x = Int(srpto).stringFormattedWithSepator
+                self.defaults.setObject(modelid, forKey: "selectedPropertyModelId")
+                self.defaults.setObject(x, forKey: "selectedPropertyModelSRP")
+                self.defaults.setObject(proj, forKey: "selectedPropertyProj")
+                self.defaults.setObject(developer, forKey: "selectedPropertyDeveloper")
+                
                 //SAVE SELECTED TO RECENTLY VIEWED ITEM
                 let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 if (userDefaults.objectForKey("viewedVehicles") != nil) {
@@ -1058,8 +1078,7 @@ class ListTableViewController: UITableViewController {
                 }else{
                     NSUserDefaults.standardUserDefaults().setObject(modelid, forKey: "viewedProperties")
                 }
-                
-                
+
                 self.performSegueWithIdentifier("ApplyHomeLoanDirect", sender: self)
                 
             })

@@ -28,8 +28,14 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     var propertytypeArr = [("","")]
     var provinceArr = [("","")]
     var cityArr = [("","","")]
+    var occupationgroupArr = [("1","EXECUTIVE"), ("2","MANAGER AND OFFICER"), ("3","STAFF/CLERK"), ("4","BUSINESS OWNER"), ("5","OTHERS") ]
     var civilStatusArr = [("S","Single"),("M","Married"),("W","Widow/er")]
     var salutationArr = [("MR","Mr"),("MS","Ms"),("MRS","Mrs")]
+    var homeownershipArr = [
+        ("0", "OWNED/NOT MORTGAGED"),("1","OWNED/MORTGAGED"), ("2", "LIVING WITH PARENTS"), ("3", "RENTED"), ("4","USED FOR FREE/OTHERS") ]
+    var sourceFundsArr = [("1","Business Income"), ("2","Rental Income"), ("3","Investment"), ("4","Personal Savings"), ("5","Salary"), ("6","Inheritance"), ("7","Sales of Property"), ("8","Pension"), ("9","Others")]
+    var industryArr = [("","")]
+    var bankArr = [("","")]
     var selectedCarModelId = ""
     var selectedCarModelSRP = 0
     var selectedTerm = "60"
@@ -64,6 +70,29 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     var selectedProvince = ""
     var selectedProvinceID = ""
     var selectedCity = ""
+    var selectedCityID = ""
+    
+    var selectedProvince_present = ""
+    var selectedProvinceID_present = ""
+    var selectedCity_present = ""
+    var selectedCityID_present = ""
+    
+    var selectedProvince_permanent = ""
+    var selectedProvinceID_permanent = ""
+    var selectedCity_permanent = ""
+    var selectedCityID_permanent = ""
+    
+    var selectedProvinceBiz = ""
+    var selectedProvinceBizCode = ""
+    var selectedCityBiz = ""
+    var selectedCityBizCode = ""
+    
+    var selectedOccupationGroup = ""
+    var selectedOccupationGroupCode = ""
+    var selectedIndustry = ""
+    var selectedIndustryCode = ""
+    var selectedBank = ""
+    var selectedBankCode = ""
     
     @IBOutlet var tableViewCardCategory: UITableView!
     @IBOutlet var tableViewDropdown: UITableView!
@@ -110,6 +139,11 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             loadPosition()
         }
         
+        if(vcAction == "ShowOccupationGroupList" || vcAction == "ShowOccupationGroupList" || vcAction == "ShowC1OccupationGroupList" || vcAction == "ShowC2OccupationGroupList"){
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        }
+        
         if(vcAction == "ShowIncomeType" || vcAction == "ShowSPIncomeType" || vcAction == "ShowC1IncomeType" || vcAction == "ShowC2IncomeType"){
             loadEmpType()
         }
@@ -122,7 +156,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             loadPropertyTypeList()
         }
         
-        if(vcAction == "ShowProvinceList"){
+        if(vcAction == "ShowProvinceList" || vcAction == "ShowProvinceList_present" || vcAction == "ShowProvinceList_permanent" || vcAction == "ShowBizProvinceList"){
             loadProvinceList()
         }
         
@@ -131,6 +165,49 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                 selectedProvinceID = provinceID
             }
             loadCityList(selectedProvinceID)
+        }
+        
+        if(vcAction == "ShowCityList_present"){
+            if let provinceID_present = defaults.stringForKey("selectedProvinceID_present") {
+                selectedProvinceID_present = provinceID_present
+            }
+            loadCityList(selectedProvinceID_present)
+        }
+        
+        if(vcAction == "ShowCityList_permanent"){
+            if let provinceID_permanent = defaults.stringForKey("selectedProvinceID_permanent") {
+                selectedProvinceID_permanent = provinceID_permanent
+            }
+            loadCityList(selectedProvinceID_permanent)
+        }
+        
+        if(vcAction == "ShowBizCityList"){
+            if let provinceBizCode = defaults.stringForKey("selectedProvinceBizCode") {
+                selectedProvinceBizCode = provinceBizCode
+            }
+            loadCityList(selectedProvinceBizCode)
+        }
+        
+        if(vcAction == "ShowIndustryList") {
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            loadIndustryList()
+        }
+        
+        if(vcAction == "ShowBankList") {
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            loadBankList()
+        }
+        
+        if(vcAction == "ShowHomeOwnershipList") {
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        }
+        
+        if(vcAction == "ShowSourceOfFundList") {
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
         }
     }
     
@@ -800,6 +877,197 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    func loadIndustryList(){
+        urlLib = NSLocalizedString("urlLib", comment: "")
+        
+        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "CATS-BUSINDUSTRY")
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            
+            loadingIndicator.hidden = false
+            loadingIndicator.startAnimating()
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            self.industryArr.removeAll()
+                            
+                            for i in 0...str.count - 2{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2[0] != ""){
+                                    self.industryArr.append((str2[1], str2[0]))
+                                    
+                                }
+                            }
+                            
+                            self.tableViewDropdown.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            
+                            
+                        })
+                    }else{
+                        
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        self.loadingIndicator.hidden = true
+                        self.loadingIndicator.stopAnimating()
+                        self.view.userInteractionEnabled = true
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            //exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            self.view.userInteractionEnabled = true
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+                
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func loadBankList(){
+        urlLib = NSLocalizedString("urlLib", comment: "")
+        
+        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "CATS-BANK")
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            
+            loadingIndicator.hidden = false
+            loadingIndicator.startAnimating()
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            self.bankArr.removeAll()
+                            
+                            for i in 0...str.count - 2{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2[0] != ""){
+                                    self.bankArr.append((str2[1], str2[0]))
+                                    
+                                }
+                            }
+                            
+                            self.tableViewDropdown.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                            
+                            
+                        })
+                    }else{
+                        
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        self.loadingIndicator.hidden = true
+                        self.loadingIndicator.stopAnimating()
+                        self.view.userInteractionEnabled = true
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            //exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            self.view.userInteractionEnabled = true
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+                
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -822,14 +1090,29 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         else if(vcAction == "ShowPropertyType"){
             itemCount = propertytypeArr.count
         }
-        else if(vcAction == "ShowProvinceList"){
+        else if(vcAction == "ShowProvinceList" || vcAction == "ShowProvinceList_present" || vcAction == "ShowProvinceList_permanent" || vcAction == "ShowBizProvinceList"){
             itemCount = provinceArr.count
         }
-        else if(vcAction == "ShowCityList"){
+        else if(vcAction == "ShowCityList" || vcAction == "ShowCityList_present" || vcAction == "ShowCityList_permanent" || vcAction == "ShowBizCityList"){
             itemCount = cityArr.count
         }
         else if(vcAction == "ShowOccupationList" || vcAction == "ShowSPOccupationList" || vcAction == "ShowC1OccupationList" || vcAction == "ShowC2OccupationList"){
             itemCount = positionArr.count
+        }
+        else if(vcAction == "ShowOccupationGroupList" || vcAction == "ShowC1OccupationGroupList" || vcAction == "ShowC2OccupationGroupList"){
+            itemCount = occupationgroupArr.count
+        }
+        else if(vcAction == "ShowIndustryList"){
+            itemCount = industryArr.count
+        }
+        else if(vcAction == "ShowBankList"){
+            itemCount = bankArr.count
+        }
+        else if(vcAction == "ShowHomeOwnershipList"){
+            itemCount = homeownershipArr.count
+        }
+        else if(vcAction == "ShowSourceOfFundList"){
+            itemCount = sourceFundsArr.count
         }
         else if(vcAction == "ShowIncomeType" || vcAction == "ShowSPIncomeType" || vcAction == "ShowC1IncomeType" || vcAction == "ShowC2IncomeType"){
             itemCount = emptypeArr.count
@@ -865,14 +1148,29 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         else if(vcAction == "ShowPropertyType"){
             dropdownName = "Select Property Type"
         }
-        else if(vcAction == "ShowProvinceList"){
+        else if(vcAction == "ShowProvinceList" || vcAction == "ShowProvinceList_present" || vcAction == "ShowProvinceList_permanent" || vcAction == "ShowBizProvinceList"){
             dropdownName = "Select Province"
         }
-        else if(vcAction == "ShowCityList"){
+        else if(vcAction == "ShowCityList" || vcAction == "ShowCityList_present" || vcAction == "ShowCityList_permanent" || vcAction == "ShowBizCityList"){
             dropdownName = "Select City"
         }
         else if(vcAction == "ShowOccupationList" || vcAction == "ShowSPOccupationList" || vcAction == "ShowC1OccupationList" || vcAction == "ShowC2OccupationList"){
             dropdownName = "Select Occupation"
+        }
+        else if(vcAction == "ShowOccupationGroupList" || vcAction == "ShowC1OccupationGroupList" || vcAction == "ShowC2OccupationGroupList"){
+            dropdownName = "Select Occupation Group"
+        }
+        else if(vcAction == "ShowIndustryList"){
+            dropdownName = "Choose Business/Employment Industry"
+        }
+        else if(vcAction == "ShowBankList"){
+            dropdownName = "Choose Bank"
+        }
+        else if(vcAction == "ShowHomeOwnershipList"){
+            dropdownName = "Select Home Ownership"
+        }
+        else if(vcAction == "ShowSourceOfFundList"){
+            dropdownName = "Select Source Of Fund"
         }
         else if(vcAction == "ShowIncomeType" || vcAction == "ShowSPIncomeType" || vcAction == "ShowC1IncomeType" || vcAction == "ShowC2IncomeType"){
             dropdownName = "Select Source of Income Type"
@@ -938,7 +1236,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                 listcell.textLabel!.text = ""
             }
         }
-        else if(vcAction == "ShowProvinceList"){
+        else if(vcAction == "ShowProvinceList" || vcAction == "ShowProvinceList_present" || vcAction == "ShowProvinceList_permanent" || vcAction == "ShowBizProvinceList"){
             let (id_province, province) = self.provinceArr[indexPath.row]
             
             if(Int(id_province) != 0){
@@ -947,7 +1245,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                 listcell.textLabel!.text = ""
             }
         }
-        else if(vcAction == "ShowCityList"){
+        else if(vcAction == "ShowCityList" || vcAction == "ShowCityList_present" || vcAction == "ShowCityList_permanent" || vcAction == "ShowBizCityList"){
             let (id_city, city, id_province) = self.cityArr[indexPath.row]
             
             if(Int(id_city) != 0 && Int(id_province) != 0){
@@ -961,6 +1259,51 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             
             if(Int(id_position) != 0){
                 listcell.textLabel?.text = position
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
+        else if(vcAction == "ShowOccupationGroupList" || vcAction == "ShowC1OccupationGroupList" || vcAction == "ShowC2OccupationGroupList" ){
+            let (id_occupationGroupCode, occupationGroupCode) = self.occupationgroupArr[indexPath.row]
+            
+            if(id_occupationGroupCode != ""){
+                listcell.textLabel?.text = occupationGroupCode
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
+        else if(vcAction == "ShowIndustryList" ){
+            let (id_industryCode, industryCode) = self.industryArr[indexPath.row]
+            
+            if(id_industryCode != ""){
+                listcell.textLabel?.text = industryCode
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
+        else if(vcAction == "ShowBankList" ){
+            let (id_bankCode, bankCode) = self.bankArr[indexPath.row]
+            
+            if(id_bankCode != ""){
+                listcell.textLabel?.text = bankCode
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
+        else if(vcAction == "ShowHomeOwnershipList"){
+            let (id_homeownership, homeownership) = self.homeownershipArr[indexPath.row]
+            
+            if(id_homeownership != ""){
+                listcell.textLabel?.text = homeownership
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
+        else if(vcAction == "ShowSourceOfFundList"){
+            let (id_sourceoffund, sourceoffund) = self.sourceFundsArr[indexPath.row]
+            
+            if(id_sourceoffund != ""){
+                listcell.textLabel?.text = sourceoffund
             }else{
                 listcell.textLabel!.text = ""
             }
@@ -1062,9 +1405,79 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             defaults.setObject("", forKey: "selectedCity")
         }
         
+        if(vcAction == "ShowProvinceList_present"){
+            let (id_province, province) = self.provinceArr[indexPath.row]
+            defaults.setObject(province, forKey: "selectedProvince_present")
+            defaults.setObject(id_province, forKey: "selectedProvinceID_present")
+            defaults.setObject("", forKey: "selectedCity_present")
+        }
+        
+        if(vcAction == "ShowProvinceList_permanent"){
+            let (id_province, province) = self.provinceArr[indexPath.row]
+            defaults.setObject(province, forKey: "selectedProvince_permanent")
+            defaults.setObject(id_province, forKey: "selectedProvinceID_permanent")
+            defaults.setObject("", forKey: "selectedCity_permanent")
+        }
+        
+        if(vcAction == "ShowBizProvinceList"){
+            let (id_bizProvinceCode, bizProvinceCode) = self.provinceArr[indexPath.row]
+            defaults.setObject(bizProvinceCode, forKey: "selectedProvinceBiz")
+            defaults.setObject(id_bizProvinceCode, forKey: "selectedProvinceBizCode")
+            defaults.setObject("", forKey: "selectedCityBiz")
+        }
+        
         if(vcAction == "ShowCityList"){
-            selectedCity = currentCell.textLabel!.text!
-            defaults.setObject(currentCell.textLabel!.text!, forKey: "selectedCity")
+            let (id_city, city, _) = self.cityArr[indexPath.row]
+            defaults.setObject(city, forKey: "selectedCity")
+            defaults.setObject(id_city, forKey: "selectedCityID")
+        }
+        
+        if(vcAction == "ShowCityList_present"){
+            let (id_city, city, _) = self.cityArr[indexPath.row]
+            defaults.setObject(city, forKey: "selectedCity_present")
+            defaults.setObject(id_city, forKey: "selectedCityID_present")
+        }
+        
+        if(vcAction == "ShowCityList_permanent"){
+            let (id_city, city, _) = self.cityArr[indexPath.row]
+            defaults.setObject(city, forKey: "selectedCity_permanent")
+            defaults.setObject(id_city, forKey: "selectedCityID_permanent")
+        }
+        
+        if(vcAction == "ShowBizCityList"){
+            let (id_bizCityCode, bizCityCode, _) = self.cityArr[indexPath.row]
+            defaults.setObject(bizCityCode, forKey: "selectedCityBiz")
+            defaults.setObject(id_bizCityCode, forKey: "selectedCityBizCode")
+        }
+        
+        if(vcAction == "ShowOccupationGroupList"){
+            let (id_occupationGroup, occupationGroup) = self.occupationgroupArr[indexPath.row]
+            defaults.setObject(occupationGroup, forKey: "selectedOccupationGroup")
+            defaults.setObject(id_occupationGroup, forKey: "selectedOccupationGroupCode")
+        }
+        
+        if(vcAction == "ShowIndustryList"){
+            let (id_industryCode, industryCode) = self.industryArr[indexPath.row]
+            defaults.setObject(industryCode, forKey: "selectedIndustry")
+            defaults.setObject(id_industryCode, forKey: "selectedIndustryCode")
+        }
+        
+        if(vcAction == "ShowBankList"){
+            let (id_bankCode, bankCode) = self.bankArr[indexPath.row]
+            defaults.setObject(bankCode, forKey: "selectedBank")
+            defaults.setObject(id_bankCode, forKey: "selectedBankCode")
+        }
+        
+        if(vcAction == "ShowHomeOwnershipList"){
+            let (id_homeownership, homeownership) = self.homeownershipArr[indexPath.row]
+            defaults.setObject(homeownership, forKey: "selectedHomeOwnership")
+            defaults.setObject(id_homeownership, forKey: "selectedHomeOwnershipID")
+        }
+        
+        if(vcAction == "ShowSourceOfFundList"){
+            let (id_sourceoffunds, sourceoffunds) = self.sourceFundsArr[indexPath.row]
+            defaults.setObject(sourceoffunds, forKey: "selectedSourceOfFund")
+            defaults.setObject(id_sourceoffunds, forKey: "selectedSourceOfFundID")
         }
         
         if(vcAction == "ShowCarBrandList" || vcAction == "SelectCarBrandModel"){
@@ -1193,14 +1606,14 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
         }
         
-        if(vcAction == "ShowProvinceList"){
+        if(vcAction == "ShowProvinceList" || vcAction == "ShowProvinceList_present" || vcAction == "ShowProvinceList_permanent" || vcAction == "ShowBizProvinceList"){
             if let oldIndex = tableView.indexPathForSelectedRow {
                 tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
             }
             tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
         }
         
-        if(vcAction == "ShowCityList"){
+        if(vcAction == "ShowCityList" || vcAction == "ShowCityList_present" || vcAction == "ShowCityList_permanent" || vcAction == "ShowBizCityList"){
             if let oldIndex = tableView.indexPathForSelectedRow {
                 tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .Checkmark
             }
@@ -1208,6 +1621,41 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         
         if(vcAction == "ShowOccupationList" || vcAction == "ShowSPOccupationList" || vcAction == "ShowC1OccupationList" || vcAction == "ShowC2OccupationList"){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
+        if(vcAction == "ShowOccupationGroupList" || vcAction == "ShowC1OccupationGroupList" || vcAction == "ShowC2OccupationGroupList"){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
+        if(vcAction == "ShowIndustryList" ){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
+        if(vcAction == "ShowBankList" ){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
+        if(vcAction == "ShowHomeOwnershipList"){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
+        if(vcAction == "ShowSourceOfFundList"){
             if let oldIndex = tableView.indexPathForSelectedRow {
                 tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
             }
