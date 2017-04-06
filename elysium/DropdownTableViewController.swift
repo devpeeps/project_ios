@@ -28,12 +28,14 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     var propertytypeArr = [("","")]
     var provinceArr = [("","")]
     var cityArr = [("","","")]
+    var cardNetworkArr = [("1","Visa"),("2","MasterCard")]
     var occupationgroupArr = [("1","EXECUTIVE"), ("2","MANAGER AND OFFICER"), ("3","STAFF/CLERK"), ("4","BUSINESS OWNER"), ("5","OTHERS") ]
     var civilStatusArr = [("S","Single"),("M","Married"),("W","Widow/er")]
     var salutationArr = [("MR","Mr"),("MS","Ms"),("MRS","Mrs")]
     var homeownershipArr = [
         ("0", "OWNED/NOT MORTGAGED"),("1","OWNED/MORTGAGED"), ("2", "LIVING WITH PARENTS"), ("3", "RENTED"), ("4","USED FOR FREE/OTHERS") ]
     var sourceFundsArr = [("1","Business Income"), ("2","Rental Income"), ("3","Investment"), ("4","Personal Savings"), ("5","Salary"), ("6","Inheritance"), ("7","Sales of Property"), ("8","Pension"), ("9","Others")]
+    var addressOptionArr = [("1","Use Present Address"), ("2","Use Work Address")]
     var industryArr = [("","")]
     var bankArr = [("","")]
     var selectedCarModelId = ""
@@ -94,6 +96,10 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     var selectedBank = ""
     var selectedBankCode = ""
     
+    var selectedCardNetwork = ""
+    var selectedBillingAddress = ""
+    var selectedDeliveryAddress = ""
+    
     @IBOutlet var tableViewCardCategory: UITableView!
     @IBOutlet var tableViewDropdown: UITableView!
     @IBOutlet var tableViewDropdown2: UITableView!
@@ -152,6 +158,11 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             loadCardCategoryList()
         }
         
+        if(vcAction == "ShowCardNetworkList"){
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        }
+        
         if(vcAction == "ShowPropertyType"){
             loadPropertyTypeList()
         }
@@ -206,6 +217,16 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         
         if(vcAction == "ShowSourceOfFundList") {
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        }
+        
+        if(vcAction == "ShowBillingAddressOption"){
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        }
+        
+        if(vcAction == "ShowDeliveryAddressOption"){
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()
         }
@@ -1090,6 +1111,9 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         else if(vcAction == "ShowPropertyType"){
             itemCount = propertytypeArr.count
         }
+        else if(vcAction == "ShowCardNetworkList"){
+            itemCount = cardNetworkArr.count
+        }
         else if(vcAction == "ShowProvinceList" || vcAction == "ShowProvinceList_present" || vcAction == "ShowProvinceList_permanent" || vcAction == "ShowBizProvinceList"){
             itemCount = provinceArr.count
         }
@@ -1126,6 +1150,9 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         else if(vcAction == "ShowSalutationList" || vcAction == "ShowC1SalutationList" || vcAction == "ShowC2SalutationList"){
             itemCount = salutationArr.count
         }
+        else if(vcAction == "ShowBillingAddressOption" || vcAction == "ShowDeliveryAddressOption"){
+            itemCount = addressOptionArr.count
+        }
         
         return itemCount
     }
@@ -1147,6 +1174,9 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         else if(vcAction == "ShowPropertyType"){
             dropdownName = "Select Property Type"
+        }
+        else if(vcAction == "ShowCardNetworkList"){
+            dropdownName = "Select Card Network"
         }
         else if(vcAction == "ShowProvinceList" || vcAction == "ShowProvinceList_present" || vcAction == "ShowProvinceList_permanent" || vcAction == "ShowBizProvinceList"){
             dropdownName = "Select Province"
@@ -1183,6 +1213,12 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         }
         else if(vcAction == "ShowSalutationList" || vcAction == "ShowC1SalutationList" || vcAction == "ShowC2SalutationList"){
             dropdownName = "Select Salutation"
+        }
+        else if(vcAction == "ShowBillingAddressOption"){
+            dropdownName = "Select Billing Address"
+        }
+        else if(vcAction == "ShowDeliveryAddressOption"){
+            dropdownName = "Select Delivery Address"
         }
         
         return dropdownName
@@ -1232,6 +1268,15 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             
             if(Int(id_propertyType) != 0){
                 listcell.textLabel?.text = String(propertyType)
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
+        else if(vcAction == "ShowCardNetworkList"){
+            let (id_cardNetwork, cardNetwork) = self.cardNetworkArr[indexPath.row]
+            
+            if(Int(id_cardNetwork) != 0){
+                listcell.textLabel?.text = String(cardNetwork)
             }else{
                 listcell.textLabel!.text = ""
             }
@@ -1368,6 +1413,15 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                 listcell.textLabel!.text = ""
             }
         }
+        else if(vcAction == "ShowBillingAddressOption" || vcAction == "ShowDeliveryAddressOption"){
+            let (id_addressOption, addressOption) = self.addressOptionArr[indexPath.row]
+            
+            if(id_addressOption != ""){
+                listcell.textLabel?.text = addressOption
+            }else{
+                listcell.textLabel!.text = ""
+            }
+        }
         
         return listcell
     }
@@ -1396,6 +1450,13 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         if(vcAction == "ShowPropertyType"){
             selectedPropertyType = currentCell.textLabel!.text!
             defaults.setObject(currentCell.textLabel!.text!, forKey: "selectedPropertyType")
+        }
+        
+        if(vcAction == "ShowCardNetworkList"){
+            let (id_cardNetwork, cardNetwork) = self.cardNetworkArr[indexPath.row]
+            
+            defaults.setObject(cardNetwork, forKey: "selectedCardNetwork")
+            defaults.setObject(id_cardNetwork, forKey: "selectedCardNetworkID")
         }
         
         if(vcAction == "ShowProvinceList"){
@@ -1575,6 +1636,18 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             defaults.setObject(C2salutationCode, forKey: "selectedC2Salutation")
             defaults.setObject(id_C2salutationCode, forKey: "selectedC2SalutationCode")
         }
+        
+        if(vcAction == "ShowBillingAddressOption"){
+            let (id_addressOption, addressOption) = self.addressOptionArr[indexPath.row]
+            defaults.setObject(addressOption, forKey: "selectedBillingAddress")
+            defaults.setObject(id_addressOption, forKey: "selectedBillingAddressCode")
+        }
+        
+        if(vcAction == "ShowDeliveryAddressOption"){
+            let (id_addressOption, addressOption) = self.addressOptionArr[indexPath.row]
+            defaults.setObject(addressOption, forKey: "selectedDeliveryAddress")
+            defaults.setObject(id_addressOption, forKey: "selectedDeliveryAddressCode")
+        }
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -1683,6 +1756,13 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
         }
         
+        if(vcAction == "ShowBillingAddressOption" || vcAction == "ShowDeliveryAddressOption"){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        }
+        
         return indexPath
     }
     
@@ -1707,6 +1787,12 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                 if(vcAction == "SelectCarBrandModel"){
                     destinationVC.rootVC = "autoApplication"
                 }
+            }
+        }
+        
+        if segue.identifier == "ShowSelectedCardNetworkList" {
+            if let destinationVC = segue.destinationViewController as? ListTableViewController{
+                destinationVC.vcAction = "ShowSelectedCardNetworkList"
             }
         }
         

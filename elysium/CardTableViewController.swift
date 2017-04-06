@@ -7,9 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
 class CardTableViewController: UITableViewController {
     @IBOutlet var menuButton: UIBarButtonItem!
+    
+    var id = ""
+    var name = ""
+    var email = ""
+    var autoInfo = ["","","",""]
+    var homeInfo = ["","",""]
+    var ccInfo = ["","","",""]
+    var autoRates = [("",0.00)]
+    var homeRates = [("",0.00)]
     
     var salutationArr = [("MR","Mr"),("MRS","Mrs"),("MS","Ms")]
     
@@ -23,6 +33,7 @@ class CardTableViewController: UITableViewController {
     var selectedCity = ""
     var selectedBizCity = ""
     var selectedIncomeType = ""
+    var selectedIncomeTypeID = ""
     var selectedOccupation = ""
     var selectedOccupationGroup = ""
     var selectedIndustry = ""
@@ -38,9 +49,13 @@ class CardTableViewController: UITableViewController {
     
     let defaults = NSUserDefaults.standardUserDefaults()
     
+    let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        checkIfLogged()
+        
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AutoTableViewController.DismissKeyboard))
         view.addGestureRecognizer(dismiss)
         dismiss.cancelsTouchesInView = false
@@ -138,6 +153,18 @@ class CardTableViewController: UITableViewController {
             if let sourceOfFundLabel = defaults.stringForKey("selectedSourceOfFund") {
                 self.empsourcefundsCell.detailTextLabel?.text = sourceOfFundLabel
             }
+            
+            if let cardTypeNameLabel = defaults.stringForKey("selectedCardTypeName") {
+                self.cardTypeCell.detailTextLabel?.text = cardTypeNameLabel
+            }
+            
+            if let billingAddressLabel = defaults.stringForKey("selectedBillingAddress") {
+                self.billingAddressCell.detailTextLabel?.text = billingAddressLabel
+            }
+            
+            if let deliveryAddressLabel = defaults.stringForKey("selectedDeliveryAddress") {
+                self.deliveryAddressCell.detailTextLabel?.text = deliveryAddressLabel
+            }
         }
     }
     
@@ -146,13 +173,35 @@ class CardTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func checkIfLogged(){
+        //Load User defaults
+        let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        
+        
+        if (userDefaults.objectForKey("id") != nil) {
+            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
+            //NSLog(self.id)
+        }
+        if (userDefaults.objectForKey("name") != nil) {
+            self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
+            //NSLog(self.name)
+        }
+        if (userDefaults.objectForKey("email") != nil) {
+            self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
+            //NSLog(self.email)
+        }
+        if (userDefaults.objectForKey("ccInfo") != nil) {
+            self.ccInfo = NSUserDefaults.standardUserDefaults().valueForKey("ccInfo") as! [String]
+            //NSLog(self.ccInfo[1])
+        }
+    }
     
     @IBAction func actionSubmit(sender: AnyObject) {
         let tnc = NSLocalizedString("tnc_apply", comment: "").html2String
         
         let alert = UIAlertController(title: "Acceptance of Terms & Conditions", message: tnc, preferredStyle: .ActionSheet)
         let action = UIAlertAction(title: "Yes, I accept", style: .Default, handler: { (alert) -> Void in
-            //self.submitApplication()
+            self.submitApplication()
         })
         alert.addAction(action)
         let action2 = UIAlertAction(title: "No, I do not accept", style: .Default, handler: { (alert) -> Void in
@@ -162,7 +211,6 @@ class CardTableViewController: UITableViewController {
         presentViewController(alert, animated: true, completion: nil)
     }
     
-    /*
     func submitApplication(){
         //self.loadingIndicator.hidden = false
         //self.loadingIndicator.startAnimating()
@@ -173,11 +221,16 @@ class CardTableViewController: UITableViewController {
         
         var stringUrl = url
         
+        var cardtypecode = ""
+        if let cardTypeLabel = defaults.stringForKey("selectedCardType") {
+            cardtypecode = cardTypeLabel
+        }
+        
         var errorctr = 0;
         var errormsg = "";
-        stringUrl = stringUrl + "&companyid=" + self.id;
+        stringUrl = stringUrl + "&companyid=" + self.id
         
-        stringUrl = stringUrl + "&cardtype=" + selectedCardTypeName.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&cardtype=" + cardtypecode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&appsource=" + (self.id != "NON" ? "WAP" : "Online Application").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //CHECK WITH LIBFIELDVALUES
@@ -195,7 +248,7 @@ class CardTableViewController: UITableViewController {
             errorctr += 1;
             errormsg += "First Name\n";
         }
-        if(self.mobilenumber.text == ""){ //CHECK IF VALID PHONE
+        if(self.mobilenumber.text == ""){
             errorctr += 1;
             errormsg += "Mobile No\n";
         }
@@ -208,12 +261,18 @@ class CardTableViewController: UITableViewController {
             errormsg += "Res Address\n";
         }
         
-        if(emptypeArr[self.emptype.selectedRowInComponent(0)].0 != "6"){
+        
+        var incomeTypeID = ""
+        if let incomeTypeIDLabel = defaults.stringForKey("selectedIncomeTypeID") {
+            incomeTypeID = incomeTypeIDLabel
+        }
+        
+        if(incomeTypeID != "6"){
             if(self.empname.text == ""){
                 errorctr += 1;
                 errormsg += "Emp/Biz Name\n";
             }
-            if(self.empincome.text == ""){ //CHECK IF VALID AMOUNT
+            if(self.empincome.text == ""){
                 errorctr += 1;
                 errormsg += "Emp/Biz Income\n";
             }
@@ -237,21 +296,18 @@ class CardTableViewController: UITableViewController {
         stringUrl = stringUrl + "&fname=" + self.firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&mname=" + self.middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        let bday = self.birthday.date
-        let dateStr = bday.dateFormatted
-        
-        stringUrl = stringUrl + "&bday=" + dateStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&bday=" + self.birthday.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         //stringUrl = stringUrl + "&gender=" + (self.gender.selectedSegmentIndex == 0 ? "0" : "1")
         
         stringUrl = stringUrl + "&salutation=" +
-            (salutationArr[self.salutation.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            self.salutation.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&homeownership=" + (homeownershipArr[self.homeownership.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&homeownership=" + self.homeownership.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&empsourcefunds=" + (sourceFundsArr[self.empsourcefunds.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empsourcefunds=" + self.empsourcefunds.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&civilstat=" + (civilStatusArr[self.civilstatus.selectedRowInComponent(0)].0).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&civilstat=" + self.civilstatus.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&resphone=" + self.phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&mobileno=" + self.mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -259,13 +315,13 @@ class CardTableViewController: UITableViewController {
         stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&empbiz_type=" + emptypeArr[self.emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbiz_type=" + self.emptype.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&remarks=" + bankNameArr[self.withexistingbankname.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&remarks=" + self.bank.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         
         stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&jobpos=" + positionArr[self.position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&jobpos=" + self.position.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&empbiz_y=" + self.empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&empbizadd1=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -273,10 +329,7 @@ class CardTableViewController: UITableViewController {
         stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&monthly_income=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        
-        
         if(self.withc1.on == true){
-            
             
             if(self.c1lastname.text == ""){
                 errorctr += 1;
@@ -296,6 +349,7 @@ class CardTableViewController: UITableViewController {
             }
             
             /*
+             
              if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
              if(self.c1empname.text == ""){
              errorctr++;
@@ -316,20 +370,17 @@ class CardTableViewController: UITableViewController {
              }
              */
             
-            
             stringUrl = stringUrl + "&m1lname=" + self.c1lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m1fname=" + self.c1firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m1mname=" + self.c1middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
-            let bday = self.c1birthday.date
-            let dateStr = bday.dateFormatted
-            stringUrl = stringUrl + "&m1bday=" + dateStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1bday=" + self.c1birthday.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
             //stringUrl = stringUrl + "&m1gender=" + (self.c1gender.selectedSegmentIndex == 0 ? "0" : "1")
             stringUrl = stringUrl + "&m1resphone=" + self.c1phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m1mobileno=" + self.c1mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m1resadd1=" + self.c1address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-            stringUrl = stringUrl + "&m1resadd2=" + self.c1address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1resadd2=" + self.c1address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
             //stringUrl = stringUrl + "&m1empbiz_type=" + emptypeArr[self.c1emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
@@ -345,8 +396,6 @@ class CardTableViewController: UITableViewController {
         }
         
         if(self.withc2.on == true){
-            
-            
             if(self.c2lastname.text == ""){
                 errorctr += 1;
                 errormsg += "S2 Last Name\n";
@@ -390,15 +439,13 @@ class CardTableViewController: UITableViewController {
             stringUrl = stringUrl + "&m2fname=" + self.c2firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m2mname=" + self.c2middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
-            let bday = self.c2birthday.date
-            let dateStr = bday.dateFormatted
-            stringUrl = stringUrl + "&m2bday=" + dateStr.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2bday=" + self.c2birthday.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
             //stringUrl = stringUrl + "&m2gender=" + (self.c2gender.selectedSegmentIndex == 0 ? "0" : "1")
             stringUrl = stringUrl + "&m2resphone=" + self.c2phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m2mobileno=" + self.c2mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m2resadd1=" + self.c2address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-            stringUrl = stringUrl + "&m2resadd2=" + self.c2address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2resadd2=" + self.c2address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
             //stringUrl = stringUrl + "&m2empbiz_type=" + emptypeArr[self.c2emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             
@@ -428,15 +475,15 @@ class CardTableViewController: UITableViewController {
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
             
-            self.loadingIndicator.hidden = true
-            self.loadingIndicator.stopAnimating()
+            //self.loadingIndicator.hidden = true
+            //self.loadingIndicator.stopAnimating()
             self.view.userInteractionEnabled = true
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
         }else{
             NSUserDefaults.standardUserDefaults().setObject(self.lastname.text, forKey: "LASTNAME")
             NSUserDefaults.standardUserDefaults().setObject(self.firstname.text, forKey: "FIRSTNAME")
             NSUserDefaults.standardUserDefaults().setObject(self.middlename.text, forKey: "MIDDLENAME")
-            NSUserDefaults.standardUserDefaults().setObject(self.birthday.date, forKey: "BIRTHDAY")
+            NSUserDefaults.standardUserDefaults().setObject(self.birthday.text, forKey: "BIRTHDAY")
             NSUserDefaults.standardUserDefaults().setObject(self.mobilenumber.text, forKey: "MOBILENO")
             NSUserDefaults.standardUserDefaults().setObject(self.emailaddress.text, forKey: "EMAIL")
             NSUserDefaults.standardUserDefaults().setObject(self.phonenumber.text, forKey: "RESPHONE")
@@ -447,17 +494,16 @@ class CardTableViewController: UITableViewController {
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
             NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
             
-            
-            let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: manageObjectContext)
-            let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: manageObjectContext)
+            let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: managedObjectContext)
+            let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
             url.url = stringUrl
             url.datecreated = String(NSDate())
             url.refid = "CARD"
             url.datesuccess = "0"
             
             self.view.userInteractionEnabled = true
-            self.loadingIndicator.hidden = true
-            self.loadingIndicator.stopAnimating()
+            //self.loadingIndicator.hidden = true
+            //self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
             
             let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
@@ -468,17 +514,8 @@ class CardTableViewController: UITableViewController {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
-    */
     
-    /*
-    @IBOutlet var incometype: UILabel!
-    @IBOutlet var occupation: UILabel!
-    @IBOutlet var occupationgroup: UILabel!
-    @IBOutlet var cityBiz: UILabel!
-    @IBOutlet var provincebiz: UILabel!
-    @IBOutlet var toggleCard: UISwitch!
-    */
-    
+    @IBOutlet var cardTypeCell: UITableViewCell!
     @IBOutlet var salutationCell: UITableViewCell!
     @IBOutlet var civilStatusCell: UITableViewCell!
     @IBOutlet var provinceCell: UITableViewCell!
@@ -499,6 +536,11 @@ class CardTableViewController: UITableViewController {
     
     @IBOutlet var C1salutationCell: UITableViewCell!
     @IBOutlet var C2salutationCell: UITableViewCell!
+    
+    @IBOutlet var billingAddressCell: UITableViewCell!
+    @IBOutlet var deliveryAddressCell: UITableViewCell!
+    
+    @IBOutlet var cardtype: UILabel!
     
     @IBOutlet var salutation: UILabel!
     @IBOutlet var lastname: UITextField!
@@ -557,9 +599,10 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var c1firstname: UITextField!
     @IBOutlet var c1middlename: UITextField!
     @IBOutlet var c1birthday: UILabel!
-    /*@IBOutlet var c1phonenumber: UITextField!
+    @IBOutlet var c1phonenumber: UITextField!
     @IBOutlet var c1mobilenumber: UITextField!
     @IBOutlet var c1address1: UITextField!
+    /*
     @IBOutlet var c1address2: UITextField!
     */
     @IBOutlet var withc2: UISwitch!
@@ -569,9 +612,10 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var c2firstname: UITextField!
     @IBOutlet var c2middlename: UITextField!
     @IBOutlet var c2birthday: UILabel!
-    /*@IBOutlet var c2phonenumber: UITextField!
+    @IBOutlet var c2phonenumber: UITextField!
     @IBOutlet var c2mobilenumber: UITextField!
     @IBOutlet var c2address1: UITextField!
+    /*
     @IBOutlet var c2address2: UITextField!
     */
     //@IBOutlet var c2permaddress: UITextField!
@@ -627,15 +671,15 @@ class CardTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard")
         {
-            if indexPath.section == 0 && indexPath.row == 8 {
+            if indexPath.section == 1 && indexPath.row == 8 {
                 toggleDatepicker()
             }
             
-            if indexPath.section == 6 && indexPath.row == 4 {
+            if indexPath.section == 7 && indexPath.row == 4 {
                 c1bdaytoggleDatepicker()
             }
             
-            if indexPath.section == 8 && indexPath.row == 4 {
+            if indexPath.section == 9 && indexPath.row == 4 {
                 c2bdaytoggleDatepicker()
             }
         }
@@ -645,13 +689,13 @@ class CardTableViewController: UITableViewController {
         
         if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard")
         {
-            if bdaydatePickerHidden && indexPath.section == 0 && indexPath.row == 9 {
+            if bdaydatePickerHidden && indexPath.section == 1 && indexPath.row == 9 {
                 return 0
             }
-            else if c1bdaydatePickerHidden && indexPath.section == 6 && indexPath.row == 5 {
+            else if c1bdaydatePickerHidden && indexPath.section == 7 && indexPath.row == 5 {
                 return 0
             }
-            else if c2bdaydatePickerHidden && indexPath.section == 8 && indexPath.row == 5 {
+            else if c2bdaydatePickerHidden && indexPath.section == 9 && indexPath.row == 5 {
                 return 0
             }
             else {
@@ -669,25 +713,28 @@ class CardTableViewController: UITableViewController {
         
         if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             if(section == 0){
-                itemCount = 14
-            }
-            else if(section == 1){
-                itemCount = 5
-            }
-            else if(section == 2){
-                itemCount = 8
-            }
-            else if(section == 3){
-                itemCount = 17
-            }
-            else if(section == 4){
-                itemCount = 3
-            }
-            else if(section == 5){
                 itemCount = 1
             }
-            else if(section == 6 || section == 7 || section == 8){
-                if(section == 6){
+            if(section == 1){
+                itemCount = 14
+            }
+            else if(section == 2){
+                itemCount = 5
+            }
+            else if(section == 3){
+                itemCount = 8
+            }
+            else if(section == 4){
+                itemCount = 17
+            }
+            else if(section == 5){
+                itemCount = 3
+            }
+            else if(section == 6){
+                itemCount = 1
+            }
+            else if(section == 7 || section == 8 || section == 9){
+                if(section == 7){
                     if(self.withc1.on){
                         itemCount = 18
                     }
@@ -696,7 +743,7 @@ class CardTableViewController: UITableViewController {
                     }
                 }
                 
-                if(section == 7){
+                if(section == 8){
                     if(self.withc1.on){
                         itemCount = 1
                     }
@@ -705,7 +752,7 @@ class CardTableViewController: UITableViewController {
                     }
                 }
                 
-                if(section == 8){
+                if(section == 9){
                     if(!self.withc1.on){
                         itemCount = 0
                     }else{
@@ -718,10 +765,10 @@ class CardTableViewController: UITableViewController {
                     }
                 }
             }
-            else if(section == 9){
+            else if(section == 10){
                 itemCount = 2
             }
-            else if(section == 10){
+            else if(section == 11){
                 itemCount = 1
             }
         }
@@ -758,12 +805,7 @@ class CardTableViewController: UITableViewController {
             }
             
             if(section == 6){
-                if(self.withc1.on){
-                    headerHeight = tableView.sectionHeaderHeight
-                }
-                else {
-                    headerHeight = CGFloat.min
-                }
+                headerHeight = tableView.sectionHeaderHeight
             }
             
             if(section == 7){
@@ -776,6 +818,15 @@ class CardTableViewController: UITableViewController {
             }
             
             if(section == 8){
+                if(self.withc1.on){
+                    headerHeight = tableView.sectionHeaderHeight
+                }
+                else {
+                    headerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 9){
                 if(!self.withc1.on){
                     headerHeight = CGFloat.min
                 }else{
@@ -788,11 +839,11 @@ class CardTableViewController: UITableViewController {
                 }
             }
             
-            if(section == 9){
+            if(section == 10){
                 headerHeight = tableView.sectionHeaderHeight
             }
             
-            if(section == 10){
+            if(section == 11){
                 headerHeight = tableView.sectionHeaderHeight
             }
         }
@@ -806,11 +857,11 @@ class CardTableViewController: UITableViewController {
         if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             
             if(section == 0){
-               footerHeight = tableView.sectionFooterHeight
+                footerHeight = tableView.sectionFooterHeight
             }
             
             if(section == 1){
-                footerHeight = tableView.sectionFooterHeight
+               footerHeight = tableView.sectionFooterHeight
             }
             
             if(section == 2){
@@ -830,12 +881,7 @@ class CardTableViewController: UITableViewController {
             }
             
             if(section == 6){
-                if(self.withc1.on){
-                    footerHeight = tableView.sectionFooterHeight
-                }
-                else {
-                    footerHeight = CGFloat.min
-                }
+                footerHeight = tableView.sectionFooterHeight
             }
             
             if(section == 7){
@@ -848,6 +894,15 @@ class CardTableViewController: UITableViewController {
             }
             
             if(section == 8){
+                if(self.withc1.on){
+                    footerHeight = tableView.sectionFooterHeight
+                }
+                else {
+                    footerHeight = CGFloat.min
+                }
+            }
+            
+            if(section == 9){
                 if(!self.withc1.on){
                     footerHeight = CGFloat.min
                 }else{
@@ -860,11 +915,11 @@ class CardTableViewController: UITableViewController {
                 }
             }
             
-            if(section == 9){
+            if(section == 10){
                 footerHeight = tableView.sectionFooterHeight
             }
             
-            if(section == 10){
+            if(section == 11){
                 footerHeight = tableView.sectionFooterHeight
             }
         }
@@ -878,24 +933,27 @@ class CardTableViewController: UITableViewController {
         
         if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
             if(section == 0){
-                sectionHeader = "Personal Information"
+                sectionHeader = "New Credit Card Application"
             }
             else if(section == 1){
-                sectionHeader = "Present Address"
+                sectionHeader = "Personal Information"
             }
             else if(section == 2){
-                sectionHeader = "Permanent Address"
+                sectionHeader = "Present Address"
             }
             else if(section == 3){
-                sectionHeader = "Financial Information"
+                sectionHeader = "Permanent Address"
             }
             else if(section == 4){
-                sectionHeader = "Credit Card Information"
+                sectionHeader = "Financial Information"
             }
             else if(section == 5){
-                sectionHeader = "Additional Supplementary"
+                sectionHeader = "Credit Card Information"
             }
             else if(section == 6){
+                sectionHeader = "Additional Supplementary"
+            }
+            else if(section == 7){
                 if(self.withc1.on){
                     sectionHeader = "Supplementary 1 Information"
                 }
@@ -903,7 +961,7 @@ class CardTableViewController: UITableViewController {
                     sectionHeader = ""
                 }
             }
-            else if(section == 7){
+            else if(section == 8){
                 if(self.withc1.on){
                     sectionHeader = "Additional Supplementary"
                 }
@@ -911,7 +969,7 @@ class CardTableViewController: UITableViewController {
                     sectionHeader = ""
                 }
             }
-            else if(section == 8){
+            else if(section == 9){
                 if(!self.withc1.on){
                     sectionHeader = ""
                 }else{
@@ -923,10 +981,10 @@ class CardTableViewController: UITableViewController {
                     }
                 }
             }
-            else if(section == 9){
+            else if(section == 10){
                 sectionHeader = "Other Instructions"
             }
-            else if(section == 10){
+            else if(section == 11){
                 sectionHeader = ""
             }
         }
@@ -1005,6 +1063,13 @@ class CardTableViewController: UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "ShowCardNetworkList"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowCardNetworkList"
+            }
+        }
         
         if segue.identifier == "ShowAutoFAQ"
         {
@@ -1173,6 +1238,20 @@ class CardTableViewController: UITableViewController {
         {
             if let destinationVC = segue.destinationViewController as? DateTableViewController{
                 destinationVC.vcAction = "ShowBDayDatePicker"
+            }
+        }
+        
+        if segue.identifier == "ShowBillingAddressOption"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowBillingAddressOption"
+            }
+        }
+        
+        if segue.identifier == "ShowDeliveryAddressOption"
+        {
+            if let destinationVC = segue.destinationViewController as? DropdownTableViewController{
+                destinationVC.vcAction = "ShowDeliveryAddressOption"
             }
         }
         

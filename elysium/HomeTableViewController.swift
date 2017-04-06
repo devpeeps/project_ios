@@ -72,6 +72,8 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkIfLogged()
+        
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeTableViewController.DismissKeyboard))
         view.addGestureRecognizer(dismiss)
         dismiss.cancelsTouchesInView = false
@@ -392,6 +394,24 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
                 
                 homeLoanApplicationTable.reloadData()
             }
+        }
+    }
+    
+    func checkIfLogged(){
+        //Load User defaults
+        let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        
+        if (userDefaults.objectForKey("id") != nil) {
+            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
+        }
+        if (userDefaults.objectForKey("name") != nil) {
+            self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
+        }
+        if (userDefaults.objectForKey("email") != nil) {
+            self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
+        }
+        if (userDefaults.objectForKey("homeInfo") != nil) {
+            self.homeInfo = NSUserDefaults.standardUserDefaults().valueForKey("homeInfo") as! [String]
         }
     }
     

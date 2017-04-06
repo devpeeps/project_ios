@@ -19,6 +19,7 @@ class HomePageTableViewController: UITableViewController {
     var ccInfo = ["","","",""]
     var autoRates = [("",0.00)]
     var homeRates = [("",0.00)]
+    var vcAction = ""
     
     var withConnection = false
     

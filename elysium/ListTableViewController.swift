@@ -15,6 +15,7 @@ class ListTableViewController: UITableViewController {
     var rootVC = ""
     var passedValue = ""
     var withConnection = false
+    var selectedCardNetworkArr = [("","")]
     var propertyModelArr = [("modelid","modeldesc", "proj", "type",0.00,0.00,"areafrom","areato","developer","prov","city")]
     var carModelArr = [("","","","")]
     var cardTypeArr = [("","","","","")]
@@ -47,12 +48,14 @@ class ListTableViewController: UITableViewController {
     var provinceID = ""
     var city = ""
     var cityID = ""
+    var selectedCardNetwork = ""
     
     var showRecent = false
     
     @IBOutlet var tableViewCardType: UITableView!
     @IBOutlet var tableViewCarModels: UITableView!
     @IBOutlet var tableViewPropertyModels: UITableView!
+    @IBOutlet var tableViewCardNetwork: UITableView!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -65,7 +68,6 @@ class ListTableViewController: UITableViewController {
             if let carBrand = defaults.stringForKey("selectedCarBrand") {
                 selectedCarBrand = carBrand
             }
-            NSLog("selected " + selectedCarBrand)
             loadCarModels(selectedCarBrand)
         }
         
@@ -148,6 +150,18 @@ class ListTableViewController: UITableViewController {
                 selectedCardCategory = cardCategory
             }
             loadCardTypeList()
+        }
+        
+        if(vcAction == "ShowSelectedCardNetworkList"){
+            if let cardNetwork = defaults.stringForKey("selectedCardNetwork") {
+                selectedCardNetwork = cardNetwork
+            }
+            selectedCardNetworkArr.removeAll()
+            if(selectedCardNetwork == "Visa"){
+                loadVisaCardList()
+            }else if(selectedCardNetwork == "MasterCard"){
+                loadMasterCardList()
+            }
         }
     }
     
@@ -687,6 +701,188 @@ class ListTableViewController: UITableViewController {
         }
     }
     
+    func loadVisaCardList(){
+        urlLib = NSLocalizedString("urlLib", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "CATS-PRODUCTS_VISA")
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            
+            loadingIndicator.hidden = false
+            loadingIndicator.startAnimating()
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            self.selectedCardNetworkArr.removeAll()
+                            for i in 1...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2.count >= 2){
+                                    self.selectedCardNetworkArr.append((str2[0], str2[1]))
+                                }
+                            }
+                            
+                            self.tableViewCardNetwork.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        })
+                    }else{
+                        
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        self.loadingIndicator.hidden = true
+                        self.loadingIndicator.stopAnimating()
+                        self.view.userInteractionEnabled = true
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            //exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            self.view.userInteractionEnabled = true
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func loadMasterCardList(){
+        urlLib = NSLocalizedString("urlLib", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        let urlAsString = urlLib.stringByReplacingOccurrencesOfString("@@LIBTYPE", withString: "CATS-PRODUCTS_MC")
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            
+            loadingIndicator.hidden = false
+            loadingIndicator.startAnimating()
+            
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            self.selectedCardNetworkArr.removeAll()
+                            for i in 1...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString("***")
+                                if(str2.count >= 2){
+                                    self.selectedCardNetworkArr.append((str2[0], str2[1]))
+                                }
+                            }
+                            
+                            self.tableViewCardNetwork.reloadData()
+                            self.view.userInteractionEnabled = true
+                            self.loadingIndicator.hidden = true
+                            self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        })
+                    }else{
+                        
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        self.loadingIndicator.hidden = true
+                        self.loadingIndicator.stopAnimating()
+                        self.view.userInteractionEnabled = true
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            //exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+        }else{
+            self.view.userInteractionEnabled = true
+            self.loadingIndicator.hidden = true
+            self.loadingIndicator.stopAnimating()
+            self.view.userInteractionEnabled = true
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -712,6 +908,10 @@ class ListTableViewController: UITableViewController {
         
         if(vcAction == "ShowPropertyModelList"){
             itemCount = propertyModelArr.count
+        }
+        
+        if(vcAction == "ShowSelectedCardNetworkList"){
+            itemCount = selectedCardNetworkArr.count
         }
         
         return itemCount
@@ -753,6 +953,14 @@ class ListTableViewController: UITableViewController {
                 let x = Int(srpto)
                 listcell.lblSecondRow.text = "PHP " + x.stringFormattedWithSepator + " (From " + areafrom + "sqm to " + areato + "sqm)"
             }
+        } else if(vcAction == "ShowSelectedCardNetworkList"){
+            let (id_selectedCardNetwork, selectedCardNetwork) = self.selectedCardNetworkArr[indexPath.row]
+            
+            if(id_selectedCardNetwork != ""){
+                listcell.textLabel!.text = selectedCardNetwork
+            }else{
+                listcell.textLabel!.text = ""
+            }
         }
         return listcell
     }
@@ -786,6 +994,10 @@ class ListTableViewController: UITableViewController {
         
         if(vcAction == "ShowPropertyModelList"){
             dropdownName = "Choose Property Model"
+        }
+        
+        if(vcAction == "ShowSelectedCardNetworkList"){
+            dropdownName = "Choose Credit Card"
         }
         
         return dropdownName
@@ -1091,6 +1303,13 @@ class ListTableViewController: UITableViewController {
             
             presentViewController(alert, animated: true, completion: nil)
         }
+        
+        if(vcAction == "ShowSelectedCardNetworkList") {
+            selectedCarModelId = currentCell.textLabel!.text!
+            let (cardType_id, cardTypeName) = self.selectedCardNetworkArr[indexPath.row]
+            self.defaults.setObject(cardType_id, forKey: "selectedCardType")
+            self.defaults.setObject(cardTypeName, forKey: "selectedCardTypeName")
+        }
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
@@ -1100,6 +1319,11 @@ class ListTableViewController: UITableViewController {
             }
             tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
         } else if(vcAction == "ShowCardTypeList" || vcAction == "CardCategoryTravel" || vcAction == "CardCategoryCashBack"){
+            if let oldIndex = tableView.indexPathForSelectedRow {
+                tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
+            }
+            tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
+        } else if(vcAction == "ShowSelectedCardNetworkList"){
             if let oldIndex = tableView.indexPathForSelectedRow {
                 tableView.cellForRowAtIndexPath(oldIndex)?.accessoryType = .None
             }

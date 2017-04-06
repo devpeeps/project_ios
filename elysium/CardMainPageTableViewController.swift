@@ -78,7 +78,9 @@ class CardMainPageTableViewController: UITableViewController {
             if let destinationVC = segue.destinationViewController as? CardTableViewController{
                 destinationVC.vcAction = "ShowApplyCard"
             }
-
+            
+            defaults.setObject("", forKey: "selectedCardType")
+            defaults.setObject("", forKey: "selectedCardTypeName")
             defaults.setObject("", forKey: "selectedSalutation")
             defaults.setObject("", forKey: "selectedC1Salutation")
             defaults.setObject("", forKey: "selectedC2Salutation")
@@ -100,6 +102,10 @@ class CardMainPageTableViewController: UITableViewController {
             defaults.setObject("", forKey: "selectedHomeOwnershipID")
             defaults.setObject("", forKey: "selectedSourceOfFund")
             defaults.setObject("", forKey: "selectedSourceOfFundID")
+            defaults.setObject("", forKey: "selectedBillingAddress")
+            defaults.setObject("", forKey: "selectedBillingAddressCode")
+            defaults.setObject("", forKey: "selectedDeliveryAddress")
+            defaults.setObject("", forKey: "selectedDeliveryAddressCode")
         }
     }
 }

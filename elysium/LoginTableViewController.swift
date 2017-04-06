@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class LoginTableViewController: UITableViewController {
+class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     
     var id = ""
     var name = ""
@@ -24,6 +25,12 @@ class LoginTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginTableViewController.DismissKeyboard))
+        view.addGestureRecognizer(dismiss)
+        dismiss.cancelsTouchesInView = false
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginTableViewController.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginTableViewController.keyboardWasShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
+        
         if revealViewController() != nil {
             revealViewController().rearViewRevealWidth = 280
             menuButton.target = revealViewController()
@@ -33,14 +40,11 @@ class LoginTableViewController: UITableViewController {
             
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerLogin.networkStatusChanged(_:)), name: ReachabilityStatusChangedNotification, object: nil)
-        Reach().monitorReachabilityChanges()
-        
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerLogin.keyboardWasShown(_:)), name:UIKeyboardWillShowNotification, object: nil);
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewControllerLogin.keyboardWasNotShown(_:)), name:UIKeyboardWillHideNotification, object: nil);
-        
         //txtPassword.delegate = self
+    }
+    
+    func DismissKeyboard(){
+        view.endEditing(true)
     }
     
     func networkStatusChanged(notification: NSNotification) {
@@ -82,14 +86,13 @@ class LoginTableViewController: UITableViewController {
             //loadingIndicator.startAnimating()
             
             var urlAsString = "";
-            NSLog("txtPassword.text: " + txtPassword.text!)
-            NSLog("sender.tag: " + String(sender.tag))
+
             if(sender.tag == 0){
                 urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + txtPassword.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=ios&platform=@@PLATFORM&v=@@VERSION&promo=@@PROMO"
             }else{
                 urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=ios"
             }
-            NSLog("urlAsString: " + urlAsString)
+
             let url = NSURL(string: urlAsString)!
             let urlSession = NSURLSession.sharedSession()
             
@@ -104,7 +107,7 @@ class LoginTableViewController: UITableViewController {
                 if(!err){
                     
                     let s = String(data: data!, encoding: NSUTF8StringEncoding)
-                    NSLog("s: " + s!)
+                    
                     if(s == "INVALID_LOGIN"){
                         dispatch_async(dispatch_get_main_queue(), {
                             //self.loadingIndicator.stopAnimating()
@@ -220,9 +223,9 @@ class LoginTableViewController: UITableViewController {
                                 self.saveUserDefaults()
                                 
                                 if(sender.tag == 0){
-                                    self.performSegueWithIdentifier("LoginSuccess", sender: self)
+                                    self.performSegueWithIdentifier("LogInSuccess", sender: self)
                                 }else{
-                                    self.performSegueWithIdentifier("IDontHavePassword", sender: self)
+                                    //self.performSegueWithIdentifier("IDontHavePassword", sender: self)
                                 }
                                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                             })
@@ -257,67 +260,11 @@ class LoginTableViewController: UITableViewController {
         }
     }
     
-    func keyboardWasShown(notification: NSNotification) {
-
-        let userInfo: [NSObject : AnyObject] = notification.userInfo!
-        
-        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
-        let offset: CGSize = userInfo[UIKeyboardFrameEndUserInfoKey]!.CGRectValue.size
-        
-        if keyboardSize.height == offset.height {
-            if self.view.frame.origin.y == 0 {
-                UIView.animateWithDuration(0.1, animations: { () -> Void in
-                    self.view.frame.origin.y -= 0
-                })
-            }
-        } else {
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                self.view.frame.origin.y += keyboardSize.height - offset.height
-            })
-        }
-    }
-    
-    func keyboardWasNotShown(notification: NSNotification) {
-        /*
-         var info = notification.userInfo!
-         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-         
-         UIView.animateWithDuration(0.1, animations: { () -> Void in
-         self.bottomConstraint.constant = keyboardFrame.size.height - 20
-         })
-         */
-        let userInfo: [NSObject : AnyObject] = notification.userInfo!
-        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
-        if self.view.frame.origin.y + keyboardSize.height == 0 {
-            self.view.frame.origin.y += keyboardSize.height
-        }else{
-            self.view.frame.origin.y = 0
-        }
-    }
-    
-    //touches the screen
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
-        self.view.endEditing(true)
-    }
-    
-    //presses the return button from the keypad
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
-        textField.resignFirstResponder()
-        self.view.endEditing(true)
-        return false;
-    }
-    
-    //@IBOutlet var loadingIndicator: UIActivityIndicatorView!
-    
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "LoginSuccess"
         {
             if let destinationVC = segue.destinationViewController as? HomePageTableViewController{
+                destinationVC.vcAction = "LogInSuccess"
                 destinationVC.id = self.id
                 destinationVC.name = self.name
                 destinationVC.email = self.email
@@ -326,6 +273,13 @@ class LoginTableViewController: UITableViewController {
                 destinationVC.homeInfo = self.homeInfo
                 destinationVC.homeRates = self.homeRates
                 destinationVC.ccInfo = self.ccInfo
+            }
+        }
+        
+        if (segue.identifier == "IDontHavePassword")
+        {
+            if let destinationVC = segue.destinationViewController as? HomePageTableViewController{
+                destinationVC.vcAction = "IDontHavePassword"
             }
         }
     }
@@ -352,5 +306,50 @@ class LoginTableViewController: UITableViewController {
         //NSUserDefaults.standardUserDefaults().setObject(self.homeRates as? AnyObject, forKey: "homeRates")
         
         NSUserDefaults.standardUserDefaults().setObject(self.ccInfo, forKey: "ccInfo")
+    }
+    
+    func keyboardWasShown(notification: NSNotification) {
+        
+        let userInfo: [NSObject : AnyObject] = notification.userInfo!
+        
+        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
+        let offset: CGSize = userInfo[UIKeyboardFrameEndUserInfoKey]!.CGRectValue.size
+        
+        if keyboardSize.height == offset.height {
+            if self.view.frame.origin.y == 0 {
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                    self.view.frame.origin.y -= 0
+                })
+            }
+        } else {
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.view.frame.origin.y += keyboardSize.height - offset.height
+            })
+        }
+    }
+    
+    func keyboardWasNotShown(notification: NSNotification) {
+        
+        let userInfo: [NSObject : AnyObject] = notification.userInfo!
+        let keyboardSize: CGSize = userInfo[UIKeyboardFrameBeginUserInfoKey]!.CGRectValue.size
+        if self.view.frame.origin.y + keyboardSize.height == 0 {
+            self.view.frame.origin.y += keyboardSize.height
+        }else{
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    //touches the screen
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        self.view.endEditing(true)
+    }
+    
+    //presses the return button from the keypad
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        self.view.endEditing(true)
+        return false;
     }
 }
