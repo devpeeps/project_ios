@@ -132,7 +132,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ShowAutoLoanCalculator" || vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+        if(vcAction == "ShowAutoLoanCalculator" || vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication"){
             if let DPLabel = defaults.stringForKey("selectedDP") {
                 self.downpaymentCell.detailTextLabel?.text = DPLabel
             }
@@ -142,7 +142,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication"){
             let date = NSDate()
             let calendar = NSCalendar.currentCalendar()
             let components = calendar.components([.Day , .Month , .Year], fromDate: date)
@@ -702,28 +702,28 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var c2bdaydetailLabel: UILabel!
     
     @IBAction func datePickerChanged() {
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp")
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication")
         {
             bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func spousedatePickerChanged() {
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp")
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication")
         {
             spousebdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(spousebdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func c1datePickerChanged() {
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp")
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication")
         {
             c1bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c1bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
     }
     
     @IBAction func c2datePickerChanged() {
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp")
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication")
         {
             c2bdaydetailLabel.text = NSDateFormatter.localizedStringFromDate(c2bdaydatePicker.date, dateStyle: NSDateFormatterStyle.ShortStyle, timeStyle: NSDateFormatterStyle.NoStyle)
         }
@@ -906,7 +906,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication"){
             if(section == 0){
                 itemCount = 26
             } else if(section == 1){
@@ -963,7 +963,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication"){
             if(section == 0){
                 headerHeight = tableView.sectionHeaderHeight
             }
@@ -1033,7 +1033,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication"){
             if(section == 0){
                 footerHeight = tableView.sectionFooterHeight
             }
@@ -1100,7 +1100,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
             }
         }
         
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp"){
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication"){
             if(section == 0){
                 var promoLabel = ""
                 
@@ -1614,7 +1614,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp")
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication")
         {
             if indexPath.section == 0 && indexPath.row == 10 {
                 toggleDatepicker()
@@ -1636,7 +1636,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp")
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication")
         {
             if carConditionFieldsHidden && indexPath.section == 0 && indexPath.row == 2 {
                 return 0

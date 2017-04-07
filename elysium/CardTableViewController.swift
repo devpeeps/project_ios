@@ -494,13 +494,16 @@ class CardTableViewController: UITableViewController {
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
             NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
             
+            NSLog("stringUrl: " + stringUrl)
+            /*
             let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: managedObjectContext)
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
             url.url = stringUrl
             url.datecreated = String(NSDate())
             url.refid = "CARD"
             url.datesuccess = "0"
-            
+            */
+ 
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
             //self.loadingIndicator.stopAnimating()
@@ -508,7 +511,7 @@ class CardTableViewController: UITableViewController {
             
             let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                self.performSegueWithIdentifier("BackToMain", sender: self)
+                self.performSegueWithIdentifier("BackToCardMain", sender: self)
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
