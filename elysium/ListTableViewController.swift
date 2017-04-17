@@ -1085,6 +1085,7 @@ class ListTableViewController: UITableViewController {
             })
             alert.addAction(action2)
             
+            /*
             let action3 = UIAlertAction(title: "Apply for Auto Loan", style: .Default, handler: { (alert) -> Void in
                 self.selectedCarModelId = modelid
                 self.selectedCarModelSRP = Int(self.carModelArr[indexPath.row].2)!
@@ -1118,6 +1119,7 @@ class ListTableViewController: UITableViewController {
                 
             })
             alert.addAction(action3)
+            */
  
             let action4 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
                 //nothing

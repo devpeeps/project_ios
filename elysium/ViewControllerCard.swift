@@ -2628,14 +2628,15 @@ class ViewControllerCard: UIViewController, UIPickerViewDataSource, UIPickerView
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
             NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
             
-            
+            NSLog("stringUrl: " + stringUrl)
+
             let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: manageObjectContext)
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: manageObjectContext)
             url.url = stringUrl
             url.datecreated = String(NSDate())
             url.refid = "CARD"
             url.datesuccess = "0"
-            
+ 
             self.view.userInteractionEnabled = true
             self.loadingIndicator.hidden = true
             self.loadingIndicator.stopAnimating()

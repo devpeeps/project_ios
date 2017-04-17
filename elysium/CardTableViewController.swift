@@ -222,7 +222,7 @@ class CardTableViewController: UITableViewController {
         var stringUrl = url
         
         var cardtypecode = ""
-        if let cardTypeLabel = defaults.stringForKey("selectedCardType") {
+        if let cardTypeLabel = defaults.stringForKey("selectedCardTypeName") {
             cardtypecode = cardTypeLabel
         }
         
@@ -260,7 +260,6 @@ class CardTableViewController: UITableViewController {
             errorctr += 1;
             errormsg += "Res Address\n";
         }
-        
         
         var incomeTypeID = ""
         if let incomeTypeIDLabel = defaults.stringForKey("selectedIncomeTypeID") {
@@ -495,14 +494,13 @@ class CardTableViewController: UITableViewController {
             NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
             
             NSLog("stringUrl: " + stringUrl)
-            /*
+
             let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: managedObjectContext)
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
             url.url = stringUrl
             url.datecreated = String(NSDate())
             url.refid = "CARD"
             url.datesuccess = "0"
-            */
  
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
