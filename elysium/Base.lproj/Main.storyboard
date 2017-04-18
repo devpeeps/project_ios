@@ -7396,7 +7396,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N76-JE-xzn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8555" y="4139"/>
+            <point key="canvasLocation" x="8555" y="4231"/>
         </scene>
         <!--Card Main Page Table View Controller-->
         <scene sceneID="Jrn-Vh-78t">
@@ -7693,7 +7693,6 @@
                                                     </state>
                                                     <connections>
                                                         <action selector="actionBackToMain:" destination="Lyd-hf-rB3" eventType="touchUpInside" id="Yid-9D-7E6"/>
-                                                        <segue destination="bV4-jc-Awb" kind="show" identifier="IDontHavePassword" id="NWy-CZ-iGH"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -7722,7 +7721,8 @@
                     <connections>
                         <outlet property="menuButton" destination="cRC-tu-v0q" id="wcA-aM-W8x"/>
                         <outlet property="txtPassword" destination="M1W-R2-gAm" id="hKh-zE-MCM"/>
-                        <segue destination="5lM-L4-4pk" kind="show" identifier="LogInSuccess" id="ewy-Si-lr5"/>
+                        <segue destination="5lM-L4-4pk" kind="show" identifier="IDontHavePassword" customClass="SWRevealViewControllerSeguePushController" id="vF9-5g-XO6"/>
+                        <segue destination="5lM-L4-4pk" kind="show" identifier="LogInSuccess" customClass="SWRevealViewControllerSeguePushController" id="ceo-zV-aD7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U3f-gA-ll3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -8910,6 +8910,7 @@
                                                     <color key="tintColor" red="0.90196078430000004" green="0.40784313729999999" blue="0.094117647060000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="onTintColor" red="0.90196078430000004" green="0.40784313729999999" blue="0.094117647060000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <connections>
+                                                        <action selector="actionTogglePermAddress:" destination="hqZ-4J-8RW" eventType="valueChanged" id="HUg-bN-tmi"/>
                                                         <action selector="toggleWithC1:" destination="SIo-Jx-Z9z" eventType="valueChanged" id="tcs-DR-Z2f"/>
                                                     </connections>
                                                 </switch>
@@ -10605,7 +10606,7 @@
                         <outlet property="c2mobilenumber" destination="1GY-ZQ-O1u" id="RhV-gf-9ga"/>
                         <outlet property="c2phonenumber" destination="cBj-gj-woa" id="ngR-IQ-6Qy"/>
                         <outlet property="c2salutation" destination="FWx-fm-hQF" id="PL3-u5-xwt"/>
-                        <outlet property="cardTypeCell" destination="RmE-zc-uat" id="6Qc-IZ-8IO"/>
+                        <outlet property="cardTypeCell" destination="RmE-zc-uat" id="4jI-10-LcU"/>
                         <outlet property="cardtype" destination="rhn-Q3-nef" id="K3q-Q1-CDo"/>
                         <outlet property="city" destination="0DJ-m6-fyI" id="9lH-Li-rjE"/>
                         <outlet property="cityBizCell" destination="9lH-gk-xYg" id="3Cb-co-WAs"/>
@@ -10663,6 +10664,7 @@
                         <outlet property="withexistingbankname" destination="uXp-QZ-bTY" id="XVK-go-VME"/>
                         <outlet property="withexistingcard" destination="oat-ze-T3C" id="DRB-Q2-FgA"/>
                         <outlet property="withexistingcardno" destination="pQO-jd-rI8" id="e9J-jg-xVi"/>
+                        <outlet property="withpermaddress" destination="tPf-jw-NRm" id="liQ-Tm-JZt"/>
                         <segue destination="1ck-mi-ghI" kind="show" identifier="BackToCardMain" id="fYH-QQ-tdc"/>
                     </connections>
                 </tableViewController>
@@ -18267,50 +18269,49 @@
         <image name="tmb_promo" width="379" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="8st-wj-4kH"/>
+        <segue reference="voi-uh-FVI"/>
         <segue reference="AqJ-IS-hPn"/>
         <segue reference="ZBL-Ep-1OW"/>
-        <segue reference="qqo-IO-C6M"/>
-        <segue reference="Zxp-ae-epi"/>
-        <segue reference="nxQ-Hj-7dh"/>
         <segue reference="Dic-bS-ciY"/>
-        <segue reference="fZ2-hs-Eq0"/>
         <segue reference="ABo-FH-72m"/>
-        <segue reference="NWy-CZ-iGH"/>
+        <segue reference="fZ2-hs-Eq0"/>
+        <segue reference="nxQ-Hj-7dh"/>
+        <segue reference="Zxp-ae-epi"/>
+        <segue reference="BzD-4U-ZxB"/>
+        <segue reference="nXe-YB-f3D"/>
+        <segue reference="dwj-8d-YAM"/>
+        <segue reference="r04-pM-PPL"/>
+        <segue reference="s4l-H5-wEc"/>
+        <segue reference="m11-Rr-8sX"/>
+        <segue reference="uev-eI-iAB"/>
+        <segue reference="1Ls-nd-7um"/>
         <segue reference="ZgY-jG-imB"/>
         <segue reference="iWz-RQ-C1W"/>
         <segue reference="W1t-uI-oHy"/>
         <segue reference="ThR-TF-3qJ"/>
         <segue reference="zet-D3-k27"/>
-        <segue reference="BzD-4U-ZxB"/>
-        <segue reference="r04-pM-PPL"/>
-        <segue reference="nXe-YB-f3D"/>
-        <segue reference="dwj-8d-YAM"/>
-        <segue reference="s4l-H5-wEc"/>
-        <segue reference="m11-Rr-8sX"/>
-        <segue reference="uev-eI-iAB"/>
-        <segue reference="1Ls-nd-7um"/>
-        <segue reference="voi-uh-FVI"/>
-        <segue reference="8st-wj-4kH"/>
+        <segue reference="vF9-5g-XO6"/>
         <segue reference="Dbu-OT-G62"/>
         <segue reference="wBy-Ug-7Il"/>
-        <segue reference="EDu-Jm-yls"/>
-        <segue reference="WNW-1b-TzT"/>
-        <segue reference="SKq-aG-qli"/>
         <segue reference="XCt-AV-QdG"/>
-        <segue reference="teQ-qp-wN3"/>
+        <segue reference="SKq-aG-qli"/>
+        <segue reference="WNW-1b-TzT"/>
         <segue reference="1xu-O6-hB2"/>
-        <segue reference="zUp-us-UO3"/>
+        <segue reference="EDu-Jm-yls"/>
+        <segue reference="teQ-qp-wN3"/>
+        <segue reference="zaZ-Uv-Mst"/>
         <segue reference="gCS-LE-3Sd"/>
         <segue reference="7zp-ZM-g3U"/>
-        <segue reference="d3h-y5-Wxz"/>
-        <segue reference="Rva-9A-zdx"/>
-        <segue reference="zaZ-Uv-Mst"/>
         <segue reference="hHP-v4-cuB"/>
-        <segue reference="bim-qy-i6V"/>
+        <segue reference="zUp-us-UO3"/>
+        <segue reference="Rva-9A-zdx"/>
+        <segue reference="d3h-y5-Wxz"/>
         <segue reference="sWb-vh-Bbx"/>
         <segue reference="hkk-Y0-chg"/>
         <segue reference="wOC-9L-5b9"/>
-        <segue reference="fn9-CO-cw6"/>
+        <segue reference="bim-qy-i6V"/>
         <segue reference="hm6-NY-94e"/>
+        <segue reference="fn9-CO-cw6"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -225,7 +225,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                                 if(sender.tag == 0){
                                     self.performSegueWithIdentifier("LogInSuccess", sender: self)
                                 }else{
-                                    //self.performSegueWithIdentifier("IDontHavePassword", sender: self)
+                                    self.performSegueWithIdentifier("IDontHavePassword", sender: self)
                                 }
                                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
                             })

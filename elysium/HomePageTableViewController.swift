@@ -28,11 +28,11 @@ class HomePageTableViewController: UITableViewController {
         
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        if (userDefaults.objectForKey("id") != nil) {
-            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
+        if (userDefaults.objectForKey("name") != nil) {
+            self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
         }
         
-        if(self.id == ""){
+        if(self.name != ""){
             getUserDefaults()
         }
     }
@@ -51,8 +51,8 @@ class HomePageTableViewController: UITableViewController {
     func getUserDefaults(){
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        if (userDefaults.objectForKey("id") != nil) {
-            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
+        if (userDefaults.objectForKey("name") != nil) {
+            self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
         }
         
         //loadingIndicator.hidden = false
@@ -78,8 +78,8 @@ class HomePageTableViewController: UITableViewController {
             
             var urlAsString = "";
             
-            if(id != ""){
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + id.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android"
+            if(name != "" && name != "Standard"){
+                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + name.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android"
             }else{
                 urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android"
             }

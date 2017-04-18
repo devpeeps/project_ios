@@ -40,6 +40,7 @@ class CardTableViewController: UITableViewController {
     var selectedIndustryCode = ""
     var selectedBank = ""
     var selectedBankCode = ""
+    var selectedOccupationID = ""
     
     var bdaydatePickerHidden = true
     var c1bdaydatePickerHidden = true
@@ -222,7 +223,7 @@ class CardTableViewController: UITableViewController {
         var stringUrl = url
         
         var cardtypecode = ""
-        if let cardTypeLabel = defaults.stringForKey("selectedCardTypeName") {
+        if let cardTypeLabel = defaults.stringForKey("selectedCardType") {
             cardtypecode = cardTypeLabel
         }
         
@@ -230,15 +231,15 @@ class CardTableViewController: UITableViewController {
         var errormsg = "";
         stringUrl = stringUrl + "&companyid=" + self.id
         
-        stringUrl = stringUrl + "&cardtype=" + cardtypecode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&cardproduct=" + cardtypecode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&appsource=" + (self.id != "NON" ? "WAP" : "Online Application").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //CHECK WITH LIBFIELDVALUES
-        stringUrl = stringUrl + "&rm=" + "";
-        stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&clientclass=" + (self.id != "NON" ? "WAP (WORKPLACE ARRANGEMENT PROGR" : "REGULAR").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //ADD TO LIBFIELDVALUES = REGULAR
-        stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&rm=" + "";
+        //stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&clientclass=" + (self.id != "NON" ? "WAP (WORKPLACE ARRANGEMENT PROGR" : "REGULAR").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //ADD TO LIBFIELDVALUES = REGULAR
+        //stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         if(self.lastname.text == ""){
             errorctr += 1;
@@ -299,34 +300,46 @@ class CardTableViewController: UITableViewController {
         
         //stringUrl = stringUrl + "&gender=" + (self.gender.selectedSegmentIndex == 0 ? "0" : "1")
         
-        stringUrl = stringUrl + "&salutation=" +
+        stringUrl = stringUrl + "&title=" +
             self.salutation.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&homeownership=" + self.homeownership.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&res_ownership=" + self.homeownership.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&empsourcefunds=" + self.empsourcefunds.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&empsourcefunds=" + self.empsourcefunds.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&civilstat=" + self.civilstatus.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        var civilstat = ""
+        if let civilStatusCodeLabel = defaults.stringForKey("selectedCivilStatusCode") {
+            civilstat = civilStatusCodeLabel
+        }
+        
+        stringUrl = stringUrl + "&civilstat=" + civilstat.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&resphone=" + self.phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&mobileno=" + self.mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&email=" + self.emailaddress.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&empbiz_type=" + self.emptype.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizorgtype=" + self.emptype.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&remarks=" + self.bank.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&remarks=" + self.bank.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         
         stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&jobpos=" + self.position.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var jobposition = ""
+        if let occupationIDLabel = defaults.stringForKey("selectedOccupationID") {
+            jobposition = occupationIDLabel
+            print("jobposition" + jobposition)
+        }
+        
+        stringUrl = stringUrl + "&jobpos=" + jobposition.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&empbiz_y=" + self.empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&empbizadd1=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&empbizadd1=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&monthly_income=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizannualincome=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         if(self.withc1.on == true){
             
@@ -492,8 +505,6 @@ class CardTableViewController: UITableViewController {
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress1.text, forKey: "EMPBIZADDLINE1")
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
             NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
-            
-            NSLog("stringUrl: " + stringUrl)
 
             let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: managedObjectContext)
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
@@ -502,11 +513,13 @@ class CardTableViewController: UITableViewController {
             url.refid = "CARD"
             url.datesuccess = "0"
  
+            NSLog("stringUrl: " + stringUrl)
+            
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
             //self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            
+
             let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 self.performSegueWithIdentifier("BackToCardMain", sender: self)
@@ -667,6 +680,16 @@ class CardTableViewController: UITableViewController {
         c2bdaydatePickerHidden = !c2bdaydatePickerHidden
         tableView.beginUpdates()
         tableView.endUpdates()
+    }
+    
+    @IBAction func actionTogglePermAddress(sender: AnyObject) {
+        if(self.withpermaddress.on == true) {
+            permaddress1.text = address1.text
+            permaddress2.text = address2.text
+        }else{
+            permaddress1.text = ""
+            permaddress2.text = ""
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

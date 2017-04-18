@@ -1164,10 +1164,9 @@ class ListTableViewController: UITableViewController {
             alert.addAction(action)
             
             let action3 = UIAlertAction(title: "Apply for Credit Card", style: .Default, handler: { (alert) -> Void in
-                self.selectedCardType = id
-                self.selectedCardTypeName = name
+                self.defaults.setObject(id, forKey: "selectedCardType")
+                self.defaults.setObject(name, forKey: "selectedCardTypeName")
                 self.performSegueWithIdentifier("ApplyCreditCard", sender: self)
-                
             })
             alert.addAction(action3)
             
