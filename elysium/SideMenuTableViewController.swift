@@ -24,6 +24,7 @@ class SideMenuTableViewController: UITableViewController {
         if let loggedInIDLabel = defaults.stringForKey("name") {
             self.loggedInAccountCell.textLabel?.text = loggedInIDLabel
             loginStatus = loggedInIDLabel
+            NSLog("PRINT NAME: " + String(self.loggedInAccountCell.textLabel?.text))
         }
     }
     

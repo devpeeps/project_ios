@@ -117,14 +117,17 @@ class InquiryTableViewController: UITableViewController {
         if (userDefaults.objectForKey("email") != nil) {
             self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
         }
-        if (userDefaults.objectForKey("autoInfo") != nil) {
-            self.autoInfo = NSUserDefaults.standardUserDefaults().valueForKey("autoInfo") as! [String]
-        }
-        if (userDefaults.objectForKey("homeInfo") != nil) {
-            self.homeInfo = NSUserDefaults.standardUserDefaults().valueForKey("homeInfo") as! [String]
-        }
-        if (userDefaults.objectForKey("ccInfo") != nil) {
-            self.ccInfo = NSUserDefaults.standardUserDefaults().valueForKey("ccInfo") as! [String]
+        
+        if(self.id != ""){
+            if (userDefaults.objectForKey("autoInfo") != nil) {
+                self.autoInfo = NSUserDefaults.standardUserDefaults().valueForKey("autoInfo") as! [String]
+            }
+            if (userDefaults.objectForKey("homeInfo") != nil) {
+                self.homeInfo = NSUserDefaults.standardUserDefaults().valueForKey("homeInfo") as! [String]
+            }
+            if (userDefaults.objectForKey("ccInfo") != nil) {
+                self.ccInfo = NSUserDefaults.standardUserDefaults().valueForKey("ccInfo") as! [String]
+            }
         }
     }
     

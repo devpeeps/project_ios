@@ -86,13 +86,13 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             //loadingIndicator.startAnimating()
             
             var urlAsString = "";
-
+            
             if(sender.tag == 0){
                 urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + txtPassword.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=ios&platform=@@PLATFORM&v=@@VERSION&promo=@@PROMO"
             }else{
                 urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=ios"
             }
-
+            
             let url = NSURL(string: urlAsString)!
             let urlSession = NSURLSession.sharedSession()
             

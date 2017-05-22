@@ -9,8 +9,7 @@
 import UIKit
 import CoreData
 
-class CardTableViewController: UITableViewController {
-    @IBOutlet var menuButton: UIBarButtonItem!
+class CardTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var id = ""
     var name = ""
@@ -41,6 +40,8 @@ class CardTableViewController: UITableViewController {
     var selectedBank = ""
     var selectedBankCode = ""
     var selectedOccupationID = ""
+    var selectedImage = ""
+    var selectedSourceOfImage = ""
     
     var bdaydatePickerHidden = true
     var c1bdaydatePickerHidden = true
@@ -54,7 +55,7 @@ class CardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         checkIfLogged()
         
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AutoTableViewController.DismissKeyboard))
@@ -66,6 +67,12 @@ class CardTableViewController: UITableViewController {
         datePickerChanged()
         c1datePickerChanged()
         c2datePickerChanged()
+        
+        btnDeleteImage1.hidden = true
+        btnDeleteImage2.hidden = true
+        btnDeleteImage3.hidden = true
+        
+        self.defaults.setObject("", forKey: "selectedSourceOfImage")
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,8 +92,8 @@ class CardTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        
         if(vcAction == "ShowApplyCard" || vcAction == "ApplyCreditCard"){
+
             if let salutationLabel = defaults.stringForKey("selectedSalutation") {
                 self.salutationCell.detailTextLabel?.text = salutationLabel
             }
@@ -167,6 +174,8 @@ class CardTableViewController: UITableViewController {
                 self.deliveryAddressCell.detailTextLabel?.text = deliveryAddressLabel
             }
         }
+        
+        creditCardApplicationTable.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -175,25 +184,22 @@ class CardTableViewController: UITableViewController {
     }
     
     func checkIfLogged(){
-        //Load User defaults
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        
         
         if (userDefaults.objectForKey("id") != nil) {
             self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
-            //NSLog(self.id)
         }
         if (userDefaults.objectForKey("name") != nil) {
             self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
-            //NSLog(self.name)
         }
         if (userDefaults.objectForKey("email") != nil) {
             self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
-            //NSLog(self.email)
         }
-        if (userDefaults.objectForKey("ccInfo") != nil) {
-            self.ccInfo = NSUserDefaults.standardUserDefaults().valueForKey("ccInfo") as! [String]
-            //NSLog(self.ccInfo[1])
+        
+        if(self.id != ""){
+            if (userDefaults.objectForKey("ccInfo") != nil) {
+                self.ccInfo = NSUserDefaults.standardUserDefaults().valueForKey("ccInfo") as! [String]
+            }
         }
     }
     
@@ -233,11 +239,11 @@ class CardTableViewController: UITableViewController {
         
         stringUrl = stringUrl + "&cardproduct=" + cardtypecode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        //stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&appsource=" + (self.id != "NON" ? "WAP" : "Online Application").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //CHECK WITH LIBFIELDVALUES
-        //stringUrl = stringUrl + "&rm=" + "";
-        //stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        //stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&rm=" + "";
+        stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         //stringUrl = stringUrl + "&clientclass=" + (self.id != "NON" ? "WAP (WORKPLACE ARRANGEMENT PROGR" : "REGULAR").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //ADD TO LIBFIELDVALUES = REGULAR
         //stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
@@ -266,7 +272,6 @@ class CardTableViewController: UITableViewController {
         if let incomeTypeIDLabel = defaults.stringForKey("selectedIncomeTypeID") {
             incomeTypeID = incomeTypeIDLabel
         }
-        
         if(incomeTypeID != "6"){
             if(self.empname.text == ""){
                 errorctr += 1;
@@ -290,15 +295,17 @@ class CardTableViewController: UITableViewController {
         stringUrl = stringUrl + (", " + self.firstname.text!).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + (" " + self.middlename.text!).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        
-        
         stringUrl = stringUrl + "&lname=" + self.lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&fname=" + self.firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&mname=" + self.middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&bday=" + self.birthday.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        //stringUrl = stringUrl + "&gender=" + (self.gender.selectedSegmentIndex == 0 ? "0" : "1")
+        stringUrl = stringUrl + "&bPlace=" + self.bPlace.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&mothermaidenname=" + self.mothermaidenname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&gender=" + (self.salutation.text! == "Mr" ? "0" : "1")
         
         stringUrl = stringUrl + "&title=" +
             self.salutation.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -320,7 +327,7 @@ class CardTableViewController: UITableViewController {
         stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         //stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&empbizorgtype=" + self.emptype.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizstatus=" + incomeTypeID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         //stringUrl = stringUrl + "&remarks=" + self.bank.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
@@ -336,7 +343,7 @@ class CardTableViewController: UITableViewController {
         stringUrl = stringUrl + "&jobpos=" + jobposition.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&empbiz_y=" + self.empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        //stringUrl = stringUrl + "&empbizadd1=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizaddress=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         //stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&empbizannualincome=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -361,26 +368,25 @@ class CardTableViewController: UITableViewController {
             }
             
             /*
-             
-             if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
-             if(self.c1empname.text == ""){
-             errorctr++;
-             errormsg += "S1 Emp/Biz Name\n";
-             }
-             if(self.c1empincome.text == ""){ //CHECK IF VALID AMOUNT
-             errorctr++;
-             errormsg += "S1 Emp/Biz Income\n";
-             }
-             if(self.c1empaddress1.text == ""){
-             errorctr++;
-             errormsg += "S1 Emp/Biz Address\n";
-             }
-             if(self.c1empphone.text == ""){
-             errorctr++;
-             errormsg += "S1 Emp/Biz Phone\n";
-             }
-             }
-             */
+            if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
+            if(self.c1empname.text == ""){
+            errorctr++;
+            errormsg += "S1 Emp/Biz Name\n";
+            }
+            if(self.c1empincome.text == ""){ //CHECK IF VALID AMOUNT
+            errorctr++;
+            errormsg += "S1 Emp/Biz Income\n";
+            }
+            if(self.c1empaddress1.text == ""){
+            errorctr++;
+            errormsg += "S1 Emp/Biz Address\n";
+            }
+            if(self.c1empphone.text == ""){
+            errorctr++;
+            errormsg += "S1 Emp/Biz Phone\n";
+            }
+            }
+            */
             
             stringUrl = stringUrl + "&m1lname=" + self.c1lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m1fname=" + self.c1firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -472,6 +478,9 @@ class CardTableViewController: UITableViewController {
             //stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
+        let mReqId = UIDevice.currentDevice().identifierForVendor!.UUIDString + "-" + cardtypecode + "-" + self.lastname.text! + "-" + self.firstname.text! + "-" + self.birthday.text!
+        stringUrl = stringUrl + "&applicationId=" + mReqId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
         stringUrl = stringUrl + "&duid=" + UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&dtype=ios"
         
@@ -562,6 +571,8 @@ class CardTableViewController: UITableViewController {
     @IBOutlet var middlename: UITextField!
     
     @IBOutlet var birthday: UILabel!
+    @IBOutlet var bPlace: UITextField!
+    @IBOutlet var mothermaidenname: UITextField!
     @IBOutlet var civilstatus: UILabel!
     @IBOutlet var phonenumber: UITextField!
     @IBOutlet var mobilenumber: UITextField!
@@ -686,9 +697,27 @@ class CardTableViewController: UITableViewController {
         if(self.withpermaddress.on == true) {
             permaddress1.text = address1.text
             permaddress2.text = address2.text
+            defaults.setObject(province.text, forKey: "selectedProvince_permanent")
+            if let permprovinceLabel = defaults.stringForKey("selectedProvince_permanent") {
+                self.permprovinceCell.detailTextLabel?.text = permprovinceLabel
+            }
+            defaults.setObject(city.text, forKey: "selectedCity_permanent")
+            if let permcityLabel = defaults.stringForKey("selectedCity_permanent") {
+                self.permcityCell.detailTextLabel?.text = permcityLabel
+            }
+            permpostalcode.text = postalcode.text
+            
+            creditCardApplicationTable.reloadData()
         }else{
             permaddress1.text = ""
             permaddress2.text = ""
+            defaults.setObject("", forKey: "selectedProvince_permanent")
+            self.permprovinceCell.detailTextLabel?.text = ""
+            defaults.setObject("", forKey: "selectedCity_permanent")
+            self.permcityCell.detailTextLabel?.text = ""
+            permpostalcode.text = ""
+            
+            creditCardApplicationTable.reloadData()
         }
     }
     
@@ -793,6 +822,9 @@ class CardTableViewController: UITableViewController {
                 itemCount = 2
             }
             else if(section == 11){
+                itemCount = 3
+            }
+            else if(section == 12){
                 itemCount = 1
             }
         }
@@ -868,6 +900,10 @@ class CardTableViewController: UITableViewController {
             }
             
             if(section == 11){
+                headerHeight = tableView.sectionHeaderHeight
+            }
+            
+            if(section == 12){
                 headerHeight = tableView.sectionHeaderHeight
             }
         }
@@ -946,6 +982,10 @@ class CardTableViewController: UITableViewController {
             if(section == 11){
                 footerHeight = tableView.sectionFooterHeight
             }
+            
+            if(section == 12){
+                footerHeight = tableView.sectionFooterHeight
+            }
         }
 
         return footerHeight
@@ -1009,6 +1049,9 @@ class CardTableViewController: UITableViewController {
                 sectionHeader = "Other Instructions"
             }
             else if(section == 11){
+                sectionHeader = "Upload Requirements"
+            }
+            else if(section == 12){
                 sectionHeader = ""
             }
         }
@@ -1084,6 +1127,221 @@ class CardTableViewController: UITableViewController {
         }
         
         creditCardApplicationTable.reloadData()
+    }
+    
+    @IBOutlet var image1: UIImageView!
+    @IBOutlet weak var filename1: UILabel!
+    @IBOutlet weak var filedetails1: UILabel!
+    @IBOutlet weak var btnAddImage1: UIButton!
+    @IBOutlet weak var btnDeleteImage1: UIButton!
+    
+    @IBOutlet var image2: UIImageView!
+    @IBOutlet weak var filename2: UILabel!
+    @IBOutlet weak var filedetails2: UILabel!
+    @IBOutlet weak var btnAddImage2: UIButton!
+    @IBOutlet weak var btnDeleteImage2: UIButton!
+    
+    @IBOutlet var image3: UIImageView!
+    @IBOutlet weak var filename3: UILabel!
+    @IBOutlet weak var filedetails3: UILabel!
+    @IBOutlet weak var btnAddImage3: UIButton!
+    @IBOutlet weak var btnDeleteImage3: UIButton!
+    
+    @IBAction func btnAddImage1(sender: AnyObject) {
+        defaults.setObject("image1", forKey: "selectedImage")
+        
+        let alert = UIAlertController(title: "Upload Photo", message: "Choose", preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Take Photo", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.Camera;
+                imagePicker.allowsEditing = false
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("takePhoto", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "Choose from Camera Roll", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                imagePicker.allowsEditing = true
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("cameraRoll", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action2)
+        let action3 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+            self.defaults.setObject("", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action3)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnAddImage2(sender: AnyObject) {
+        defaults.setObject("image2", forKey: "selectedImage")
+        
+        let alert = UIAlertController(title: "Upload Photo", message: "Choose", preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Take Photo", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.Camera;
+                imagePicker.allowsEditing = false
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("takePhoto", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "Choose from Camera Roll", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                imagePicker.allowsEditing = true
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("cameraRoll", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action2)
+        let action3 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+            self.defaults.setObject("", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action3)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnAddImage3(sender: AnyObject) {
+        defaults.setObject("image3", forKey: "selectedImage")
+        
+        let alert = UIAlertController(title: "Upload Photo", message: "Choose", preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Take Photo", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.Camera;
+                imagePicker.allowsEditing = false
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("takePhoto", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "Choose from Camera Roll", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                imagePicker.allowsEditing = true
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("cameraRoll", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action2)
+        let action3 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+            self.defaults.setObject("", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action3)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnDeleteImage1(sender: AnyObject) {
+        btnAddImage1.enabled = true
+        btnAddImage1.hidden = false
+        image1.hidden = true
+        btnDeleteImage1.hidden = true
+        
+        defaults.setObject("", forKey: "selectedImage")
+    }
+    
+    @IBAction func btnDeleteImage2(sender: AnyObject) {
+        btnAddImage2.enabled = true
+        btnAddImage2.hidden = false
+        image2.hidden = true
+        btnDeleteImage2.hidden = true
+        
+        defaults.setObject("", forKey: "selectedImage")
+    }
+    
+    @IBAction func btnDeleteImage3(sender: AnyObject) {
+        btnAddImage3.enabled = true
+        btnAddImage3.hidden = false
+        image3.hidden = true
+        btnDeleteImage3.hidden = true
+        
+        defaults.setObject("", forKey: "selectedImage")
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        
+        if let imageNum = defaults.stringForKey("selectedImage") {
+            selectedImage = imageNum
+        }
+        
+        if(selectedImage == "image1"){
+            image1.image = image
+            btnAddImage1.enabled = false
+            btnAddImage1.hidden = true
+            image1.hidden = false
+            btnDeleteImage1.hidden = false
+        }else if(selectedImage == "image2"){
+            image2.image = image
+            btnAddImage2.enabled = false
+            btnAddImage2.hidden = true
+            image2.hidden = false
+            btnDeleteImage2.hidden = false
+        }else if(selectedImage == "image3"){
+            image3.image = image
+            btnAddImage3.enabled = false
+            btnAddImage3.hidden = true
+            image3.hidden = false
+            btnDeleteImage3.hidden = false
+        }
+
+        self.dismissViewControllerAnimated(true, completion: nil);
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
+            selectedSourceOfImage = sourceOfImage
+        }
+        
+        if let imageNum = defaults.stringForKey("selectedImage") {
+            selectedImage = imageNum
+        }
+        
+        if(selectedSourceOfImage == "takePhoto"){
+            let alert = UIAlertController(title: "Do you want to save the picture", message: nil, preferredStyle: .Alert)
+            let okButton = UIAlertAction(title: "Save", style: UIAlertActionStyle.Default){
+                UIAlertAction in
+                NSLog("ok pressed")
+
+                if(self.selectedImage == "image1"){
+                    let imageData1 = UIImageJPEGRepresentation(self.image1.image!, 0.6)
+                    let compressedJPGImage1 = UIImage(data: imageData1!)
+                    UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
+                    
+                }else if(self.selectedImage == "image2"){
+                    let imageData2 = UIImageJPEGRepresentation(self.image2.image!, 0.6)
+                    let compressedJPGImage2 = UIImage(data: imageData2!)
+                    UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
+                }else if(self.selectedImage == "image3"){
+                    let imageData3 = UIImageJPEGRepresentation(self.image3.image!, 0.6)
+                    let compressedJPGImage3 = UIImage(data: imageData3!)
+                    UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
+                }
+            }
+            let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive)
+            {
+                UIAlertAction in
+                NSLog("Cancel Pressed")
+            }
+            alert.addAction(okButton)
+            alert.addAction(cancelButton)
+            presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

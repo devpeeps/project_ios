@@ -129,7 +129,11 @@
 		4F728F321C3F6B4B00703575 /* property.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F728F311C3F6B4B00703575 /* property.plist */; };
 		4F728F341C3F6DD900703575 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F728F331C3F6DD900703575 /* Localizable.strings */; };
 		4F728F361C3F806800703575 /* ViewControllerAuto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F728F351C3F806800703575 /* ViewControllerAuto.swift */; };
+		CE697EA41EA70DA30071D154 /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = CE697EA31EA70DA30071D154 /* car.png */; };
+		CE697EA61EA712010071D154 /* creditcard.png in Resources */ = {isa = PBXBuildFile; fileRef = CE697EA51EA712010071D154 /* creditcard.png */; };
 		CE9586D01E92481C0022C5AA /* SideMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9586CF1E92481C0022C5AA /* SideMenuTableViewController.swift */; };
+		CEA86D391EC43398001FE933 /* addphoto.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA86D381EC43398001FE933 /* addphoto.png */; };
+		CEA86D3B1EC46234001FE933 /* deletephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA86D3A1EC46234001FE933 /* deletephoto.png */; };
 		D70FA9CC1DCAE7AF00F750FA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70FA9CB1DCAE7AF00F750FA /* HomeTableViewController.swift */; };
 		D712113C1E2F077E00644A6B /* HomeMainPageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D712113B1E2F077E00644A6B /* HomeMainPageTableViewController.swift */; };
 		D71468061DCABD3E0001AE8F /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D71468051DCABD3E0001AE8F /* SWRevealViewController.m */; };
@@ -306,7 +310,11 @@
 		4F728F311C3F6B4B00703575 /* property.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = property.plist; path = ../property.plist; sourceTree = "<group>"; };
 		4F728F331C3F6DD900703575 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ../Localizable.strings; sourceTree = "<group>"; };
 		4F728F351C3F806800703575 /* ViewControllerAuto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewControllerAuto.swift; path = ../ViewControllerAuto.swift; sourceTree = "<group>"; };
+		CE697EA31EA70DA30071D154 /* car.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = car.png; path = ../../../../Downloads/car.png; sourceTree = "<group>"; };
+		CE697EA51EA712010071D154 /* creditcard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = creditcard.png; path = ../../../../Downloads/creditcard.png; sourceTree = "<group>"; };
 		CE9586CF1E92481C0022C5AA /* SideMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewController.swift; sourceTree = "<group>"; };
+		CEA86D381EC43398001FE933 /* addphoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addphoto.png; path = "../../../Ely/Elysium/res/drawable-hdpi/addphoto.png"; sourceTree = "<group>"; };
+		CEA86D3A1EC46234001FE933 /* deletephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deletephoto.png; path = "../../../Ely/Elysium/res/drawable-hdpi/deletephoto.png"; sourceTree = "<group>"; };
 		D70FA9CB1DCAE7AF00F750FA /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		D712113B1E2F077E00644A6B /* HomeMainPageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeMainPageTableViewController.swift; sourceTree = "<group>"; };
 		D71468031DCABD3D0001AE8F /* elysium-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "elysium-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -461,6 +469,10 @@
 		4F5A730F1C3B666C007EC33C /* res */ = {
 			isa = PBXGroup;
 			children = (
+				CEA86D3A1EC46234001FE933 /* deletephoto.png */,
+				CEA86D381EC43398001FE933 /* addphoto.png */,
+				CE697EA51EA712010071D154 /* creditcard.png */,
+				CE697EA31EA70DA30071D154 /* car.png */,
 				D76C9EDC1E027F0D002DEC07 /* mast_head4.png */,
 				D76C9EDA1E027B93002DEC07 /* mast_head3.png */,
 				D76C9ED81E027A22002DEC07 /* ubp.png */,
@@ -694,6 +706,7 @@
 				4F5A73CF1C3B6794007EC33C /* ic_thumbsup.png in Resources */,
 				4F5A734B1C3B675D007EC33C /* card_cfc.png in Resources */,
 				4F5A73C71C3B6794007EC33C /* ic_logout.png in Resources */,
+				CEA86D391EC43398001FE933 /* addphoto.png in Resources */,
 				3F0168FE1CD8333B00009B5B /* ic_creditcardpromo1.png in Resources */,
 				4F5A73611C3B675D007EC33C /* card_phoenix.png in Resources */,
 				3FA642391D3491CA00730FC6 /* ic_mastercard_menu.png in Resources */,
@@ -710,6 +723,7 @@
 				4F5A736D1C3B675D007EC33C /* card_stpaul.png in Resources */,
 				4F5A73BD1C3B6794007EC33C /* ic_home.png in Resources */,
 				4F5A73601C3B675D007EC33C /* card_parklane.png in Resources */,
+				CE697EA61EA712010071D154 /* creditcard.png in Resources */,
 				3FBD03AB1D47D1AF002C6013 /* ic_navigate_back_arrow.png in Resources */,
 				4F5A73591C3B675D007EC33C /* card_lourdes.png in Resources */,
 				4F5A736B1C3B675D007EC33C /* card_silliman.png in Resources */,
@@ -743,6 +757,7 @@
 				4F5A73D91C3B6794007EC33C /* tmb_school.png in Resources */,
 				4F5A73CC1C3B6794007EC33C /* ic_outblue.png in Resources */,
 				4F5A734D1C3B675D007EC33C /* card_corporate.png in Resources */,
+				CEA86D3B1EC46234001FE933 /* deletephoto.png in Resources */,
 				4F5A73D81C3B6794007EC33C /* tmb_rewards.png in Resources */,
 				4F5A73BE1C3B6794007EC33C /* ic_home2.png in Resources */,
 				4F5A73CE1C3B6794007EC33C /* ic_textviewbg.png in Resources */,
@@ -777,6 +792,7 @@
 				4F5A73651C3B675D007EC33C /* card_racks.png in Resources */,
 				4F5A73DA1C3B6794007EC33C /* tmb_shop.png in Resources */,
 				4F5A73B31C3B6794007EC33C /* ic_creditcard2.png in Resources */,
+				CE697EA41EA70DA30071D154 /* car.png in Resources */,
 				4F5A734E1C3B675D007EC33C /* card_csb.png in Resources */,
 				4F5A73471C3B675D007EC33C /* card_ateneo.png in Resources */,
 				4F5A734C1C3B675D007EC33C /* card_classic_paywave.png in Resources */,

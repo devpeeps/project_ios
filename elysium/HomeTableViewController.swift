@@ -403,6 +403,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         
         if (userDefaults.objectForKey("id") != nil) {
             self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
+            NSLog("PRINT ID: " + String(self.id))
         }
         if (userDefaults.objectForKey("name") != nil) {
             self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
@@ -410,8 +411,12 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         if (userDefaults.objectForKey("email") != nil) {
             self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
         }
-        if (userDefaults.objectForKey("homeInfo") != nil) {
-            self.homeInfo = NSUserDefaults.standardUserDefaults().valueForKey("homeInfo") as! [String]
+        
+        if(self.id != ""){
+            if (userDefaults.objectForKey("homeInfo") != nil) {
+                self.homeInfo = NSUserDefaults.standardUserDefaults().objectForKey("homeInfo") as! [String]
+                NSLog("HOMEINFO: " + String(self.homeInfo))
+            }
         }
     }
     

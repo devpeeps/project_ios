@@ -25,14 +25,15 @@ class HomePageTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.clearUserDefaults()
         
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        if (userDefaults.objectForKey("name") != nil) {
-            self.name = NSUserDefaults.standardUserDefaults().valueForKey("name") as! String
+        if (userDefaults.objectForKey("id") != nil) {
+            self.id = NSUserDefaults.standardUserDefaults().valueForKey("id") as! String
         }
         
-        if(self.name != ""){
+        if(id != ""){
             getUserDefaults()
         }
     }
@@ -78,12 +79,12 @@ class HomePageTableViewController: UITableViewController {
             
             var urlAsString = "";
             
-            if(name != "" && name != "Standard"){
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + name.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=android"
+            if(id != ""){
+                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=" + name.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + "&from=ios"
             }else{
-                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=android"
+                urlAsString = "https://eclipse.unionbankph.com/custom/elysium_ws_login.php?passw=NON&from=ios"
             }
-            
+
             let url = NSURL(string: urlAsString)!
             let urlSession = NSURLSession.sharedSession()
             

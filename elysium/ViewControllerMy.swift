@@ -221,11 +221,11 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelega
             cell.txtRightLabel2.text = datelastupdated
             var imageView = UIImage(named: "")
             switch(type){
-            case "AUTO": imageView = UIImage(named: "ic_auto")
+            case "AUTO": imageView = UIImage(named: "car")
             break;
             case "HOME": imageView = UIImage(named: "ic_home")
             break;
-            case "CARD": imageView = UIImage(named: "ic_creditcard2")
+            case "CARD": imageView = UIImage(named: "creditcard")
             break;
             default:
                 break;

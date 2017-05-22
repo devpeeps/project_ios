@@ -414,8 +414,10 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
         if (userDefaults.objectForKey("email") != nil) {
             self.email = NSUserDefaults.standardUserDefaults().valueForKey("email") as! String
         }
-        if (userDefaults.objectForKey("autoInfo") != nil) {
-            self.autoInfo = NSUserDefaults.standardUserDefaults().valueForKey("autoInfo") as! [String]
+        if(self.id != ""){
+            if (userDefaults.objectForKey("autoInfo") != nil) {
+                self.autoInfo = NSUserDefaults.standardUserDefaults().valueForKey("autoInfo") as! [String]
+            }
         }
     }
     
@@ -498,7 +500,6 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate {
     
         if (userDefaults.objectForKey("autoRates_" + selectedTerm) != nil) {
             aor = NSUserDefaults.standardUserDefaults().objectForKey("autoRates_" + selectedTerm) as! Double
-            
         }
         
         //aor = Double(selectedTerm)!
