@@ -22,10 +22,16 @@ urlOTP = "https://eclipse.unionbankph.com/custom/luminousCheckOTP_ws.php?";
 
 
 urlECLIPSE = "https://eclipse.unionbankph.com/custom/newappservice_eclipse_mobile.php?";
+urlECLIPSE_IMAGE = "https://eclipse.unionbankph.com/custom/newappservice_eclipse_img_mobile.php?id=@@REQID";
+
 urlCREST = "https://eclipse.unionbankph.com/custom/newappservice_crest_mobile.php?";
+urlCREST_IMAGE = "https://eclipse.unionbankph.com/custom/newappservice_crest_img_mobile.php?id=@@REQID";
+
 urlCATS2 = "http://10.19.20.88:8081/custom/newappservice_cats_confin_mobileapp.php?";
 urlCATS1 = "https://eclipse.unionbankph.com/custom/newappservice_cats_mobile.php?";
 urlCATS = "https://eclipse.unionbankph.com/custom/newappservice_cats_confin_mobileapp.php?";
+urlCATS_IMAGE = "https://eclipse.unionbankph.com/custom/newappservice_cats_img_mobile.php?id=@@REQID";
+
 urlINQ = "https://eclipse.unionbankph.com/custom/newappservice_elysium_inquire.php?";
 
 disclaimer_amortHome = "Computed monthly amortization is rough estimation only based on a standard fixing-term rate. This may vary on the actual monthly amortization based on the developer rates.";

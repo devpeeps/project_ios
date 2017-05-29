@@ -11,6 +11,8 @@ import CoreData
 
 class CardTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    var withConnection = false
+    var urlIMG = ""
     var id = ""
     var name = ""
     var email = ""
@@ -43,6 +45,12 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     var selectedImage = ""
     var selectedSourceOfImage = ""
     
+    var imagePath_1 = ""
+    var imagePath_2 = ""
+    var imagePath_3 = ""
+    
+    var submittedApplicationID = ""
+    
     var bdaydatePickerHidden = true
     var c1bdaydatePickerHidden = true
     var c2bdaydatePickerHidden = true
@@ -67,7 +75,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         datePickerChanged()
         c1datePickerChanged()
         c2datePickerChanged()
-        
+
         btnDeleteImage1.hidden = true
         btnDeleteImage2.hidden = true
         btnDeleteImage3.hidden = true
@@ -432,26 +440,25 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             }
             
             /*
-             if(emptypeArr[self.c2emptype.selectedRowInComponent(0)].0 != "6"){
-             if(self.c2empname.text == ""){
-             errorctr++;
-             errormsg += "S2 Emp/Biz Name\n";
-             }
-             if(self.c2empincome.text == ""){ //CHECK IF VALID AMOUNT
-             errorctr++;
-             errormsg += "S2 Emp/Biz Income\n";
-             }
-             if(self.c2empaddress1.text == ""){
-             errorctr++;
-             errormsg += "S2 Emp/Biz Address\n";
-             }
-             if(self.c2empphone.text == ""){
-             errorctr++;
-             errormsg += "S2 Emp/Biz Phone\n";
-             }
-             }
-             */
-            
+            if(emptypeArr[self.c2emptype.selectedRowInComponent(0)].0 != "6"){
+            if(self.c2empname.text == ""){
+            errorctr++;
+            errormsg += "S2 Emp/Biz Name\n";
+            }
+            if(self.c2empincome.text == ""){ //CHECK IF VALID AMOUNT
+            errorctr++;
+            errormsg += "S2 Emp/Biz Income\n";
+            }
+            if(self.c2empaddress1.text == ""){
+            errorctr++;
+            errormsg += "S2 Emp/Biz Address\n";
+            }
+            if(self.c2empphone.text == ""){
+            errorctr++;
+            errormsg += "S2 Emp/Biz Phone\n";
+            }
+            }
+            */
             
             stringUrl = stringUrl + "&m2lname=" + self.c2lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
             stringUrl = stringUrl + "&m2fname=" + self.c2firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -478,7 +485,20 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             //stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
+        
+        
         let mReqId = UIDevice.currentDevice().identifierForVendor!.UUIDString + "-" + cardtypecode + "-" + self.lastname.text! + "-" + self.firstname.text! + "-" + self.birthday.text!
+        
+        defaults.setObject(mReqId, forKey: "submittedApplicationID")
+        
+        if(imagePath_1 != ""){
+            
+        }else if(imagePath_2 != ""){
+            
+        }else if(imagePath_3 != ""){
+            
+        }
+        
         stringUrl = stringUrl + "&applicationId=" + mReqId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&duid=" + UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
@@ -486,7 +506,6 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         //stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         //stringUrl = stringUrl + "&loggeduser=" + EncodeURLString(loggedUSRUID);
-        
         
         if(errorctr > 0){
             let alert = UIAlertController(title: "Error in Form", message: "You have blank/invalid/errors on some required fields.\n" + errormsg, preferredStyle: .Alert)
@@ -529,6 +548,8 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             //self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
 
+            //uploadImage(mReqId)
+        
             let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 self.performSegueWithIdentifier("BackToCardMain", sender: self)
@@ -1275,16 +1296,82 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         
+        if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
+            selectedSourceOfImage = sourceOfImage
+        }
+
         if let imageNum = defaults.stringForKey("selectedImage") {
             selectedImage = imageNum
         }
-        
+        NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
+        if(selectedSourceOfImage == "cameraRoll"){
+            let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
+            let imagePath =  imageURL.path!
+            let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
+            NSLog("imagePath: " + imagePath)
+            NSLog("localPath: " + String(localPath))
+            
+            if(selectedImage == "image1"){
+                //defaults.setObject(localPath, forKey: "imagePath_1")
+                NSLog("imagePath_1: " + String(localPath))
+            }else if(selectedImage == "image2"){
+                //defaults.setObject(localPath, forKey: "imagePath_2")
+                NSLog("imagePath_2: " + String(localPath))
+            }else if(selectedImage == "image3"){
+                //defaults.setObject(localPath, forKey: "imagePath_3")
+                NSLog("imagePath_3: " + String(localPath))
+            }
+        }
+        else if(selectedSourceOfImage == "takePhoto"){
+            
+            /*
+            if let imageData = pictures[string] {
+                if let image = UIImage(data: imageData) {
+                    image1.image = image
+                }
+            }
+            */
+            
+            if(self.selectedImage == "image1"){
+                let imageData1 = UIImageJPEGRepresentation(self.image1.image!, 0.6)
+                let compressedJPGImage1 = UIImage(data: imageData1!)
+                UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
+                NSLog("SUCCESS")
+            }else if(self.selectedImage == "image2"){
+                let imageData2 = UIImageJPEGRepresentation(self.image2.image!, 0.6)
+                let compressedJPGImage2 = UIImage(data: imageData2!)
+                UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
+            }else if(self.selectedImage == "image3"){
+                let imageData3 = UIImageJPEGRepresentation(self.image3.image!, 0.6)
+                let compressedJPGImage3 = UIImage(data: imageData3!)
+                UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
+            }
+            NSLog("HEY!!!!")
+            NSLog("selectedImage: " + selectedImage)
+            
+            let imageURL = editingInfo[UIImagePickerControllerOriginalImage] as! NSURL
+            let imagePath =  imageURL.path!
+            let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
+            
+            //this block of code adds data to the above path
+            let path = localPath.relativePath!
+            let imageName = editingInfo[UIImagePickerControllerOriginalImage] as! UIImage
+            let data = UIImagePNGRepresentation(imageName)
+            data?.writeToFile(imagePath, atomically: true)
+            
+            //this block grabs the NSURL so you can use it in CKASSET
+            let photoURL = NSURL(fileURLWithPath: path)
+            NSLog("photoURL: " + String(photoURL))
+ 
+        }
+ 
         if(selectedImage == "image1"){
             image1.image = image
             btnAddImage1.enabled = false
             btnAddImage1.hidden = true
             image1.hidden = false
             btnDeleteImage1.hidden = false
+            
         }else if(selectedImage == "image2"){
             image2.image = image
             btnAddImage2.enabled = false
@@ -1298,7 +1385,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             image3.hidden = false
             btnDeleteImage3.hidden = false
         }
-
+        
         self.dismissViewControllerAnimated(true, completion: nil);
     }
     
@@ -1319,16 +1406,15 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                 NSLog("ok pressed")
 
                 if(self.selectedImage == "image1"){
-                    let imageData1 = UIImageJPEGRepresentation(self.image1.image!, 0.6)
+                    let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 0.6)
                     let compressedJPGImage1 = UIImage(data: imageData1!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
-                    
                 }else if(self.selectedImage == "image2"){
-                    let imageData2 = UIImageJPEGRepresentation(self.image2.image!, 0.6)
+                    let imageData2 = UIImageJPEGRepresentation((self.image2?.image)!, 0.6)
                     let compressedJPGImage2 = UIImage(data: imageData2!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
                 }else if(self.selectedImage == "image3"){
-                    let imageData3 = UIImageJPEGRepresentation(self.image3.image!, 0.6)
+                    let imageData3 = UIImageJPEGRepresentation((self.image3?.image)!, 0.6)
                     let compressedJPGImage3 = UIImage(data: imageData3!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
                 }
@@ -1342,7 +1428,106 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             alert.addAction(cancelButton)
             presentViewController(alert, animated: true, completion: nil)
         }
+        
+        if let path1 = defaults.stringForKey("imagePath_1") {
+            imagePath_1 = path1
+        }
+        
+        if let path2 = defaults.stringForKey("imagePath_2") {
+            imagePath_2 = path2
+        }
+        
+        if let path3 = defaults.stringForKey("imagePath_3") {
+            imagePath_3 = path3
+        }
     }
+    
+    /*
+    func uploadImage(appId: String){
+        urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@ID", withString: appId)
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+        default:
+            contProc = true
+            withConnection = true
+        }
+        
+        if(contProc){
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            var err = false
+            
+            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+                if (error != nil) {
+                    print(error!.localizedDescription)
+                    err = true
+                }
+                
+                if(!err){
+                    
+                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
+                    
+                    if(s != ""){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let str = s!.componentsSeparatedByString("<br/>")
+                            self.carModelArr.removeAll()
+                            for i in 0...str.count - 1{
+                                let str2 = str[i].componentsSeparatedByString(",")
+                                if(str2.count >= 3){
+                                    self.carModelArr.append((str2[0], str2[1], str2[2], str2[3]))
+                                }
+                            }
+                            
+                            self.creditCardApplicationTable.reloadData()
+                            self.view.userInteractionEnabled = true
+                            //self.loadingIndicator.hidden = true
+                            //self.loadingIndicator.stopAnimating()
+                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        })
+                    }else{
+                        
+                    }
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.view.userInteractionEnabled = true
+                        //self.loadingIndicator.hidden = true
+                        //self.loadingIndicator.stopAnimating()
+                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
+                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                            //exit(1)
+                        })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                }
+            })
+            jsonQuery.resume()
+            
+        }
+        else{
+            self.view.userInteractionEnabled = true
+            //self.loadingIndicator.hidden = true
+            //self.loadingIndicator.stopAnimating()
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -1394,7 +1579,6 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                 destinationVC.vcAction = "ShowOccupationGroupList"
             }
         }
-        
         
         if segue.identifier == "ShowSPIncomeType"
         {
@@ -1536,7 +1720,6 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                 destinationVC.vcAction = "ShowDeliveryAddressOption"
             }
         }
-        
     }
     
     func keyboardWasShown(notification: NSNotification) {
