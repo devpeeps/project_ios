@@ -11,7 +11,7 @@
 import UIKit
 import CoreData
 
-class HomeTableViewController: UITableViewController, UITextFieldDelegate {
+class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var id = ""
     var name = ""
@@ -53,6 +53,14 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     var selectedCivilStat = ""
     var selectedWithC1 = false
     var selectedWithC2 = false
+    var selectedImage = ""
+    var selectedSourceOfImage = ""
+    
+    var imagePath_1 = ""
+    var imagePath_2 = ""
+    var imagePath_3 = ""
+    
+    var submittedApplicationID = ""
     
     var bdaydatePickerHidden = true
     var spousebdaydatePickerHidden = true
@@ -108,7 +116,6 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var cityCell: UITableViewCell!
     
     override func viewDidAppear(animated: Bool) {
-        
         if(vcAction == "ShowCalculateHomeLoan"){
             if let selectedPropertyModelSRPLabel = defaults.stringForKey("selectedPropertyModelSRP") {
                 self.txtSellingPrice.text = selectedPropertyModelSRPLabel
@@ -395,6 +402,8 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
                 homeLoanApplicationTable.reloadData()
             }
         }
+        
+        homeLoanApplicationTable.reloadData()
     }
     
     func checkIfLogged(){
@@ -967,6 +976,258 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
+    @IBOutlet var image1: UIImageView!
+    @IBOutlet weak var filename1: UILabel!
+    @IBOutlet weak var filedetails1: UILabel!
+    @IBOutlet weak var btnAddImage1: UIButton!
+    @IBOutlet weak var btnDeleteImage1: UIButton!
+    
+    @IBOutlet var image2: UIImageView!
+    @IBOutlet weak var filename2: UILabel!
+    @IBOutlet weak var filedetails2: UILabel!
+    @IBOutlet weak var btnAddImage2: UIButton!
+    @IBOutlet weak var btnDeleteImage2: UIButton!
+    
+    @IBOutlet var image3: UIImageView!
+    @IBOutlet weak var filename3: UILabel!
+    @IBOutlet weak var filedetails3: UILabel!
+    @IBOutlet weak var btnAddImage3: UIButton!
+    @IBOutlet weak var btnDeleteImage3: UIButton!
+    
+    @IBAction func btnAddImage1(sender: AnyObject) {
+        defaults.setObject("image1", forKey: "selectedImage")
+        
+        let alert = UIAlertController(title: "Upload Photo", message: "Choose", preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Take Photo", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.Camera;
+                imagePicker.allowsEditing = false
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("takePhoto", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "Choose from Camera Roll", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                imagePicker.allowsEditing = true
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("cameraRoll", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action2)
+        let action3 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+            self.defaults.setObject("", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action3)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnAddImage2(sender: AnyObject) {
+        defaults.setObject("image2", forKey: "selectedImage")
+        
+        let alert = UIAlertController(title: "Upload Photo", message: "Choose", preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Take Photo", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.Camera;
+                imagePicker.allowsEditing = false
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("takePhoto", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "Choose from Camera Roll", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                imagePicker.allowsEditing = true
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("cameraRoll", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action2)
+        let action3 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+            self.defaults.setObject("", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action3)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnAddImage3(sender: AnyObject) {
+        defaults.setObject("image3", forKey: "selectedImage")
+        
+        let alert = UIAlertController(title: "Upload Photo", message: "Choose", preferredStyle: .ActionSheet)
+        let action = UIAlertAction(title: "Take Photo", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.Camera;
+                imagePicker.allowsEditing = false
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("takePhoto", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action)
+        let action2 = UIAlertAction(title: "Choose from Camera Roll", style: .Default, handler: { (alert) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                imagePicker.allowsEditing = true
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+            self.defaults.setObject("cameraRoll", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action2)
+        let action3 = UIAlertAction(title: "Cancel", style: .Default, handler: { (alert) -> Void in
+            self.defaults.setObject("", forKey: "selectedSourceOfImage")
+        })
+        alert.addAction(action3)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnDeleteImage1(sender: AnyObject) {
+        btnAddImage1.enabled = true
+        btnAddImage1.hidden = false
+        image1.hidden = true
+        btnDeleteImage1.hidden = true
+        
+        defaults.setObject("", forKey: "selectedImage")
+    }
+    
+    @IBAction func btnDeleteImage2(sender: AnyObject) {
+        btnAddImage2.enabled = true
+        btnAddImage2.hidden = false
+        image2.hidden = true
+        btnDeleteImage2.hidden = true
+        
+        defaults.setObject("", forKey: "selectedImage")
+    }
+    
+    @IBAction func btnDeleteImage3(sender: AnyObject) {
+        btnAddImage3.enabled = true
+        btnAddImage3.hidden = false
+        image3.hidden = true
+        btnDeleteImage3.hidden = true
+        
+        defaults.setObject("", forKey: "selectedImage")
+    }
+
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
+            selectedSourceOfImage = sourceOfImage
+        }
+        
+        if let imageNum = defaults.stringForKey("selectedImage") {
+            selectedImage = imageNum
+        }
+        NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
+        if(selectedSourceOfImage == "cameraRoll"){
+            let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
+            let imagePath =  imageURL.path!
+            let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
+            NSLog("imagePath: " + imagePath)
+            NSLog("localPath: " + String(localPath))
+            
+            if(selectedImage == "image1"){
+                //defaults.setObject(localPath, forKey: "imagePath_1")
+                NSLog("imagePath_1: " + String(localPath))
+            }else if(selectedImage == "image2"){
+                //defaults.setObject(localPath, forKey: "imagePath_2")
+                NSLog("imagePath_2: " + String(localPath))
+            }else if(selectedImage == "image3"){
+                //defaults.setObject(localPath, forKey: "imagePath_3")
+                NSLog("imagePath_3: " + String(localPath))
+            }
+        }
+        
+        if(selectedImage == "image1"){
+            image1.image = image
+            btnAddImage1.enabled = false
+            btnAddImage1.hidden = true
+            image1.hidden = false
+            btnDeleteImage1.hidden = false
+            
+        }else if(selectedImage == "image2"){
+            image2.image = image
+            btnAddImage2.enabled = false
+            btnAddImage2.hidden = true
+            image2.hidden = false
+            btnDeleteImage2.hidden = false
+        }else if(selectedImage == "image3"){
+            image3.image = image
+            btnAddImage3.enabled = false
+            btnAddImage3.hidden = true
+            image3.hidden = false
+            btnDeleteImage3.hidden = false
+        }
+        
+        self.dismissViewControllerAnimated(true, completion: nil);
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
+            selectedSourceOfImage = sourceOfImage
+        }
+        
+        if let imageNum = defaults.stringForKey("selectedImage") {
+            selectedImage = imageNum
+        }
+        
+        if(selectedSourceOfImage == "takePhoto"){
+            let alert = UIAlertController(title: "Do you want to save the picture", message: nil, preferredStyle: .Alert)
+            let okButton = UIAlertAction(title: "Save", style: UIAlertActionStyle.Default){
+                UIAlertAction in
+                NSLog("ok pressed")
+                
+                if(self.selectedImage == "image1"){
+                    let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 0.6)
+                    let compressedJPGImage1 = UIImage(data: imageData1!)
+                    UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
+                }else if(self.selectedImage == "image2"){
+                    let imageData2 = UIImageJPEGRepresentation((self.image2?.image)!, 0.6)
+                    let compressedJPGImage2 = UIImage(data: imageData2!)
+                    UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
+                }else if(self.selectedImage == "image3"){
+                    let imageData3 = UIImageJPEGRepresentation((self.image3?.image)!, 0.6)
+                    let compressedJPGImage3 = UIImage(data: imageData3!)
+                    UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
+                }
+            }
+            let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive)
+            {
+                UIAlertAction in
+                NSLog("Cancel Pressed")
+            }
+            alert.addAction(okButton)
+            alert.addAction(cancelButton)
+            presentViewController(alert, animated: true, completion: nil)
+        }
+        
+        if let path1 = defaults.stringForKey("imagePath_1") {
+            imagePath_1 = path1
+            NSLog("imagePath_1: " + imagePath_1)
+        }
+        
+        if let path2 = defaults.stringForKey("imagePath_2") {
+            imagePath_2 = path2
+            NSLog("imagePath_2: " + imagePath_2)
+        }
+        
+        if let path3 = defaults.stringForKey("imagePath_3") {
+            imagePath_3 = path3
+            NSLog("imagePath_3: " + imagePath_3)
+        }
+    }
+    
     @IBAction func actionSearchPropertyModel(sender: AnyObject) {
         
         let selectedPropertyType = propertyTypeCell.detailTextLabel?.text
@@ -1448,10 +1709,13 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
                     }
                 }
             } else if(section == 6){
-                itemCount = 1
+                itemCount = 3
             } else if(section == 7){
                 itemCount = 1
+            } else if(section == 8){
+                itemCount = 1
             }
+            
         }
         return itemCount
     }
@@ -1527,6 +1791,10 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             if(section == 7){
                 headerHeight = tableView.sectionHeaderHeight
             }
+            
+            if(section == 8){
+                headerHeight = tableView.sectionHeaderHeight
+            }
         }
         
         return headerHeight
@@ -1599,6 +1867,10 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
             if(section == 7){
                 footerHeight = tableView.sectionFooterHeight
             }
+            
+            if(section == 8){
+                footerHeight = tableView.sectionFooterHeight
+            }
         }
         
         return footerHeight
@@ -1662,8 +1934,10 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate {
                     }
                 }
             } else if(section == 6){
-                sectionHeader = "Remarks"
+                sectionHeader = "Upload Requirements"
             } else if(section == 7){
+                sectionHeader = "Remarks"
+            } else if(section == 8){
                 sectionHeader = ""
             }
         }

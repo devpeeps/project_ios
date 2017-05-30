@@ -492,12 +492,35 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         defaults.setObject(mReqId, forKey: "submittedApplicationID")
         
         if(imagePath_1 != ""){
-            
+            NSLog("")
         }else if(imagePath_2 != ""){
-            
+            NSLog("")
         }else if(imagePath_3 != ""){
-            
+            NSLog("")
         }
+        
+        /*
+        if(!idImg1.equals("")){
+        db.addAppImg("SALARY", mReqId, idImg1);
+        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg1);
+        }
+        if(!idImg2.equals("")){
+        db.addAppImg("SALARY", mReqId, idImg2);
+        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg2);
+        }
+        if(!idImg3.equals("")){
+        db.addAppImg("SALARY", mReqId, idImg3);
+        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg3);
+        }
+        /*if(!idImg4.equals("")){
+        db.addAppImg("SALARY", mReqId, idImg4);
+        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg4);
+        }
+        if(!idImg5.equals("")){
+        db.addAppImg("SALARY", mReqId, idImg5);
+        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg5);
+        }*/
+        */
         
         stringUrl = stringUrl + "&applicationId=" + mReqId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
@@ -1318,7 +1341,6 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     }
     */
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-    //func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
             selectedSourceOfImage = sourceOfImage
         }
@@ -1327,7 +1349,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             selectedImage = imageNum
         }
         NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
-        if(selectedSourceOfImage == "cameraRoll" || selectedSourceOfImage == "takePhoto"){
+        if(selectedSourceOfImage == "cameraRoll"){
             let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
             let imagePath =  imageURL.path!
             let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
@@ -1425,20 +1447,14 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                     let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 0.6)
                     let compressedJPGImage1 = UIImage(data: imageData1!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
-                    //NSLog("imageData1: " + String(imageData1))
-                    //NSLog("compressedJPGImage1: " + String(compressedJPGImage1))
                 }else if(self.selectedImage == "image2"){
                     let imageData2 = UIImageJPEGRepresentation((self.image2?.image)!, 0.6)
                     let compressedJPGImage2 = UIImage(data: imageData2!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
-                    //NSLog("imageData2: " + String(imageData2))
-                    //NSLog("compressedJPGImage2: " + String(compressedJPGImage2))
                 }else if(self.selectedImage == "image3"){
                     let imageData3 = UIImageJPEGRepresentation((self.image3?.image)!, 0.6)
                     let compressedJPGImage3 = UIImage(data: imageData3!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
-                    //NSLog("imageData3: " + String(imageData3))
-                    //NSLog("compressedJPGImage3: " + String(compressedJPGImage3))
                 }
             }
             let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive)
@@ -1453,17 +1469,21 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         if let path1 = defaults.stringForKey("imagePath_1") {
             imagePath_1 = path1
+            NSLog("imagePath_1: " + imagePath_1)
         }
         
         if let path2 = defaults.stringForKey("imagePath_2") {
             imagePath_2 = path2
+            NSLog("imagePath_2: " + imagePath_2)
         }
         
         if let path3 = defaults.stringForKey("imagePath_3") {
             imagePath_3 = path3
+            NSLog("imagePath_3: " + imagePath_3)
         }
     }
     
+    /*
     func uploadImage(appId: String){
         urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
         self.view.userInteractionEnabled = false
@@ -1511,6 +1531,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             
         }
     }
+    */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
