@@ -1293,9 +1293,32 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         defaults.setObject("", forKey: "selectedImage")
     }
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    /*
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
+        self.image1.image = image
+        let url: NSURL = editingInfo.valueForKey("UIImagePickerControllerReferenceURL") as! NSURL
+        let imagePath =  url.path!
+        let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
+        NSLog("IMAGE_NAME: " + imagePath)
+        NSLog("IMAGE_PATH: " + String(localPath))
+        NSLog("IMAGE_URL: " + url.absoluteString)
+        self.dismissViewControllerAnimated(true, completion: nil)
         
+        if let imageNum = defaults.stringForKey("selectedImage") {
+            selectedImage = imageNum
+        }
+        
+        if(selectedImage == "image1"){
+            image1.image = image
+            btnAddImage1.enabled = false
+            btnAddImage1.hidden = true
+            image1.hidden = false
+            btnDeleteImage1.hidden = false
+        }
+    }
+    */
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    //func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
             selectedSourceOfImage = sourceOfImage
         }
@@ -1304,7 +1327,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             selectedImage = imageNum
         }
         NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
-        if(selectedSourceOfImage == "cameraRoll"){
+        if(selectedSourceOfImage == "cameraRoll" || selectedSourceOfImage == "takePhoto"){
             let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
             let imagePath =  imageURL.path!
             let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
@@ -1322,16 +1345,9 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                 NSLog("imagePath_3: " + String(localPath))
             }
         }
+        /*
+        UIImagePickerControllerReferenceURL 
         else if(selectedSourceOfImage == "takePhoto"){
-            
-            /*
-            if let imageData = pictures[string] {
-                if let image = UIImage(data: imageData) {
-                    image1.image = image
-                }
-            }
-            */
-            
             if(self.selectedImage == "image1"){
                 let imageData1 = UIImageJPEGRepresentation(self.image1.image!, 0.6)
                 let compressedJPGImage1 = UIImage(data: imageData1!)
@@ -1364,7 +1380,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             NSLog("photoURL: " + String(photoURL))
  
         }
- 
+        */
         if(selectedImage == "image1"){
             image1.image = image
             btnAddImage1.enabled = false
@@ -1409,14 +1425,20 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                     let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 0.6)
                     let compressedJPGImage1 = UIImage(data: imageData1!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
+                    //NSLog("imageData1: " + String(imageData1))
+                    //NSLog("compressedJPGImage1: " + String(compressedJPGImage1))
                 }else if(self.selectedImage == "image2"){
                     let imageData2 = UIImageJPEGRepresentation((self.image2?.image)!, 0.6)
                     let compressedJPGImage2 = UIImage(data: imageData2!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
+                    //NSLog("imageData2: " + String(imageData2))
+                    //NSLog("compressedJPGImage2: " + String(compressedJPGImage2))
                 }else if(self.selectedImage == "image3"){
                     let imageData3 = UIImageJPEGRepresentation((self.image3?.image)!, 0.6)
                     let compressedJPGImage3 = UIImage(data: imageData3!)
                     UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
+                    //NSLog("imageData3: " + String(imageData3))
+                    //NSLog("compressedJPGImage3: " + String(compressedJPGImage3))
                 }
             }
             let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive)
@@ -1442,12 +1464,11 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         }
     }
     
-    /*
     func uploadImage(appId: String){
         urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@ID", withString: appId)
+        let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@ID", withString: appId)
         
         var contProc = true
         let status = Reach().connectionStatus()
@@ -1473,61 +1494,23 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                 }
                 
                 if(!err){
-                    
                     let s = String(data: data!, encoding: NSUTF8StringEncoding)
                     
                     if(s != ""){
-                        dispatch_async(dispatch_get_main_queue(), {
-                            let str = s!.componentsSeparatedByString("<br/>")
-                            self.carModelArr.removeAll()
-                            for i in 0...str.count - 1{
-                                let str2 = str[i].componentsSeparatedByString(",")
-                                if(str2.count >= 3){
-                                    self.carModelArr.append((str2[0], str2[1], str2[2], str2[3]))
-                                }
-                            }
-                            
-                            self.creditCardApplicationTable.reloadData()
-                            self.view.userInteractionEnabled = true
-                            //self.loadingIndicator.hidden = true
-                            //self.loadingIndicator.stopAnimating()
-                            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        })
+                        
                     }else{
                         
                     }
                 }else{
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.view.userInteractionEnabled = true
-                        //self.loadingIndicator.hidden = true
-                        //self.loadingIndicator.stopAnimating()
-                        UIApplication.sharedApplication().endIgnoringInteractionEvents()
-                        let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
-                        let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                            //exit(1)
-                        })
-                        alert.addAction(action)
-                        self.presentViewController(alert, animated: true, completion: nil)
-                    })
+                    
                 }
             })
             jsonQuery.resume()
-            
         }
         else{
-            self.view.userInteractionEnabled = true
-            //self.loadingIndicator.hidden = true
-            //self.loadingIndicator.stopAnimating()
-            UIApplication.sharedApplication().endIgnoringInteractionEvents()
-            let alert = UIAlertController(title: "Connection Error", message: "There seems to be a problem with your network connection. Please try again.", preferredStyle: .Alert)
-            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
-                //exit(1)
-            })
-            alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
+            
         }
     }
-    */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
