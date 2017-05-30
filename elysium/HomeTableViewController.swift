@@ -92,6 +92,14 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         spousedatePickerChanged()
         c1datePickerChanged()
         c2datePickerChanged()
+        
+        if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect"){
+            btnDeleteImage1.hidden = true
+            btnDeleteImage2.hidden = true
+            btnDeleteImage3.hidden = true
+        }
+        
+        self.defaults.setObject("", forKey: "selectedSourceOfImage")
     }
     
     override func viewDidLayoutSubviews() {
@@ -152,6 +160,8 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             if let cityLabel = defaults.stringForKey("selectedCity") {
                 self.cityCell.detailTextLabel?.text = cityLabel
             }
+            
+            homeLoanApplicationTable2.reloadData()
         }
         
         if(vcAction == "ShowHomeApplication" || vcAction == "ApplyHomeLoanDirect"){
@@ -401,9 +411,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
                 
                 homeLoanApplicationTable.reloadData()
             }
-        }
-        
-        homeLoanApplicationTable.reloadData()
+        }        
     }
     
     func checkIfLogged(){
@@ -757,6 +765,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
     @IBOutlet var remarks: UITextField!
     
     @IBOutlet var homeLoanApplicationTable: UITableView!
+    @IBOutlet var homeLoanApplicationTable2: UITableView!
     
     @IBOutlet var c1LastnameCell: UITableViewCell!
     @IBOutlet var cashpriceCell: UITableViewCell!

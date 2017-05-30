@@ -34,8 +34,6 @@ class AboutViewController: UIViewController {
         
         labelAppVersion.text = appver
         labelAppVersion.hidden = true
-        
-        
     }
     
     override func viewDidAppear(animated: Bool) {

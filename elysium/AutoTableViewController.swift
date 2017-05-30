@@ -90,6 +90,14 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         spousedatePickerChanged()
         c1datePickerChanged()
         c2datePickerChanged()
+        
+        if(vcAction == "ApplyLoanDirect" || vcAction == "ShowComputedAutoApp" || vcAction == "ShowAutoLoanApplication"){
+            btnDeleteImage1.hidden = true
+            btnDeleteImage2.hidden = true
+            btnDeleteImage3.hidden = true
+        }
+        
+        self.defaults.setObject("", forKey: "selectedSourceOfImage")
     }
     
     override func viewDidLayoutSubviews() {
@@ -406,8 +414,6 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
                 autoLoanApplicationTable.reloadData()
             }
         }
-        
-        autoLoanApplicationTable.reloadData()
     }
     
     func checkIfLogged(){

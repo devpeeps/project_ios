@@ -18749,6 +18749,7 @@
                     </tableView>
                     <connections>
                         <outlet property="cityCell" destination="O7P-d7-Czh" id="iAn-v1-btR"/>
+                        <outlet property="homeLoanApplicationTable2" destination="kjQ-hl-bKV" id="D0O-DO-435"/>
                         <outlet property="propertyTypeCell" destination="9vi-EF-bVq" id="Rnd-vu-Zwc"/>
                         <outlet property="provinceCell" destination="gNX-Fi-wvI" id="rYY-5G-bUZ"/>
                         <outlet property="txtPriceFrom" destination="4i4-rb-REf" id="7ob-65-yXS"/>
@@ -18928,7 +18929,7 @@
         <segue reference="o7u-W1-rLC"/>
         <segue reference="4kN-9j-0g2"/>
         <segue reference="6Pi-cU-jE7"/>
+        <segue reference="mzj-d4-dpS"/>
         <segue reference="Dbu-OT-G62"/>
-        <segue reference="lNB-M2-eRq"/>
     </inferredMetricsTieBreakers>
 </document>
