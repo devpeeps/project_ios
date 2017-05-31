@@ -1065,26 +1065,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         if let imageNum = defaults.stringForKey("selectedImage") {
             selectedImage = imageNum
         }
-        NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
-        if(selectedSourceOfImage == "cameraRoll"){
-            let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
-            let imagePath =  imageURL.path!
-            let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
-            NSLog("imagePath: " + imagePath)
-            NSLog("localPath: " + String(localPath))
-            
-            if(selectedImage == "image1"){
-                //defaults.setObject(localPath, forKey: "imagePath_1")
-                NSLog("imagePath_1: " + String(localPath))
-            }else if(selectedImage == "image2"){
-                //defaults.setObject(localPath, forKey: "imagePath_2")
-                NSLog("imagePath_2: " + String(localPath))
-            }else if(selectedImage == "image3"){
-                //defaults.setObject(localPath, forKey: "imagePath_3")
-                NSLog("imagePath_3: " + String(localPath))
-            }
-        }
-
+        
         if(selectedImage == "image1"){
             image1.image = image
             btnAddImage1.enabled = false
@@ -1106,6 +1087,83 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             btnDeleteImage3.hidden = false
         }
         
+        NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
+        if(selectedSourceOfImage == "cameraRoll"){
+            let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
+            let imagePath =  imageURL.path!
+            
+            NSLog("IMAGEURL" + String(imageURL))
+            if(selectedImage == "image1"){
+                if let data = UIImageJPEGRepresentation((self.image1?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    data.writeToFile(targetURL, atomically: true)
+                }
+                NSLog("imagePath: " + imagePath)
+            }else if(selectedImage == "image2"){
+                if let data = UIImageJPEGRepresentation((self.image2?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    data.writeToFile(targetURL, atomically: true)
+                }
+                NSLog("imagePath: " + imagePath)
+            }else if(selectedImage == "image3"){
+                if let data = UIImageJPEGRepresentation((self.image3?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    data.writeToFile(targetURL, atomically: true)
+                }
+                NSLog("imagePath: " + imagePath)
+            }
+        }
+        else if(selectedSourceOfImage == "takePhoto"){
+            
+            let alert = UIAlertController(title: "Do you want to save the picture", message: nil, preferredStyle: .Alert)
+            let okButton = UIAlertAction(title: "Save", style: UIAlertActionStyle.Default){
+                UIAlertAction in
+                NSLog("ok pressed")
+            }
+            let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive)
+            {
+                UIAlertAction in
+                NSLog("Cancel Pressed")
+            }
+            alert.addAction(okButton)
+            alert.addAction(cancelButton)
+            presentViewController(alert, animated: true, completion: nil)
+            
+            if(selectedImage == "image1"){
+                if let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    imageData1.writeToFile(targetURL, atomically: true)
+                    //let compressedJPGImage1 = UIImage(data: imageData1)
+                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
+                }
+            }else if(selectedImage == "image2"){
+                if let imageData2 = UIImageJPEGRepresentation((self.image2?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    imageData2.writeToFile(targetURL, atomically: true)
+                    //let compressedJPGImage2 = UIImage(data: imageData2)
+                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
+                }
+            }else if(selectedImage == "image3"){
+                if let imageData3 = UIImageJPEGRepresentation((self.image3?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    imageData3.writeToFile(targetURL, atomically: true)
+                    //let compressedJPGImage3 = UIImage(data: imageData3)
+                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
+                }
+            }
+        }
         self.dismissViewControllerAnimated(true, completion: nil);
     }
     

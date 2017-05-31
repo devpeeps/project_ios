@@ -1316,30 +1316,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         defaults.setObject("", forKey: "selectedImage")
     }
-    /*
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
-        self.image1.image = image
-        let url: NSURL = editingInfo.valueForKey("UIImagePickerControllerReferenceURL") as! NSURL
-        let imagePath =  url.path!
-        let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
-        NSLog("IMAGE_NAME: " + imagePath)
-        NSLog("IMAGE_PATH: " + String(localPath))
-        NSLog("IMAGE_URL: " + url.absoluteString)
-        self.dismissViewControllerAnimated(true, completion: nil)
-        
-        if let imageNum = defaults.stringForKey("selectedImage") {
-            selectedImage = imageNum
-        }
-        
-        if(selectedImage == "image1"){
-            image1.image = image
-            btnAddImage1.enabled = false
-            btnAddImage1.hidden = true
-            image1.hidden = false
-            btnDeleteImage1.hidden = false
-        }
-    }
-    */
+
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
             selectedSourceOfImage = sourceOfImage
@@ -1348,61 +1325,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         if let imageNum = defaults.stringForKey("selectedImage") {
             selectedImage = imageNum
         }
-        NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
-        if(selectedSourceOfImage == "cameraRoll"){
-            let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
-            let imagePath =  imageURL.path!
-            let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
-            NSLog("imagePath: " + imagePath)
-            NSLog("localPath: " + String(localPath))
-            
-            if(selectedImage == "image1"){
-                //defaults.setObject(localPath, forKey: "imagePath_1")
-                NSLog("imagePath_1: " + String(localPath))
-            }else if(selectedImage == "image2"){
-                //defaults.setObject(localPath, forKey: "imagePath_2")
-                NSLog("imagePath_2: " + String(localPath))
-            }else if(selectedImage == "image3"){
-                //defaults.setObject(localPath, forKey: "imagePath_3")
-                NSLog("imagePath_3: " + String(localPath))
-            }
-        }
-        /*
-        UIImagePickerControllerReferenceURL 
-        else if(selectedSourceOfImage == "takePhoto"){
-            if(self.selectedImage == "image1"){
-                let imageData1 = UIImageJPEGRepresentation(self.image1.image!, 0.6)
-                let compressedJPGImage1 = UIImage(data: imageData1!)
-                UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
-                NSLog("SUCCESS")
-            }else if(self.selectedImage == "image2"){
-                let imageData2 = UIImageJPEGRepresentation(self.image2.image!, 0.6)
-                let compressedJPGImage2 = UIImage(data: imageData2!)
-                UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
-            }else if(self.selectedImage == "image3"){
-                let imageData3 = UIImageJPEGRepresentation(self.image3.image!, 0.6)
-                let compressedJPGImage3 = UIImage(data: imageData3!)
-                UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
-            }
-            NSLog("HEY!!!!")
-            NSLog("selectedImage: " + selectedImage)
-            
-            let imageURL = editingInfo[UIImagePickerControllerOriginalImage] as! NSURL
-            let imagePath =  imageURL.path!
-            let localPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(imagePath)
-            
-            //this block of code adds data to the above path
-            let path = localPath.relativePath!
-            let imageName = editingInfo[UIImagePickerControllerOriginalImage] as! UIImage
-            let data = UIImagePNGRepresentation(imageName)
-            data?.writeToFile(imagePath, atomically: true)
-            
-            //this block grabs the NSURL so you can use it in CKASSET
-            let photoURL = NSURL(fileURLWithPath: path)
-            NSLog("photoURL: " + String(photoURL))
- 
-        }
-        */
+        
         if(selectedImage == "image1"){
             image1.image = image
             btnAddImage1.enabled = false
@@ -1424,6 +1347,83 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             btnDeleteImage3.hidden = false
         }
         
+        NSLog("selectedSourceOfImage: " + selectedSourceOfImage)
+        if(selectedSourceOfImage == "cameraRoll"){
+            let imageURL = editingInfo[UIImagePickerControllerReferenceURL] as! NSURL
+            let imagePath =  imageURL.path!
+            
+            NSLog("IMAGEURL" + String(imageURL))
+            if(selectedImage == "image1"){
+                if let data = UIImageJPEGRepresentation((self.image1?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    data.writeToFile(targetURL, atomically: true)
+                }
+                NSLog("imagePath: " + imagePath)
+            }else if(selectedImage == "image2"){
+                if let data = UIImageJPEGRepresentation((self.image2?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    data.writeToFile(targetURL, atomically: true)
+                }
+                NSLog("imagePath: " + imagePath)
+            }else if(selectedImage == "image3"){
+                if let data = UIImageJPEGRepresentation((self.image3?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    data.writeToFile(targetURL, atomically: true)
+                }
+                NSLog("imagePath: " + imagePath)
+            }
+        }
+        else if(selectedSourceOfImage == "takePhoto"){
+            
+            let alert = UIAlertController(title: "Do you want to save the picture", message: nil, preferredStyle: .Alert)
+            let okButton = UIAlertAction(title: "Save", style: UIAlertActionStyle.Default){
+                UIAlertAction in
+                NSLog("ok pressed")
+            }
+            let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive)
+            {
+                UIAlertAction in
+                NSLog("Cancel Pressed")
+            }
+            alert.addAction(okButton)
+            alert.addAction(cancelButton)
+            presentViewController(alert, animated: true, completion: nil)
+            
+            if(selectedImage == "image1"){
+                if let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    imageData1.writeToFile(targetURL, atomically: true)
+                    //let compressedJPGImage1 = UIImage(data: imageData1)
+                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
+                }
+            }else if(selectedImage == "image2"){
+                if let imageData2 = UIImageJPEGRepresentation((self.image2?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    imageData2.writeToFile(targetURL, atomically: true)
+                    //let compressedJPGImage2 = UIImage(data: imageData2)
+                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
+                }
+            }else if(selectedImage == "image3"){
+                if let imageData3 = UIImageJPEGRepresentation((self.image3?.image)!, 1) {
+                    let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
+                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL)")
+                    imageData3.writeToFile(targetURL, atomically: true)
+                    //let compressedJPGImage3 = UIImage(data: imageData3)
+                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
+                }
+            }
+        }
         self.dismissViewControllerAnimated(true, completion: nil);
     }
     
@@ -1466,21 +1466,76 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             alert.addAction(cancelButton)
             presentViewController(alert, animated: true, completion: nil)
         }
+    }
+    
+    func uploadImage(filename: String) {
         
-        if let path1 = defaults.stringForKey("imagePath_1") {
-            imagePath_1 = path1
-            NSLog("imagePath_1: " + imagePath_1)
+        if let appid = defaults.stringForKey("submittedApplicationID") {
+            submittedApplicationID = appid
         }
         
-        if let path2 = defaults.stringForKey("imagePath_2") {
-            imagePath_2 = path2
-            NSLog("imagePath_2: " + imagePath_2)
+        urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@ID", withString: submittedApplicationID)
+        
+        var contProc = true
+        let status = Reach().connectionStatus()
+        switch status {
+        case .Unknown, .Offline:
+            contProc = false
+            withConnection = false
+        default:
+            contProc = true
+            withConnection = true
         }
         
-        if let path3 = defaults.stringForKey("imagePath_3") {
-            imagePath_3 = path3
-            NSLog("imagePath_3: " + imagePath_3)
+        if(contProc) {
+            let url = NSURL(string: urlAsString)!
+            let urlSession = NSURLSession.sharedSession()
+            
+            let cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData
+            var request = NSMutableURLRequest(URL: url, cachePolicy: cachePolicy, timeoutInterval: 2.0)
+            request.HTTPMethod = "POST"
+            
+            // set Content-Type in HTTP header
+            let boundaryConstant = "----------V2ymHFg03esomerandomstuffhbqgZCaKO6jy";
+            let contentType = "multipart/form-data; boundary=" + boundaryConstant
+            NSURLProtocol.setProperty(contentType, forKey: "Content-Type", inRequest: request)
+            
+            // set data
+            var dataString = ""
+            let requestBodyData = (dataString as NSString).dataUsingEncoding(NSUTF8StringEncoding)
+            request.HTTPBody = requestBodyData
         }
+        else{
+            //EXECUTE DATA
+        }
+        
+        let url = NSURL(string:"https://eclipse.unionbankph.com/custom/newappservice_cats_img_mobile.php?id=@@REQID")
+        let cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData
+        var request = NSMutableURLRequest(URL: url!, cachePolicy: cachePolicy, timeoutInterval: 2.0)
+        request.HTTPMethod = "POST"
+        
+        // set Content-Type in HTTP header
+        let boundaryConstant = "----------V2ymHFg03esomerandomstuffhbqgZCaKO6jy";
+        let contentType = "multipart/form-data; boundary=" + boundaryConstant
+        NSURLProtocol.setProperty(contentType, forKey: "Content-Type", inRequest: request)
+        
+        // set data
+        var dataString = ""
+        let requestBodyData = (dataString as NSString).dataUsingEncoding(NSUTF8StringEncoding)
+        request.HTTPBody = requestBodyData
+        
+        // set content length
+        //NSURLProtocol.setProperty(requestBodyData.length, forKey: "Content-Length", inRequest: request)
+        
+        var response: NSURLResponse? = nil
+        var error: NSError? = nil
+        let reply = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&error)
+        
+        let results = NSString(data:reply!, encoding:NSUTF8StringEncoding)
+        println("API Response: \(results)")
     }
     
     /*
