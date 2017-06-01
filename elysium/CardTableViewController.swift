@@ -55,6 +55,14 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     var c1bdaydatePickerHidden = true
     var c2bdaydatePickerHidden = true
     
+    var targetURL1 = ""
+    var targetURL2 = ""
+    var targetURL3 = ""
+    
+    var filename = ""
+    
+    var uploadedPhotosDets = [String: String]()
+    
     @IBOutlet var creditCardApplicationTable: UITableView!
     
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -81,6 +89,10 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         btnDeleteImage3.hidden = true
         
         self.defaults.setObject("", forKey: "selectedSourceOfImage")
+        self.defaults.setObject("", forKey: "imagePath_1")
+        self.defaults.setObject("", forKey: "imagePath_2")
+        self.defaults.setObject("", forKey: "imagePath_3")
+        self.defaults.setObject("", forKey: "submittedApplicationID")
     }
     
     override func viewDidLayoutSubviews() {
@@ -485,42 +497,21 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             //stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
-        
-        
         let mReqId = UIDevice.currentDevice().identifierForVendor!.UUIDString + "-" + cardtypecode + "-" + self.lastname.text! + "-" + self.firstname.text! + "-" + self.birthday.text!
         
         defaults.setObject(mReqId, forKey: "submittedApplicationID")
         
-        if(imagePath_1 != ""){
-            NSLog("")
-        }else if(imagePath_2 != ""){
-            NSLog("")
-        }else if(imagePath_3 != ""){
-            NSLog("")
+        if let path1 = defaults.stringForKey("imagePath_1") {
+            imagePath_1 = path1
         }
         
-        /*
-        if(!idImg1.equals("")){
-        db.addAppImg("SALARY", mReqId, idImg1);
-        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg1);
+        if let path2 = defaults.stringForKey("imagePath_2") {
+            imagePath_2 = path2
         }
-        if(!idImg2.equals("")){
-        db.addAppImg("SALARY", mReqId, idImg2);
-        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg2);
+        
+        if let path3 = defaults.stringForKey("imagePath_3") {
+            imagePath_3 = path3
         }
-        if(!idImg3.equals("")){
-        db.addAppImg("SALARY", mReqId, idImg3);
-        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg3);
-        }
-        /*if(!idImg4.equals("")){
-        db.addAppImg("SALARY", mReqId, idImg4);
-        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg4);
-        }
-        if(!idImg5.equals("")){
-        db.addAppImg("SALARY", mReqId, idImg5);
-        Log.d("Insert IMG: ", "Inserting " + mReqId + "*****" + idImg5);
-        }*/
-        */
         
         stringUrl = stringUrl + "&applicationId=" + mReqId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
@@ -557,6 +548,16 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
             NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
 
+            if(imagePath_1 != "") {
+                imageUploadRequest(imageView: image1)
+            }
+            if(imagePath_2 != "") {
+                imageUploadRequest(imageView: image2)
+            }
+            if(imagePath_3 != "") {
+                imageUploadRequest(imageView: image3)
+            }
+            NSLog("MREQID: " + mReqId)
             let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: managedObjectContext)
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
             url.url = stringUrl
@@ -571,8 +572,6 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             //self.loadingIndicator.stopAnimating()
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
 
-            //uploadImage(mReqId)
-        
             let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 self.performSegueWithIdentifier("BackToCardMain", sender: self)
@@ -1318,6 +1317,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     }
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        
         if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
             selectedSourceOfImage = sourceOfImage
         }
@@ -1356,25 +1356,28 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             if(selectedImage == "image1"){
                 if let data = UIImageJPEGRepresentation((self.image1?.image)!, 1) {
                     let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
-                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
-                    print("TARGET: \(targetURL)")
-                    data.writeToFile(targetURL, atomically: true)
+                    let targetURL1 = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL1)")
+                    uploadedPhotosDets["image1"] = targetURL1
+                    data.writeToFile(targetURL1, atomically: true)
                 }
                 NSLog("imagePath: " + imagePath)
             }else if(selectedImage == "image2"){
                 if let data = UIImageJPEGRepresentation((self.image2?.image)!, 1) {
                     let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
-                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
-                    print("TARGET: \(targetURL)")
-                    data.writeToFile(targetURL, atomically: true)
+                    let targetURL2 = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL2)")
+                    uploadedPhotosDets["image2"] = targetURL2
+                    data.writeToFile(targetURL2, atomically: true)
                 }
                 NSLog("imagePath: " + imagePath)
             }else if(selectedImage == "image3"){
                 if let data = UIImageJPEGRepresentation((self.image3?.image)!, 1) {
                     let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
-                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
-                    print("TARGET: \(targetURL)")
-                    data.writeToFile(targetURL, atomically: true)
+                    let targetURL3 = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL3)")
+                    uploadedPhotosDets["image3"] = targetURL3
+                    data.writeToFile(targetURL3, atomically: true)
                 }
                 NSLog("imagePath: " + imagePath)
             }
@@ -1398,32 +1401,42 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             if(selectedImage == "image1"){
                 if let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 1) {
                     let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
-                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
-                    print("TARGET: \(targetURL)")
-                    imageData1.writeToFile(targetURL, atomically: true)
-                    //let compressedJPGImage1 = UIImage(data: imageData1)
-                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage1!, nil, nil, nil)
+                    targetURL1 = tempDirectoryURL.URLByAppendingPathComponent("image1").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL1)")
+                    uploadedPhotosDets["image1"] = targetURL1
+                    imageData1.writeToFile(targetURL1, atomically: true)
                 }
             }else if(selectedImage == "image2"){
                 if let imageData2 = UIImageJPEGRepresentation((self.image2?.image)!, 1) {
                     let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
-                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
-                    print("TARGET: \(targetURL)")
-                    imageData2.writeToFile(targetURL, atomically: true)
-                    //let compressedJPGImage2 = UIImage(data: imageData2)
-                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage2!, nil, nil, nil)
+                    targetURL2 = tempDirectoryURL.URLByAppendingPathComponent("image2").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL2)")
+                    uploadedPhotosDets["image2"] = targetURL2
+                    imageData2.writeToFile(targetURL2, atomically: true)
                 }
             }else if(selectedImage == "image3"){
                 if let imageData3 = UIImageJPEGRepresentation((self.image3?.image)!, 1) {
                     let tempDirectoryURL = NSURL.fileURLWithPath(NSTemporaryDirectory(), isDirectory: true)
-                    let targetURL = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
-                    print("TARGET: \(targetURL)")
-                    imageData3.writeToFile(targetURL, atomically: true)
-                    //let compressedJPGImage3 = UIImage(data: imageData3)
-                    //UIImageWriteToSavedPhotosAlbum(compressedJPGImage3!, nil, nil, nil)
+                    targetURL3 = tempDirectoryURL.URLByAppendingPathComponent("image3").URLByAppendingPathExtension("JPG").path!
+                    print("TARGET: \(targetURL3)")
+                    uploadedPhotosDets["image3"] = targetURL3
+                    imageData3.writeToFile(targetURL3, atomically: true)
                 }
             }
         }
+        
+        NSLog("uploadedPhotosDets: " + String(uploadedPhotosDets))
+        
+        for (key, value) in uploadedPhotosDets {
+            if(key == "image1") {
+                self.defaults.setObject(value, forKey: "imagePath_1")
+            }else if(key == "image2") {
+                self.defaults.setObject(value, forKey: "imagePath_2")
+            }else if(key == "image3") {
+                self.defaults.setObject(value, forKey: "imagePath_3")
+            }
+        }
+        
         self.dismissViewControllerAnimated(true, completion: nil);
     }
     
@@ -1468,125 +1481,123 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         }
     }
     
-    func uploadImage(filename: String) {
+    /*
+    var url = "http://andreid.imcserver.ro/test/service.php"
+    var nsURL = NSURL(string: url)
+    var request = NSURLRequest(URL: nsURL!)
+    var data: NSData
+    var response: NSURLResponse?
+    var error: NSErrorPointer?
+     
+    var jsonTask = NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: {
+        (data, response, error) -> Void in
+     
+        println("\(data)")
+        println("\(response)")
+        println("\(error)")
+     
+        if error == nil
+        {
+            var jsonError: NSError?
+            var jsonResponse: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! NSDictionary
+            println("\(jsonResponse)")
+        }
+        else
+        {
+            println("JSON PARse error")
+        }
+    })
+    jsonTask.resume()
+    */
+    
+    
+    ////UPLOAD TASK////
+    func imageUploadRequest(imageView imageView: UIImageView) {
         
-        if let appid = defaults.stringForKey("submittedApplicationID") {
-            submittedApplicationID = appid
+        if let appID = defaults.stringForKey("submittedApplicationID") {
+            submittedApplicationID = appID
         }
         
         urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-        self.view.userInteractionEnabled = false
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
         let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@ID", withString: submittedApplicationID)
-        
-        var contProc = true
-        let status = Reach().connectionStatus()
-        switch status {
-        case .Unknown, .Offline:
-            contProc = false
-            withConnection = false
-        default:
-            contProc = true
-            withConnection = true
-        }
-        
-        if(contProc) {
-            let url = NSURL(string: urlAsString)!
-            let urlSession = NSURLSession.sharedSession()
-            
-            let cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData
-            var request = NSMutableURLRequest(URL: url, cachePolicy: cachePolicy, timeoutInterval: 2.0)
-            request.HTTPMethod = "POST"
-            
-            // set Content-Type in HTTP header
-            let boundaryConstant = "----------V2ymHFg03esomerandomstuffhbqgZCaKO6jy";
-            let contentType = "multipart/form-data; boundary=" + boundaryConstant
-            NSURLProtocol.setProperty(contentType, forKey: "Content-Type", inRequest: request)
-            
-            // set data
-            var dataString = ""
-            let requestBodyData = (dataString as NSString).dataUsingEncoding(NSUTF8StringEncoding)
-            request.HTTPBody = requestBodyData
-        }
-        else{
-            //EXECUTE DATA
-        }
-        
-        let url = NSURL(string:"https://eclipse.unionbankph.com/custom/newappservice_cats_img_mobile.php?id=@@REQID")
-        let cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData
-        var request = NSMutableURLRequest(URL: url!, cachePolicy: cachePolicy, timeoutInterval: 2.0)
+        let uploadUrl = NSURL(string: urlAsString)
+        let request = NSMutableURLRequest(URL:uploadUrl!);
         request.HTTPMethod = "POST"
         
-        // set Content-Type in HTTP header
-        let boundaryConstant = "----------V2ymHFg03esomerandomstuffhbqgZCaKO6jy";
-        let contentType = "multipart/form-data; boundary=" + boundaryConstant
-        NSURLProtocol.setProperty(contentType, forKey: "Content-Type", inRequest: request)
+        let boundary = generateBoundaryString()
         
-        // set data
-        var dataString = ""
-        let requestBodyData = (dataString as NSString).dataUsingEncoding(NSUTF8StringEncoding)
-        request.HTTPBody = requestBodyData
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        // set content length
-        //NSURLProtocol.setProperty(requestBodyData.length, forKey: "Content-Length", inRequest: request)
+        let imageData = UIImageJPEGRepresentation(imageView.image!, 1)
         
-        var response: NSURLResponse? = nil
-        var error: NSError? = nil
-        let reply = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&error)
+        let filename = String(imageView) + ".JPG"
         
-        let results = NSString(data:reply!, encoding:NSUTF8StringEncoding)
-        println("API Response: \(results)")
+        if(imageData==nil)  { return; }
+        
+        request.HTTPBody = createBodyWithParameters("uploaded_file", imageDataKey: imageData!, boundary: boundary, filename: filename)
+        
+        let task =  NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: {
+            (data, response, error) -> Void in
+            if let data = data {
+                
+                // You can print out response object
+                print("******* response = \(response)")
+                
+                print(data.length)
+                //you can use data here
+                
+                // Print out reponse body
+                let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
+                print("****** response data = \(responseString!)")
+                
+                //let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+                let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+                
+                print("json value \(json)")
+                
+                //var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: &err)
+                
+                dispatch_async(dispatch_get_main_queue(),{
+                    //self.myActivityIndicator.stopAnimating()
+                    //self.imageView.image = nil;
+                });
+            } else if let error = error {
+                print(error.description)
+            }
+        })
+        task.resume()
     }
     
-    /*
-    func uploadImage(appId: String){
-        urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-        self.view.userInteractionEnabled = false
-        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
-        let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@ID", withString: appId)
+    func createBodyWithParameters(filePathKey: String?, imageDataKey: NSData, boundary: String, filename: String) -> NSData {
+        let body = NSMutableData();
+        /*
+        if parameters != nil {
+            for (key, value) in parameters! {
+                body.appendString("--\(boundary)\r\n")
+                body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString("\(value)\r\n")
+            }
+        }
+        */
         
-        var contProc = true
-        let status = Reach().connectionStatus()
-        switch status {
-        case .Unknown, .Offline:
-            contProc = false
-            withConnection = false
-        default:
-            contProc = true
-            withConnection = true
-        }
+        NSLog("FILENAME: " + filename)
+        let mimetype = "image/jpg"
         
-        if(contProc){
-            let url = NSURL(string: urlAsString)!
-            let urlSession = NSURLSession.sharedSession()
-            
-            var err = false
-            
-            let jsonQuery = urlSession.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
-                if (error != nil) {
-                    print(error!.localizedDescription)
-                    err = true
-                }
-                
-                if(!err){
-                    let s = String(data: data!, encoding: NSUTF8StringEncoding)
-                    
-                    if(s != ""){
-                        
-                    }else{
-                        
-                    }
-                }else{
-                    
-                }
-            })
-            jsonQuery.resume()
-        }
-        else{
-            
-        }
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n")
+        body.appendString("Content-Type: \(mimetype)\r\n\r\n")
+        body.appendData(imageDataKey)
+        body.appendString("\r\n")
+        
+        body.appendString("--\(boundary)--\r\n")
+        
+        return body
     }
-    */
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().UUIDString)"
+    }
+    ///////////////////
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -1830,5 +1841,12 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluateWithObject(testStr)
+    }
+}
+
+extension NSMutableData {
+    func appendString(string: String) {
+        let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+        appendData(data!)
     }
 }
