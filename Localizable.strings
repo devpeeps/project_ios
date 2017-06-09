@@ -31,6 +31,7 @@ urlCATS2 = "http://10.19.20.88:8081/custom/newappservice_cats_confin_mobileapp.p
 urlCATS1 = "https://eclipse.unionbankph.com/custom/newappservice_cats_mobile.php?";
 urlCATS = "https://eclipse.unionbankph.com/custom/newappservice_cats_confin_mobileapp.php?";
 urlCATS_IMAGE = "https://eclipse.unionbankph.com/custom/newappservice_cats_img_mobile.php?id=@@REQID";
+//urlCATS_IMAGE = "http://10.19.20.88:8081/custom/newappservice_cats_img_mobile2.php?id=@@REQID";
 
 urlINQ = "https://eclipse.unionbankph.com/custom/newappservice_elysium_inquire.php?";
 

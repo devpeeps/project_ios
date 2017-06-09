@@ -282,6 +282,17 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                 destinationVC.vcAction = "IDontHavePassword"
             }
         }
+        
+        if (segue.identifier == "testUploadImage")
+        {
+            if let destinationVC = segue.destinationViewController as? DateTableViewController{
+                destinationVC.vcAction = "testUploadImage"
+            }
+        }
+    }
+    
+    @IBAction func btnUploadImage(sender: AnyObject) {
+        //self.performSegueWithIdentifier("testUploadImage", sender: self)
     }
     
     func saveUserDefaults(){

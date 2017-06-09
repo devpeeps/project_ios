@@ -330,7 +330,12 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         stringUrl = stringUrl + "&title=" +
             self.salutation.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&res_ownership=" + self.homeownership.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        var homeOwnershipID = ""
+        if let homeOwnershipLabel = defaults.stringForKey("selectedHomeOwnershipID") {
+            homeOwnershipID = homeOwnershipLabel
+        }
+        
+        stringUrl = stringUrl + "&res_ownership=" + homeOwnershipID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         //stringUrl = stringUrl + "&empsourcefunds=" + self.empsourcefunds.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
@@ -344,13 +349,27 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         stringUrl = stringUrl + "&resphone=" + self.phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&mobileno=" + self.mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&email=" + self.emailaddress.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        //stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + " " + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var provinceID = ""
+        if let provinceIDLabel = defaults.stringForKey("selectedProvinceID") {
+            provinceID = provinceIDLabel
+        }
+        
+        stringUrl = stringUrl + "&resprovince=" + provinceID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var cityID = ""
+        if let cityIDLabel = defaults.stringForKey("selectedCityID") {
+            cityID = cityIDLabel
+        }
+        
+        stringUrl = stringUrl + "&rescity=" + cityID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&repostalcode=" + self.postalcode.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         stringUrl = stringUrl + "&empbizstatus=" + incomeTypeID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         //stringUrl = stringUrl + "&remarks=" + self.bank.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        
         
         stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
@@ -362,14 +381,42 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         stringUrl = stringUrl + "&jobpos=" + jobposition.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
+        var industryCode = ""
+        if let industryCodeLabel = defaults.stringForKey("selectedIndustryCode") {
+            industryCode = industryCodeLabel
+        }
+        
+        stringUrl = stringUrl + "&empbizindustry=" + industryCode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
         stringUrl = stringUrl + "&empbiz_y=" + self.empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        stringUrl = stringUrl + "&empbizaddress=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
-        //stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizaddress=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())! + " " + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var empbizprovinceID = ""
+        if let empbizprovinceIDLabel = defaults.stringForKey("selectedProvinceBizCode") {
+            empbizprovinceID = empbizprovinceIDLabel
+        }
+        
+        stringUrl = stringUrl + "&empbizaddprovince=" + empbizprovinceID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var empcityID = ""
+        if let empcityIDLabel = defaults.stringForKey("selectedCityBizCode") {
+            empcityID = empcityIDLabel
+        }
+        
+        stringUrl = stringUrl + "&empbizaddcity=" + empcityID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empbizaddpostalcode=" + self.emppostalcode.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
         stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         stringUrl = stringUrl + "&empbizannualincome=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
+        stringUrl = stringUrl + "&tin=" + self.tin.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&sss=" + self.sss.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&gsis=" + self.gsis.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
         if(self.withc1.on == true){
-            
             if(self.c1lastname.text == ""){
                 errorctr += 1;
                 errormsg += "S1 Last Name\n";
@@ -497,6 +544,45 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             //stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
+        /*
+         String withOtherCard = "0";
+         if(newcase_applicantinfo_withothercard1.getSelectedItem().toString().contains("With Other Credit Card 1")){
+         withOtherCard = "1";
+         f = (LibraryField) newcase_applicantinfo_cardbank1.getSelectedItem();
+         stringUrl = stringUrl + "&cardbankname=" + EncodeURLString(f.id);
+         stringUrl = stringUrl + "&cardnumber=" + EncodeURLString(newcase_applicantinfo_cardno1.getText().toString());
+         }
+         if(newcase_applicantinfo_withothercard2.getSelectedItem().toString().contains("With Other Credit Card 2")){
+         withOtherCard = "1";
+         f = (LibraryField) newcase_applicantinfo_cardbank2.getSelectedItem();
+         stringUrl = stringUrl + "&cardbankname2=" + EncodeURLString(f.id);
+         stringUrl = stringUrl + "&cardnumber2=" + EncodeURLString(newcase_applicantinfo_cardno2.getText().toString());
+         }
+         stringUrl = stringUrl + "&cardholder=" + EncodeURLString(withOtherCard);
+        */
+        
+        var bankCode = ""
+        if let bankCodeLabel = defaults.stringForKey("selectedBankCode") {
+            bankCode = bankCodeLabel
+        }
+        
+        stringUrl = stringUrl + "&cardbankname=" + bankCode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&cardnumber=" + self.cardno.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var billingAddressCode = ""
+        if let billingAddressCodeLabel = defaults.stringForKey("selectedBillingAddressCode") {
+            billingAddressCode = billingAddressCodeLabel
+        }
+        stringUrl = stringUrl + "&billingaddress=" + billingAddressCode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var deliveryAddressCode = ""
+        if let deliveryAddressCodeLabel = defaults.stringForKey("selectedDeliveryAddressCode") {
+            deliveryAddressCode = deliveryAddressCodeLabel
+        }
+        
+        stringUrl = stringUrl + "&deliveryAddress=" + deliveryAddressCode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
         let mReqId = UIDevice.currentDevice().identifierForVendor!.UUIDString + "-" + cardtypecode + "-" + self.lastname.text! + "-" + self.firstname.text! + "-" + self.birthday.text!
         
         defaults.setObject(mReqId, forKey: "submittedApplicationID")
@@ -547,17 +633,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress1.text, forKey: "EMPBIZADDLINE1")
             NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
             NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
-
-            if(imagePath_1 != "") {
-                imageUploadRequest(imageView: image1)
-            }
-            if(imagePath_2 != "") {
-                imageUploadRequest(imageView: image2)
-            }
-            if(imagePath_3 != "") {
-                imageUploadRequest(imageView: image3)
-            }
-            NSLog("MREQID: " + mReqId)
+            
             let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: managedObjectContext)
             let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
             url.url = stringUrl
@@ -573,6 +649,72 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             UIApplication.sharedApplication().endIgnoringInteractionEvents()
 
             let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
+            
+            if(imagePath_1 != "") {
+                if let appID = defaults.stringForKey("submittedApplicationID") {
+                    submittedApplicationID = appID
+                }
+                
+                uploadedPhotosDets = ["id": submittedApplicationID]
+                NSLog("uploadedPhotosDets: " + String(uploadedPhotosDets))
+                urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+                let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+                let uploadUrl = NSURL(string: urlAsString)
+                NSLog("NSURL: " + String(uploadUrl))
+                let r = NSMutableURLRequest(URL:(uploadUrl)!);
+                r.HTTPMethod = "POST"
+                
+                let boundary = "Boundary-\(NSUUID().UUIDString)"
+                
+                r.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+                
+                //let path = self.bundle.pathForResource("Test", ofType: "txt")
+                //let bundle = NSBundle.mainBundle()
+                //let paths = self.bundle.pathForResource("image1", ofType: "JPG") as String!
+                //let paths = NSBundle.path
+                //let data = NSData(imagePath_1)
+                
+                //let data = imagePath_1.dataUsingEncoding(NSUTF8StringEncoding)
+                
+                //if let d = data {
+                //    print(d)
+                //}
+                
+                //r.HTTPBody = createBody(uploadedPhotosDets, boundary: boundary, data: UIImageJPEGRepresentation((self.image1?.image)!, 0.7)!, mimeType: "image/jpg", filename: "image1.JPG")
+                
+                let imageData = UIImageJPEGRepresentation((self.image1?.image)!, 1)
+                
+                if(imageData==nil)  { return; }
+                
+                r.HTTPBody = createBody(uploadedPhotosDets, boundary: boundary, data: imageData!, mimeType: "multipart/form-data", filename: "image1")
+                
+                let task = NSURLSession.sharedSession().dataTaskWithRequest(r) {
+                    data, response, error in
+                    if error != nil {
+                        print("error=\(error)")
+                        return
+                    }
+                    // レスポンスを出力
+                    print("******* response = \(response)")
+                    let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                    print("****** response data = \(responseString!)")
+                    dispatch_async(dispatch_get_main_queue(),{
+                        //アップロード完了
+                    });
+                }
+ 
+                task.resume()
+                
+                //imageUploadRequest(imageView: image1)
+            }
+            if(imagePath_2 != "") {
+                //imageUploadRequest(imageView: image2)
+            }
+            if(imagePath_3 != "") {
+                //imageUploadRequest(imageView: image3)
+            }
+            NSLog("MREQID: " + mReqId)
+            
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 self.performSegueWithIdentifier("BackToCardMain", sender: self)
             })
@@ -637,6 +779,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     //yearsofstay
     @IBOutlet var industry: UILabel!
     @IBOutlet var bank: UILabel!
+    @IBOutlet var cardno: UITextField!
     
     @IBOutlet var emptype: UILabel!
     @IBOutlet var empname: UITextField!
@@ -1481,36 +1624,30 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         }
     }
     
+    func createBody(parameters: [String: String], boundary: String, data: NSData, mimeType: String, filename: String) -> NSData {
+        let body = NSMutableData()
+        
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        for (key, value) in parameters {
+            body.appendString(boundaryPrefix)
+            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            body.appendString("\(value)\r\n")
+        }
+        
+        NSLog("FILENAME: " + filename)
+        
+        body.appendString(boundaryPrefix)
+        body.appendString("Content-Disposition: form-data; name=\"uploaded_file\"; filename=\"\(filename)\"\r\n")
+        body.appendString("Content-Type: \(mimeType)\r\n\r\n")
+        body.appendData(data)
+        body.appendString("\r\n")
+        body.appendString("--\(boundary)--\r\n")
+        
+        return body as NSData
+    }
+    
     /*
-    var url = "http://andreid.imcserver.ro/test/service.php"
-    var nsURL = NSURL(string: url)
-    var request = NSURLRequest(URL: nsURL!)
-    var data: NSData
-    var response: NSURLResponse?
-    var error: NSErrorPointer?
-     
-    var jsonTask = NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: {
-        (data, response, error) -> Void in
-     
-        println("\(data)")
-        println("\(response)")
-        println("\(error)")
-     
-        if error == nil
-        {
-            var jsonError: NSError?
-            var jsonResponse: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! NSDictionary
-            println("\(jsonResponse)")
-        }
-        else
-        {
-            println("JSON PARse error")
-        }
-    })
-    jsonTask.resume()
-    */
-    
-    
     ////UPLOAD TASK////
     func imageUploadRequest(imageView imageView: UIImageView) {
         
@@ -1518,10 +1655,12 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             submittedApplicationID = appID
         }
         
+        //var error: NSErrorPointer?
+        
         urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-        let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@ID", withString: submittedApplicationID)
+        let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
         let uploadUrl = NSURL(string: urlAsString)
-        let request = NSMutableURLRequest(URL:uploadUrl!);
+        let request = NSMutableURLRequest(URL:(uploadUrl)!);
         request.HTTPMethod = "POST"
         
         let boundary = generateBoundaryString()
@@ -1530,7 +1669,9 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         let imageData = UIImageJPEGRepresentation(imageView.image!, 1)
         
-        let filename = String(imageView) + ".JPG"
+        let filename = "image1.JPG"
+        
+        NSLog("filename: " + filename)
         
         if(imageData==nil)  { return; }
         
@@ -1551,9 +1692,16 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
                 print("****** response data = \(responseString!)")
                 
                 //let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
-                let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
+                //let json: NSDictionary! = NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.MutableContainers) as? NSDictionary
                 
-                print("json value \(json)")
+                do {
+                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary {
+                        print(jsonResult)
+                        print("JSON VALUE: \(jsonResult)")
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
                 
                 //var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: &err)
                 
@@ -1598,7 +1746,8 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         return "Boundary-\(NSUUID().UUIDString)"
     }
     ///////////////////
-    
+    */
+ 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "ShowCardNetworkList"

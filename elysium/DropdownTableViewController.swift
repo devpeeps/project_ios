@@ -35,7 +35,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     var homeownershipArr = [
         ("0", "OWNED/NOT MORTGAGED"),("1","OWNED/MORTGAGED"), ("2", "LIVING WITH PARENTS"), ("3", "RENTED"), ("4","USED FOR FREE/OTHERS") ]
     var sourceFundsArr = [("1","Business Income"), ("2","Rental Income"), ("3","Investment"), ("4","Personal Savings"), ("5","Salary"), ("6","Inheritance"), ("7","Sales of Property"), ("8","Pension"), ("9","Others")]
-    var addressOptionArr = [("1","Use Present Address"), ("2","Use Work Address")]
+    var addressOptionArr = [("H","Use Present Address"), ("C","Use Work Address")]
     var industryArr = [("","")]
     var bankArr = [("","")]
     var selectedCarModelId = ""
@@ -98,7 +98,9 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     
     var selectedCardNetwork = ""
     var selectedBillingAddress = ""
+    var selectedBillingAddressCode = ""
     var selectedDeliveryAddress = ""
+    var selectedDeliveryAddressCode = ""
     
     @IBOutlet var tableViewCardCategory: UITableView!
     @IBOutlet var tableViewDropdown: UITableView!
