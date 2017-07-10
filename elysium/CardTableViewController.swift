@@ -238,6 +238,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         presentViewController(alert, animated: true, completion: nil)
     }
     
+    /*
     func submitApplication(){
         //self.loadingIndicator.hidden = false
         //self.loadingIndicator.startAnimating()
@@ -371,7 +372,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         //stringUrl = stringUrl + "&remarks=" + self.bank.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
-        stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         
         var jobposition = ""
         if let occupationIDLabel = defaults.stringForKey("selectedOccupationID") {
@@ -544,23 +545,6 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             //stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
         }
         
-        /*
-         String withOtherCard = "0";
-         if(newcase_applicantinfo_withothercard1.getSelectedItem().toString().contains("With Other Credit Card 1")){
-         withOtherCard = "1";
-         f = (LibraryField) newcase_applicantinfo_cardbank1.getSelectedItem();
-         stringUrl = stringUrl + "&cardbankname=" + EncodeURLString(f.id);
-         stringUrl = stringUrl + "&cardnumber=" + EncodeURLString(newcase_applicantinfo_cardno1.getText().toString());
-         }
-         if(newcase_applicantinfo_withothercard2.getSelectedItem().toString().contains("With Other Credit Card 2")){
-         withOtherCard = "1";
-         f = (LibraryField) newcase_applicantinfo_cardbank2.getSelectedItem();
-         stringUrl = stringUrl + "&cardbankname2=" + EncodeURLString(f.id);
-         stringUrl = stringUrl + "&cardnumber2=" + EncodeURLString(newcase_applicantinfo_cardno2.getText().toString());
-         }
-         stringUrl = stringUrl + "&cardholder=" + EncodeURLString(withOtherCard);
-        */
-        
         var bankCode = ""
         if let bankCodeLabel = defaults.stringForKey("selectedBankCode") {
             bankCode = bankCodeLabel
@@ -650,76 +634,343 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
 
             let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
             
-            if(imagePath_1 != "") {
-                if let appID = defaults.stringForKey("submittedApplicationID") {
-                    submittedApplicationID = appID
-                }
-                
-                uploadedPhotosDets = ["id": submittedApplicationID]
-                NSLog("uploadedPhotosDets: " + String(uploadedPhotosDets))
-                urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-                let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
-                let uploadUrl = NSURL(string: urlAsString)
-                NSLog("NSURL: " + String(uploadUrl))
-                let r = NSMutableURLRequest(URL:(uploadUrl)!);
-                r.HTTPMethod = "POST"
-                
-                let boundary = "Boundary-\(NSUUID().UUIDString)"
-                
-                r.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-                
-                //let path = self.bundle.pathForResource("Test", ofType: "txt")
-                //let bundle = NSBundle.mainBundle()
-                //let paths = self.bundle.pathForResource("image1", ofType: "JPG") as String!
-                //let paths = NSBundle.path
-                //let data = NSData(imagePath_1)
-                
-                //let data = imagePath_1.dataUsingEncoding(NSUTF8StringEncoding)
-                
-                //if let d = data {
-                //    print(d)
-                //}
-                
-                //r.HTTPBody = createBody(uploadedPhotosDets, boundary: boundary, data: UIImageJPEGRepresentation((self.image1?.image)!, 0.7)!, mimeType: "image/jpg", filename: "image1.JPG")
-                
-                let imageData = UIImageJPEGRepresentation((self.image1?.image)!, 1)
-                
-                if(imageData==nil)  { return; }
-                
-                r.HTTPBody = createBody(uploadedPhotosDets, boundary: boundary, data: imageData!, mimeType: "multipart/form-data", filename: "image1")
-                
-                let task = NSURLSession.sharedSession().dataTaskWithRequest(r) {
-                    data, response, error in
-                    if error != nil {
-                        print("error=\(error)")
-                        return
-                    }
-                    // レスポンスを出力
-                    print("******* response = \(response)")
-                    let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-                    print("****** response data = \(responseString!)")
-                    dispatch_async(dispatch_get_main_queue(),{
-                        //アップロード完了
-                    });
-                }
- 
-                task.resume()
-                
-                //imageUploadRequest(imageView: image1)
-            }
-            if(imagePath_2 != "") {
-                //imageUploadRequest(imageView: image2)
-            }
-            if(imagePath_3 != "") {
-                //imageUploadRequest(imageView: image3)
-            }
-            NSLog("MREQID: " + mReqId)
-            
             let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 self.performSegueWithIdentifier("BackToCardMain", sender: self)
             })
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
+            
+            let triggerTime = (Int64(NSEC_PER_SEC) * 120)
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
+                self.uploadImageTask()
+            })
+        }
+    }
+    */
+    
+    func submitApplication(){
+        //self.loadingIndicator.hidden = false
+        //self.loadingIndicator.startAnimating()
+        self.view.userInteractionEnabled = false
+        UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+        
+        let url = NSLocalizedString("urlCATS", comment: "")
+        
+        var stringUrl = url
+        
+        var cardtypecode = ""
+        if let cardTypeLabel = defaults.stringForKey("selectedCardType") {
+            cardtypecode = cardTypeLabel
+        }
+        
+        var errorctr = 0;
+        var errormsg = "";
+        stringUrl = stringUrl + "&companyid=" + self.id
+        
+        stringUrl = stringUrl + "&cardproduct=" + cardtypecode.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&aoemail=" + ccInfo[1].stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&appsource=" + (self.id != "NON" ? "WAP" : "Online Application").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //CHECK WITH LIBFIELDVALUES
+        stringUrl = stringUrl + "&rm=" + "";
+        stringUrl = stringUrl + "&sourcearea=" + "Not Applicable".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&sourcetype=" + "Head Office".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&clientclass=" + (self.id != "NON" ? "WAP (WORKPLACE ARRANGEMENT PROGR" : "REGULAR").stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!; //ADD TO LIBFIELDVALUES = REGULAR
+        //stringUrl = stringUrl + "&clienttype=" + "0".stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        if(self.lastname.text == ""){
+            errorctr += 1;
+            errormsg += "Last Name\n";
+        }
+        if(self.firstname.text == ""){
+            errorctr += 1;
+            errormsg += "First Name\n";
+        }
+        if(self.mobilenumber.text == ""){
+            errorctr += 1;
+            errormsg += "Mobile No\n";
+        }
+        if(self.emailaddress.text == "" || isValidEmail(self.emailaddress.text!) == false){ //CHECK IF VALID EMAIL
+            errorctr += 1;
+            errormsg += "Email Address\n";
+        }
+        if(self.address1.text == ""){
+            errorctr += 1;
+            errormsg += "Res Address\n";
+        }
+        
+        var incomeTypeID = ""
+        if let incomeTypeIDLabel = defaults.stringForKey("selectedIncomeTypeID") {
+            incomeTypeID = incomeTypeIDLabel
+        }
+        if(incomeTypeID != "6"){
+            if(self.empname.text == ""){
+                errorctr += 1;
+                errormsg += "Emp/Biz Name\n";
+            }
+            if(self.empincome.text == ""){
+                errorctr += 1;
+                errormsg += "Emp/Biz Income\n";
+            }
+            if(self.empaddress1.text == ""){
+                errorctr += 1;
+                errormsg += "Emp/Biz Address\n";
+            }
+            if(self.empphone.text == ""){
+                errorctr += 1;
+                errormsg += "Emp/Biz Phone\n";
+            }
+        }
+        
+        stringUrl = stringUrl + "&fullname=" + self.lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + (", " + self.firstname.text!).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + (" " + self.middlename.text!).stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&lname=" + self.lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&fname=" + self.firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&mname=" + self.middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&bday=" + self.birthday.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&bPlace=" + self.bPlace.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&mothermaidenname=" + self.mothermaidenname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&gender=" + (self.salutation.text! == "Mr" ? "0" : "1")
+        
+        stringUrl = stringUrl + "&title=" +
+            self.salutation.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&res_ownership=" + self.homeownership.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        //stringUrl = stringUrl + "&empsourcefunds=" + self.empsourcefunds.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var civilstat = ""
+        if let civilStatusCodeLabel = defaults.stringForKey("selectedCivilStatusCode") {
+            civilstat = civilStatusCodeLabel
+        }
+        
+        stringUrl = stringUrl + "&civilstat=" + civilstat.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&resphone=" + self.phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&mobileno=" + self.mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&email=" + self.emailaddress.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&resadd1=" + self.address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&resadd2=" + self.address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empbizstatus=" + incomeTypeID.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        //stringUrl = stringUrl + "&remarks=" + self.bank.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        
+        stringUrl = stringUrl + "&empbizname=" + self.empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        var jobposition = ""
+        if let occupationIDLabel = defaults.stringForKey("selectedOccupationID") {
+            jobposition = occupationIDLabel
+            print("jobposition" + jobposition)
+        }
+        
+        stringUrl = stringUrl + "&jobpos=" + jobposition.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&empbiz_y=" + self.empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizaddress=" + self.empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&empbizadd2=" + self.empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizphone=" + self.empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&empbizannualincome=" + self.empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        if(self.withc1.on == true){
+            
+            if(self.c1lastname.text == ""){
+                errorctr += 1;
+                errormsg += "S1 Last Name\n";
+            }
+            if(self.c1firstname.text == ""){
+                errorctr += 1;
+                errormsg += "S1 First Name\n";
+            }
+            if(self.c1mobilenumber.text == ""){
+                errorctr += 1;
+                errormsg += "S1 Mobile No\n";
+            }
+            if(self.c1address1.text == ""){
+                errorctr += 1;
+                errormsg += "S1 Res Address\n";
+            }
+            
+            /*
+             if(emptypeArr[self.c1emptype.selectedRowInComponent(0)].0 != "6"){
+             if(self.c1empname.text == ""){
+             errorctr++;
+             errormsg += "S1 Emp/Biz Name\n";
+             }
+             if(self.c1empincome.text == ""){ //CHECK IF VALID AMOUNT
+             errorctr++;
+             errormsg += "S1 Emp/Biz Income\n";
+             }
+             if(self.c1empaddress1.text == ""){
+             errorctr++;
+             errormsg += "S1 Emp/Biz Address\n";
+             }
+             if(self.c1empphone.text == ""){
+             errorctr++;
+             errormsg += "S1 Emp/Biz Phone\n";
+             }
+             }
+             */
+            
+            stringUrl = stringUrl + "&m1lname=" + self.c1lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1fname=" + self.c1firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1mname=" + self.c1middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m1bday=" + self.c1birthday.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1gender=" + (self.c1gender.selectedSegmentIndex == 0 ? "0" : "1")
+            stringUrl = stringUrl + "&m1resphone=" + self.c1phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1mobileno=" + self.c1mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m1resadd1=" + self.c1address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1resadd2=" + self.c1address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1empbiz_type=" + emptypeArr[self.c1emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1empbizname=" + self.c1empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1jobpos=" + positionArr[self.c1position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m1empbiz_y=" + self.c1empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizadd1=" + self.c1empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizadd2=" + self.c1empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizphone=" + self.c1empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m1empbizmoincome=" + self.c1empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }
+        
+        if(self.withc2.on == true){
+            if(self.c2lastname.text == ""){
+                errorctr += 1;
+                errormsg += "S2 Last Name\n";
+            }
+            if(self.c2firstname.text == ""){
+                errorctr += 1;
+                errormsg += "S2 First Name\n";
+            }
+            if(self.c2mobilenumber.text == ""){
+                errorctr += 1;
+                errormsg += "S2 Mobile No\n";
+            }
+            if(self.c2address1.text == ""){
+                errorctr += 1;
+                errormsg += "S2 Res Address\n";
+            }
+            
+            /*
+             if(emptypeArr[self.c2emptype.selectedRowInComponent(0)].0 != "6"){
+             if(self.c2empname.text == ""){
+             errorctr++;
+             errormsg += "S2 Emp/Biz Name\n";
+             }
+             if(self.c2empincome.text == ""){ //CHECK IF VALID AMOUNT
+             errorctr++;
+             errormsg += "S2 Emp/Biz Income\n";
+             }
+             if(self.c2empaddress1.text == ""){
+             errorctr++;
+             errormsg += "S2 Emp/Biz Address\n";
+             }
+             if(self.c2empphone.text == ""){
+             errorctr++;
+             errormsg += "S2 Emp/Biz Phone\n";
+             }
+             }
+             */
+            
+            stringUrl = stringUrl + "&m2lname=" + self.c2lastname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2fname=" + self.c2firstname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2mname=" + self.c2middlename.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            stringUrl = stringUrl + "&m2bday=" + self.c2birthday.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2gender=" + (self.c2gender.selectedSegmentIndex == 0 ? "0" : "1")
+            stringUrl = stringUrl + "&m2resphone=" + self.c2phonenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2mobileno=" + self.c2mobilenumber.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            stringUrl = stringUrl + "&m2resadd1=" + self.c2address1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2resadd2=" + self.c2address2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2empbiz_type=" + emptypeArr[self.c2emptype.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2empbizname=" + self.c2empname.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2jobpos=" + positionArr[self.c2position.selectedRowInComponent(0)].0.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            
+            //stringUrl = stringUrl + "&m2empbiz_y=" + self.c2empyears.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizadd1=" + self.c2empaddress1.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizadd2=" + self.c2empaddress2.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizphone=" + self.c2empphone.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+            //stringUrl = stringUrl + "&m2empbizmoincome=" + self.c2empincome.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        }
+        
+        let mReqId = UIDevice.currentDevice().identifierForVendor!.UUIDString + "-" + cardtypecode + "-" + self.lastname.text! + "-" + self.firstname.text! + "-" + self.birthday.text!
+        
+        defaults.setObject(mReqId, forKey: "submittedApplicationID")
+        
+        stringUrl = stringUrl + "&applicationId=" + mReqId.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        
+        stringUrl = stringUrl + "&duid=" + UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        stringUrl = stringUrl + "&dtype=ios"
+        
+        //stringUrl = stringUrl + "&remarks=" + self.remarks.text!.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!;
+        //stringUrl = stringUrl + "&loggeduser=" + EncodeURLString(loggedUSRUID);
+        
+        if(errorctr > 0){
+            let alert = UIAlertController(title: "Error in Form", message: "You have blank/invalid/errors on some required fields.\n" + errormsg, preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                //exit(1)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+            //self.loadingIndicator.hidden = true
+            //self.loadingIndicator.stopAnimating()
+            self.view.userInteractionEnabled = true
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+        }else{
+            NSUserDefaults.standardUserDefaults().setObject(self.lastname.text, forKey: "LASTNAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.firstname.text, forKey: "FIRSTNAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.middlename.text, forKey: "MIDDLENAME")
+            NSUserDefaults.standardUserDefaults().setObject(self.birthday.text, forKey: "BIRTHDAY")
+            NSUserDefaults.standardUserDefaults().setObject(self.mobilenumber.text, forKey: "MOBILENO")
+            NSUserDefaults.standardUserDefaults().setObject(self.emailaddress.text, forKey: "EMAIL")
+            NSUserDefaults.standardUserDefaults().setObject(self.phonenumber.text, forKey: "RESPHONE")
+            NSUserDefaults.standardUserDefaults().setObject(self.empphone.text, forKey: "EMPBIZPHONE")
+            NSUserDefaults.standardUserDefaults().setObject(self.address1.text, forKey: "RESADDLINE1")
+            NSUserDefaults.standardUserDefaults().setObject(self.address2.text, forKey: "RESADDLINE2")
+            NSUserDefaults.standardUserDefaults().setObject(self.empaddress1.text, forKey: "EMPBIZADDLINE1")
+            NSUserDefaults.standardUserDefaults().setObject(self.empaddress2.text, forKey: "EMPBIZADDLINE2")
+            NSUserDefaults.standardUserDefaults().setObject(self.empname.text, forKey: "EMPBIZNAME")
+            
+            let entityDescription = NSEntityDescription.entityForName("UrlStrings", inManagedObjectContext: managedObjectContext)
+            let url = UrlStrings(entity:entityDescription!, insertIntoManagedObjectContext: managedObjectContext)
+            url.url = stringUrl
+            url.datecreated = String(NSDate())
+            url.refid = "CARD"
+            url.datesuccess = "0"
+            
+            NSLog("stringUrl: " + stringUrl)
+            
+            self.view.userInteractionEnabled = true
+            //self.loadingIndicator.hidden = true
+            //self.loadingIndicator.stopAnimating()
+            UIApplication.sharedApplication().endIgnoringInteractionEvents()
+            
+            let alert = UIAlertController(title: "Application Submitted", message: "Your new credit card application has been saved for submission. Please make sure not to quit the app and to have a stable data connection for a few minutes. You will receive an alert once it has been successfully sent.", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
+                self.performSegueWithIdentifier("BackToCardMain", sender: self)
+            })
+            alert.addAction(action)
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+            let triggerTime = (Int64(NSEC_PER_SEC) * 120)
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
+                self.uploadImageTask()
+            })
         }
     }
     
@@ -1460,11 +1711,10 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     }
 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        
         if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
             selectedSourceOfImage = sourceOfImage
         }
-
+        
         if let imageNum = defaults.stringForKey("selectedImage") {
             selectedImage = imageNum
         }
@@ -1583,6 +1833,130 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         self.dismissViewControllerAnimated(true, completion: nil);
     }
     
+    func uploadImageTask() {
+        if let path1 = defaults.stringForKey("imagePath_1") {
+            imagePath_1 = path1
+        }
+        
+        if let path2 = defaults.stringForKey("imagePath_2") {
+            imagePath_2 = path2
+        }
+        
+        if let path3 = defaults.stringForKey("imagePath_3") {
+            imagePath_3 = path3
+        }
+        
+        if let appID = defaults.stringForKey("submittedApplicationID") {
+            submittedApplicationID = appID
+        }
+        
+        if(imagePath_1 != "") {
+            urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            let uploadUrl = NSURL(string: urlAsString)
+            NSLog("NSURL: " + String(uploadUrl))
+            let r = NSMutableURLRequest(URL:(uploadUrl)!);
+            r.HTTPMethod = "POST"
+            
+            let boundary = "Boundary-\(NSUUID().UUIDString)"
+            
+            r.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            let imageData = UIImageJPEGRepresentation((self.image1?.image)!, 1)
+            
+            if(imageData==nil)  { return; }
+            
+            r.HTTPBody = createBody(uploadedPhotosDets, boundary: boundary, data: imageData!, mimeType: "multipart/form-data", filename: "image1.JPG")
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(r) {
+                data, response, error in
+                if error != nil {
+                    print("error=\(error)")
+                    return
+                }
+                print("******* response = \(response)")
+                let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("****** response data = \(responseString!)")
+                dispatch_async(dispatch_get_main_queue(),{
+                    //CODE
+                });
+            }
+            
+            task.resume()
+        }
+        
+        if(imagePath_2 != "") {
+            urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            let uploadUrl = NSURL(string: urlAsString)
+            NSLog("NSURL: " + String(uploadUrl))
+            let r = NSMutableURLRequest(URL:(uploadUrl)!);
+            r.HTTPMethod = "POST"
+            
+            let boundary = "Boundary-\(NSUUID().UUIDString)"
+            
+            r.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            let imageData = UIImageJPEGRepresentation((self.image2?.image)!, 1)
+            
+            if(imageData==nil)  { return; }
+            
+            r.HTTPBody = createBody(uploadedPhotosDets, boundary: boundary, data: imageData!, mimeType: "multipart/form-data", filename: "image2.JPG")
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(r) {
+                data, response, error in
+                if error != nil {
+                    print("error=\(error)")
+                    return
+                }
+                print("******* response = \(response)")
+                let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("****** response data = \(responseString!)")
+                dispatch_async(dispatch_get_main_queue(),{
+                    //CODE
+                });
+            }
+            
+            task.resume()
+        }
+        
+        if(imagePath_3 != "") {
+            urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            let uploadUrl = NSURL(string: urlAsString)
+            NSLog("NSURL: " + String(uploadUrl))
+            let r = NSMutableURLRequest(URL:(uploadUrl)!);
+            r.HTTPMethod = "POST"
+            
+            let boundary = "Boundary-\(NSUUID().UUIDString)"
+            
+            r.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            let imageData = UIImageJPEGRepresentation((self.image3?.image)!, 1)
+            
+            if(imageData==nil)  { return; }
+            
+            r.HTTPBody = createBody(uploadedPhotosDets, boundary: boundary, data: imageData!, mimeType: "multipart/form-data", filename: "image3.JPG")
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(r) {
+                data, response, error in
+                if error != nil {
+                    print("error=\(error)")
+                    return
+                }
+                print("******* response = \(response)")
+                let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                print("****** response data = \(responseString!)")
+                dispatch_async(dispatch_get_main_queue(),{
+                    //CODE
+                });
+            }
+            
+            task.resume()
+        }
+        NSLog("MREQID: " + submittedApplicationID)
+    }
+    
     override func viewWillAppear(animated: Bool) {
         
         if let sourceOfImage = defaults.stringForKey("selectedSourceOfImage") {
@@ -1598,7 +1972,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             let okButton = UIAlertAction(title: "Save", style: UIAlertActionStyle.Default){
                 UIAlertAction in
                 NSLog("ok pressed")
-
+                
                 if(self.selectedImage == "image1"){
                     let imageData1 = UIImageJPEGRepresentation((self.image1?.image)!, 0.6)
                     let compressedJPGImage1 = UIImage(data: imageData1!)
@@ -1647,107 +2021,6 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         return body as NSData
     }
     
-    /*
-    ////UPLOAD TASK////
-    func imageUploadRequest(imageView imageView: UIImageView) {
-        
-        if let appID = defaults.stringForKey("submittedApplicationID") {
-            submittedApplicationID = appID
-        }
-        
-        //var error: NSErrorPointer?
-        
-        urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-        let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
-        let uploadUrl = NSURL(string: urlAsString)
-        let request = NSMutableURLRequest(URL:(uploadUrl)!);
-        request.HTTPMethod = "POST"
-        
-        let boundary = generateBoundaryString()
-        
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        let imageData = UIImageJPEGRepresentation(imageView.image!, 1)
-        
-        let filename = "image1.JPG"
-        
-        NSLog("filename: " + filename)
-        
-        if(imageData==nil)  { return; }
-        
-        request.HTTPBody = createBodyWithParameters("uploaded_file", imageDataKey: imageData!, boundary: boundary, filename: filename)
-        
-        let task =  NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: {
-            (data, response, error) -> Void in
-            if let data = data {
-                
-                // You can print out response object
-                print("******* response = \(response)")
-                
-                print(data.length)
-                //you can use data here
-                
-                // Print out reponse body
-                let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                print("****** response data = \(responseString!)")
-                
-                //let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? NSDictionary
-                //let json: NSDictionary! = NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.MutableContainers) as? NSDictionary
-                
-                do {
-                    if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary {
-                        print(jsonResult)
-                        print("JSON VALUE: \(jsonResult)")
-                    }
-                } catch let error as NSError {
-                    print(error.localizedDescription)
-                }
-                
-                //var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: &err)
-                
-                dispatch_async(dispatch_get_main_queue(),{
-                    //self.myActivityIndicator.stopAnimating()
-                    //self.imageView.image = nil;
-                });
-            } else if let error = error {
-                print(error.description)
-            }
-        })
-        task.resume()
-    }
-    
-    func createBodyWithParameters(filePathKey: String?, imageDataKey: NSData, boundary: String, filename: String) -> NSData {
-        let body = NSMutableData();
-        /*
-        if parameters != nil {
-            for (key, value) in parameters! {
-                body.appendString("--\(boundary)\r\n")
-                body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-                body.appendString("\(value)\r\n")
-            }
-        }
-        */
-        
-        NSLog("FILENAME: " + filename)
-        let mimetype = "image/jpg"
-        
-        body.appendString("--\(boundary)\r\n")
-        body.appendString("Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n")
-        body.appendString("Content-Type: \(mimetype)\r\n\r\n")
-        body.appendData(imageDataKey)
-        body.appendString("\r\n")
-        
-        body.appendString("--\(boundary)--\r\n")
-        
-        return body
-    }
-    
-    func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().UUIDString)"
-    }
-    ///////////////////
-    */
- 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "ShowCardNetworkList"

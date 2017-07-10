@@ -328,7 +328,8 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         //let mReqId = "1E3EF1AF-B28B-49A9-AC16-15571803A55A-1003-MOBILE-APP-6/7/17"
         //let mReqId = "510107D4-5798-4CEA-B762-591636A50D79-1005-MOBILE-APP-6/7/17"
         //let mReqId = "AF68B257-492D-4AE4-B566-352A0C1C2F5B-1003-MOBILE-APP-6/7/17"
-        let mReqId = "D73EDF90-B752-4FFC-8050-F60A10E56B6F-1002-MOBILE-APP-6/7/17"
+        //let mReqId = "D73EDF90-B752-4FFC-8050-F60A10E56B6F-1002-MOBILE-APP-6/7/17"
+        let mReqId = "F8DDC87F-CCD8-428A-82D0-1A953A43C5A5-MOBILE-APP-03/30/2017"
         
         defaults.setObject(mReqId, forKey: "submittedApplicationID")
         
@@ -352,7 +353,7 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         NSLog("uploadedPhotosDets: " + String(uploadedPhotosDets))
         
         if(imagePath_1 != "") {
-            urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+            urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
             let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
             let uploadUrl = NSURL(string: urlAsString)
             NSLog("NSURL: " + String(uploadUrl))
@@ -387,7 +388,7 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         }
         
         if(imagePath_2 != "") {
-            urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+            urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
             let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
             let uploadUrl = NSURL(string: urlAsString)
             NSLog("NSURL: " + String(uploadUrl))
@@ -422,7 +423,7 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         }
         
         if(imagePath_3 != "") {
-            urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
+            urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
             let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
             let uploadUrl = NSURL(string: urlAsString)
             NSLog("NSURL: " + String(uploadUrl))
