@@ -62,7 +62,12 @@ class ListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
         
         if(vcAction == "ShowCarModelList"){
             if let carBrand = defaults.stringForKey("selectedCarBrand") {
@@ -1125,7 +1130,11 @@ class ListTableViewController: UITableViewController {
                 //nothing
             })
             alert.addAction(action4)
-            
+            if let popoverController = alert.popoverPresentationController {
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+            }
             /*
             let action4 = UIAlertAction(title: "Inquire Now", style: .Default, handler: { (alert) -> Void in
             self.selectedCarModelId = modelid
@@ -1158,6 +1167,11 @@ class ListTableViewController: UITableViewController {
                 let action_ = UIAlertAction(title: "OK", style: .Default, handler: { (alert) -> Void in
                 })
                 alert_.addAction(action_)
+                if let popoverController = alert_.popoverPresentationController {
+                    popoverController.sourceView = self.view
+                    popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                    popoverController.permittedArrowDirections = []
+                }
                 self.presentViewController(alert_, animated: true, completion: nil)
                 
             })
@@ -1180,7 +1194,11 @@ class ListTableViewController: UITableViewController {
                 //nothing
             })
             alert.addAction(action5)
-            
+            if let popoverController = alert.popoverPresentationController {
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+            }
             presentViewController(alert, animated: true, completion: nil)
         }
         
@@ -1299,7 +1317,11 @@ class ListTableViewController: UITableViewController {
                 //nothing
             })
             alert.addAction(action4)
-            
+            if let popoverController = alert.popoverPresentationController {
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+            }
             presentViewController(alert, animated: true, completion: nil)
         }
         

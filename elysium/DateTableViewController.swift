@@ -102,6 +102,11 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -135,6 +140,11 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -168,6 +178,11 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -329,7 +344,12 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         //let mReqId = "510107D4-5798-4CEA-B762-591636A50D79-1005-MOBILE-APP-6/7/17"
         //let mReqId = "AF68B257-492D-4AE4-B566-352A0C1C2F5B-1003-MOBILE-APP-6/7/17"
         //let mReqId = "D73EDF90-B752-4FFC-8050-F60A10E56B6F-1002-MOBILE-APP-6/7/17"
-        let mReqId = "F8DDC87F-CCD8-428A-82D0-1A953A43C5A5-MOBILE-APP-03/30/2017"
+        //let mReqId = "F8DDC87F-CCD8-428A-82D0-1A953A43C5A5-MOBILE-APP-03/30/2017"
+        //let mReqId = "2E20ADBC-725B-4FE4-970B-5AB3191FEAD7-1002-MOBILE 4-IOS APP-9/11/17"
+        //let mReqId = "32317DA4-4DA2-486E-B5E8-73CABF13AD92-1003-MOBILE 4-IOS APP-9/8/17"
+        //let mReqId = "EA8FCD39-ED66-461A-8B96-41F1AC17B4C4-MOBILE 1 - 09/14/2017-IOA APP-9/14/17"
+        //CREST
+        let mReqId = "E87D386B-CBEC-4E30-BFA7-2FFF0E992F09-MOBILE 3 - 09/14/2017-IOS APP HOME-14/09/2017"
         
         defaults.setObject(mReqId, forKey: "submittedApplicationID")
         
@@ -354,9 +374,13 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         
         if(imagePath_1 != "") {
             urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -389,9 +413,13 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         
         if(imagePath_2 != "") {
             urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -424,9 +452,14 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
         
         if(imagePath_3 != "") {
             urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -456,6 +489,7 @@ class DateTableViewController: UITableViewController, UIImagePickerControllerDel
             
             task.resume()
         }
+ 
         NSLog("MREQID: " + mReqId)
         
         let alert = UIAlertController(title: "UPLOADED", message: "SUCCESS", preferredStyle: .Alert)

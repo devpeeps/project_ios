@@ -17,6 +17,13 @@ class CardNewTableViewController: UITableViewController, UINavigationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
     }
     
     override func didReceiveMemoryWarning() {

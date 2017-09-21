@@ -27,6 +27,11 @@ class HomePageTableViewController: UITableViewController {
         super.viewDidLoad()
         //self.clearUserDefaults()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
         let userDefaults : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if (userDefaults.objectForKey("id") != nil) {

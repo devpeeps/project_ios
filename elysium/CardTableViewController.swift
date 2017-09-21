@@ -72,6 +72,12 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
         checkIfLogged()
         
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AutoTableViewController.DismissKeyboard))
@@ -235,6 +241,11 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             //do nothing
         })
         alert.addAction(action2)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -953,7 +964,7 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             url.refid = "CARD"
             url.datesuccess = "0"
             
-            NSLog("stringUrl: " + stringUrl)
+            //NSLog("stringUrl: " + stringUrl)
             
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
@@ -1614,6 +1625,11 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1647,6 +1663,11 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1680,6 +1701,11 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1852,9 +1878,14 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         if(imagePath_1 != "") {
             urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1887,9 +1918,14 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         if(imagePath_2 != "") {
             urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1922,9 +1958,13 @@ class CardTableViewController: UITableViewController, UIImagePickerControllerDel
         
         if(imagePath_3 != "") {
             urlIMG = NSLocalizedString("urlCATS_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             

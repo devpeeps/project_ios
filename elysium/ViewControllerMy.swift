@@ -34,6 +34,12 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
         if revealViewController() != nil {
             revealViewController().rearViewRevealWidth = 280
             menuButton.target = revealViewController()
@@ -50,7 +56,7 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelega
         
         // Do any additional setup after loading the view.
         checkIfLogged()
-        
+        print("vcAction: " + vcAction)
         if(vcAction == ""){
             myAppArr.removeAll()
             loadMyAppList()
@@ -80,6 +86,8 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelega
           mobileNo = mobilenoLabel
         }
         
+        print("mobileNo: " + mobileNo)
+        
         urlLib = NSLocalizedString("urlLib", comment: "")
         self.view.userInteractionEnabled = false
         UIApplication.sharedApplication().beginIgnoringInteractionEvents()
@@ -88,7 +96,7 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelega
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM1", withString: mobileNo.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
         
         urlAsString = urlAsString.stringByReplacingOccurrencesOfString("@@PARAM2", withString: UIDevice.currentDevice().identifierForVendor!.UUIDString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!)
-        
+        print("urlAsString: " + urlAsString)
         var contProc = true
         let status = Reach().connectionStatus()
         switch status {
@@ -223,7 +231,7 @@ class ViewControllerMy: UIViewController, UITableViewDelegate, UITextFieldDelega
             switch(type){
             case "AUTO": imageView = UIImage(named: "car")
             break;
-            case "HOME": imageView = UIImage(named: "ic_home")
+            case "HOME": imageView = UIImage(named: "home")
             break;
             case "CARD": imageView = UIImage(named: "creditcard")
             break;

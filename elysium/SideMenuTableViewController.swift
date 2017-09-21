@@ -15,6 +15,7 @@ class SideMenuTableViewController: UITableViewController {
     @IBOutlet weak var loggedInAccountCell: UITableViewCell!
     @IBOutlet var sideMenuTable: UITableView!
     
+    
     let defaults = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
@@ -56,6 +57,11 @@ class SideMenuTableViewController: UITableViewController {
             //self.performSegueWithIdentifier("showCalculator", sender: self)
         })
         alert.addAction(action2)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     

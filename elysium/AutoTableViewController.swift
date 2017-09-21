@@ -87,6 +87,12 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
         checkIfLogged()
         
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AutoTableViewController.DismissKeyboard))
@@ -105,12 +111,6 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             btnDeleteImage2.hidden = true
             btnDeleteImage3.hidden = true
         }
-        
-        self.defaults.setObject("", forKey: "selectedSourceOfImage")
-        
-        btnDeleteImage1.hidden = true
-        btnDeleteImage2.hidden = true
-        btnDeleteImage3.hidden = true
         
         self.defaults.setObject("", forKey: "selectedSourceOfImage")
         self.defaults.setObject("", forKey: "imagePath_1")
@@ -980,6 +980,11 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1013,6 +1018,11 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1046,6 +1056,11 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1218,9 +1233,14 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         
         if(imagePath_1 != "") {
             urlIMG = NSLocalizedString("urlECLIPSE_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1253,9 +1273,14 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         
         if(imagePath_2 != "") {
             urlIMG = NSLocalizedString("urlECLIPSE_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1288,9 +1313,14 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         
         if(imagePath_3 != "") {
             urlIMG = NSLocalizedString("urlECLIPSE_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1674,6 +1704,11 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             //do nothing
         })
         alert.addAction(action2)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -2103,8 +2138,8 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             url.refid = "AUTO"
             url.datesuccess = "0"
 
-            NSLog("stringUrl: " + stringUrl)
-            NSLog("url: " + String(url))
+            //NSLog("stringUrl: " + stringUrl)
+            //NSLog("url: " + String(url))
             
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
@@ -2118,7 +2153,7 @@ class AutoTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
             
-            let triggerTime = (Int64(NSEC_PER_SEC) * 120)
+            let triggerTime = (Int64(NSEC_PER_SEC) * 60)
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
                 self.uploadImageTask()
             })

@@ -89,6 +89,12 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
         checkIfLogged()
         
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeTableViewController.DismissKeyboard))
@@ -107,12 +113,6 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             btnDeleteImage2.hidden = true
             btnDeleteImage3.hidden = true
         }
-        
-        self.defaults.setObject("", forKey: "selectedSourceOfImage")
-        
-        btnDeleteImage1.hidden = true
-        btnDeleteImage2.hidden = true
-        btnDeleteImage3.hidden = true
         
         self.defaults.setObject("", forKey: "selectedSourceOfImage")
         self.defaults.setObject("", forKey: "imagePath_1")
@@ -1052,6 +1052,11 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1085,6 +1090,11 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1118,6 +1128,11 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             self.defaults.setObject("", forKey: "selectedSourceOfImage")
         })
         alert.addAction(action3)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1290,9 +1305,14 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         
         if(imagePath_1 != "") {
             urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1325,9 +1345,14 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         
         if(imagePath_2 != "") {
             urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1360,9 +1385,14 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
         
         if(imagePath_3 != "") {
             urlIMG = NSLocalizedString("urlCREST_IMAGE", comment: "")
-            let urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            var urlAsString = urlIMG.stringByReplacingOccurrencesOfString("@@REQID", withString: submittedApplicationID)
+            
+            print("urlAsString: " + urlAsString)
+            
+            urlAsString = urlAsString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let uploadUrl = NSURL(string: urlAsString)
-            NSLog("NSURL: " + String(uploadUrl))
+            print("uploadUrl: " + String(uploadUrl))
+            
             let r = NSMutableURLRequest(URL:(uploadUrl)!);
             r.HTTPMethod = "POST"
             
@@ -1486,6 +1516,11 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             //do nothing
         })
         alert.addAction(action2)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -1873,8 +1908,7 @@ class HomeTableViewController: UITableViewController, UITextFieldDelegate, UIIma
             url.datecreated = String(NSDate())
             url.refid = "HOME"
             url.datesuccess = "0"
-            NSLog("stringUrl: " + stringUrl)
-            NSLog("url: " + String(url))
+            
             self.view.userInteractionEnabled = true
             //self.loadingIndicator.hidden = true
             //self.loadingIndicator.stopAnimating()

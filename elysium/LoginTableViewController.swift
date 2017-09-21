@@ -25,6 +25,12 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginTableViewController.DismissKeyboard))
         view.addGestureRecognizer(dismiss)
         dismiss.cancelsTouchesInView = false

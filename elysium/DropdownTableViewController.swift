@@ -117,6 +117,12 @@ class DropdownTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
         self.tableView.tableFooterView = UIView()
         
         if(vcAction == "ShowCarBrandList" || vcAction == "SelectCarBrandModel"){
@@ -396,7 +402,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
                         dispatch_async(dispatch_get_main_queue(), {
                             let str = s!.componentsSeparatedByString("<br/>")
                             self.emptypeArr.removeAll()
-                            for i in 1...str.count - 1{
+                            for i in 0...str.count - 1{
                                 let str2 = str[i].componentsSeparatedByString("***")
                                 if(str2[1] != ""){
                                     self.emptypeArr.append((str2[1], str2[0]))
@@ -1205,7 +1211,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
             dropdownName = "Select Source Of Fund"
         }
         else if(vcAction == "ShowIncomeType" || vcAction == "ShowSPIncomeType" || vcAction == "ShowC1IncomeType" || vcAction == "ShowC2IncomeType"){
-            dropdownName = "Select Source of Income Type"
+            dropdownName = "Select Business/Employment Type"
         }
         else if(vcAction == "ShowCardType"){
             dropdownName = "Choose Card Category"
@@ -1358,7 +1364,7 @@ class DropdownTableViewController: UITableViewController, UINavigationController
         else if(vcAction == "ShowIncomeType" || vcAction == "ShowSPIncomeType" || vcAction == "ShowC1IncomeType" || vcAction == "ShowC2IncomeType"){
             let (id_empType, empType) = self.emptypeArr[indexPath.row]
             
-            if(Int(id_empType) != 0){
+            if(Int(id_empType) < emptypeArr.count){
                 listcell.textLabel?.text = empType
             }else{
                 listcell.textLabel!.text = ""

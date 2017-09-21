@@ -13,7 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         //NSLog(applicationDocumentsDirectory.path!)
@@ -21,10 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //LaunchScreen ubp_logo.png
         //let navBackgroundImage:UIImage! = UIImage(named: "mast_head4.png")
         //UINavigationBar.appearance().setBackgroundImage(navBackgroundImage, forBarMetrics: .Default)
-        UINavigationBar.appearance().setBackgroundImage(UIImage(named: "mast_head4.png")!.resizableImageWithCapInsets(UIEdgeInsetsMake(0, 0, 0, 0), resizingMode: .Stretch), forBarMetrics: .Default)
+        //UINavigationBar.appearance().setBackgroundImage(UIImage(named: "mast_head4.png")!.resizableImageWithCapInsets(UIEdgeInsetsMake(0, 0, 0, 0), resizingMode: .Stretch), forBarMetrics: .Default)
         UINavigationBar.appearance().backgroundColor = UIColor.orangeColor()
         UINavigationBar.appearance().barTintColor = UIColor.orangeColor()
-
+        
         let openURLAction = UIMutableUserNotificationAction()
         openURLAction.identifier = "openURL"
         openURLAction.title = "View Details"

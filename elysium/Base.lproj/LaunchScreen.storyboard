@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,25 +18,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg1.png" translatesAutoresizingMaskIntoConstraints="NO" id="0ie-VR-aGF">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="zmV-6l-YCd">
+                                <rect key="frame" x="0.0" y="-6" width="600" height="606"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="0ie-VR-aGF" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="G2L-Lq-ETZ"/>
-                            <constraint firstAttribute="trailing" secondItem="0ie-VR-aGF" secondAttribute="trailing" id="Gyf-Ay-Svq"/>
-                            <constraint firstItem="0ie-VR-aGF" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="rCS-gO-ToO"/>
-                            <constraint firstItem="0ie-VR-aGF" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="zPJ-kR-UXD"/>
+                            <constraint firstAttribute="trailing" secondItem="zmV-6l-YCd" secondAttribute="trailing" id="DDD-xx-nnQ"/>
+                            <constraint firstItem="zmV-6l-YCd" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="uyA-fx-nqv"/>
+                            <constraint firstItem="zmV-6l-YCd" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" constant="-6" id="v6i-eH-pF8"/>
+                            <constraint firstItem="zmV-6l-YCd" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="xB2-Qq-ZVf"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="-94" y="26"/>
         </scene>
     </scenes>
     <resources>
-        <image name="bg1.png" width="2667" height="4775"/>
+        <image name="splashscreen.png" width="1656" height="2944"/>
     </resources>
+    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

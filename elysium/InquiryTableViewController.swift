@@ -52,6 +52,12 @@ class InquiryTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 68, height: 58))
+        imageView.contentMode = .ScaleAspectFit
+        let image = UIImage(named: "ubp_logo.png")
+        imageView.image = image
+        navigationItem.titleView = imageView
+        
         checkIfLogged()
         
         let dismiss: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(InquiryTableViewController.DismissKeyboard))
@@ -101,6 +107,11 @@ class InquiryTableViewController: UITableViewController {
             //do nothing
         })
         alert.addAction(action2)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
         presentViewController(alert, animated: true, completion: nil)
     }
     
