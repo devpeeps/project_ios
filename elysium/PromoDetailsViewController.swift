@@ -89,12 +89,24 @@ class PromoDetailsViewController: UIViewController {
     @IBAction func actionOptIn(sender: AnyObject) {
         self.defaults.setObject("OptIn", forKey: "promoStatus")
         let promo = "Free Gas Promo"
+        
+        /*
         let alert = UIAlertView()
         alert.delegate = self
         alert.title = "Promotional Confirmation Message"
         alert.message = "Thank you for subscribing to " + promo + " promotion"
         alert.addButtonWithTitle("OK")
         alert.show()
+        */
+        
+        let alertController = UIAlertController(title: "Promotional Confirmation Message", message: "Thank you for subscribing to " + promo + " promotion", preferredStyle: .Alert)
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { action in
+            
+        }
+        alertController.addAction(OKAction)
+        
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     @IBAction func actionOptOut(sender: AnyObject) {
@@ -102,12 +114,24 @@ class PromoDetailsViewController: UIViewController {
         self.defaults.setObject("", forKey: "selectedAutoPromoCode")
         self.defaults.setObject("", forKey: "selectedAutoPromoDesc")
         let promo = "Free Gas Promo"
+        
+        /*
         let alert = UIAlertView()
         alert.delegate = self
         alert.title = "Promotional Confirmation Message"
         alert.message = "You have unsubscribed from " + promo + " promotion"
         alert.addButtonWithTitle("OK")
         alert.show()
+        */
+        
+        let alertController = UIAlertController(title: "Promotional Confirmation Message", message: "You have unsubscribed from " + promo + " promotion", preferredStyle: .Alert)
+        
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { action in
+            
+        }
+        alertController.addAction(OKAction)
+        
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

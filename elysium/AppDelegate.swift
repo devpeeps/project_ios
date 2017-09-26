@@ -343,7 +343,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     let refid = str2[0];
                                     if #available(iOS 8.2, *) {
                                         notification.alertTitle = str2[2]
-                                    } else {
+                                    }else{
                                         // Fallback on earlier versions
                                     }
                                     notification.alertBody = str2[3]

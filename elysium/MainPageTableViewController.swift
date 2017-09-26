@@ -75,12 +75,23 @@ class MainPageTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if(vcAction == "AutoPromoOptIn"){
             if listOfPromosCell.selected == true {
+                /*
                 let alert = UIAlertView()
                 alert.delegate = self
                 alert.title = "Reminder"
                 alert.message = "You are currently subcribed to Free Gas Promo."
                 alert.addButtonWithTitle("OK")
                 alert.show()
+                */
+                
+                let alertController = UIAlertController(title: "Reminder", message: "You are currently subcribed to Free Gas Promo.", preferredStyle: .Alert)
+                
+                let OKAction = UIAlertAction(title: "OK", style: .Default) { action in
+                    
+                }
+                alertController.addAction(OKAction)
+                
+                presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
